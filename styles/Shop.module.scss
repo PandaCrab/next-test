@@ -1,0 +1,94 @@
+.header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    box-shadow: 0 2px 10px gray;
+
+    & > div {
+        margin-right: 40px;
+        font-size: 30px;
+        font-weight: 600;
+    }
+}
+
+.contentContainer {
+    width: 1600px;
+    min-height: 600px;
+    padding: 40px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    
+    .loader {
+        margin: auto;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+    }
+
+    .errorWrapper {
+        margin: auto;
+        width: 300px;
+        height: 200px;
+        font-size: 25px;
+        font-weight: 500;
+        color: white;
+        background-color: red;
+        box-shadow: 0 0 15px;
+        text-align: center;
+    }
+
+
+    .productCard {
+        width: 350px;
+        max-height: 250px;
+        margin: 0 0 20px 20px;
+        border-radius: 1px solid #bbb;
+        box-shadow: 2px 3px 10px gray;
+
+        .cardContentWrapper {
+            display: flex;
+            border-bottom: 1px solid #bbb;
+
+            .cardInfo {
+                width: 200px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+
+                .stuffTitle {
+                    text-align: end;
+                    margin-bottom: 15px;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .cardButtons {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+
+            .cartButton {
+                width: 35px;
+                height: 35px;
+                background: none;
+                border: 1px solid #bbb;
+                border-radius: 50%;
+
+                &:hover {
+                    box-shadow: 0 0 6px gray;
+                }
+
+                &:active {
+                    box-shadow: 0 0 3px gray;
+                }
+            }
+        }
+    }
+}
