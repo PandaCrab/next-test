@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
+import { AiOutlineDelete } from 'react-icons/ai'
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { deleteFromOrder } from '../redux/ducks/stuff';
 
@@ -8,13 +11,11 @@ import styles from '../styles/CartPage.module.scss';
 
 const CartPage = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
     const cart = useSelector(state => state.order.clientOrder);
 
     return (
-        <div style={{margin: 'auto'}}>
-            <div>
-                Hello, i`m cart, and you buy: [sumthing]
-            </div>
+        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
             <div className={styles.cartContainer}>
                 {
                     cart.length ? cart.map(stuff => (
@@ -37,15 +38,27 @@ const CartPage = () => {
                                 <button 
                                     onClick={() => dispatch(deleteFromOrder(stuff))}
                                     className={styles.deleteButton}>
-                                    x
+                                    <AiOutlineDelete />
                                 </button>
                             </div>
                         </div>
                     )) : (
-                        <div>Your cart don`t have stuffs</div>
+                        <div>
+                            <div className={styles.emptyCart}>
+                                Your cart don`t have any stuff
+                            <Link href='/shop'>
+                                <a>Buy somhting</a>
+                            </Link>
+                            </div>
+                        </div>
                     )
                 }
             </div>
+            {cart.length && 
+                    <button className={styles.orderButton} onClick={() => router.push(`/order/${Math.floor(Math.random() * 10000000)}`)}>
+                        Create order
+                    </button>
+            }
         </div>
     );
 };

@@ -25,13 +25,6 @@ const Shop = () => {
 
     return (
         <>
-            <div className={styles.header}>
-                <div>Choose what do you need and go to the order</div>
-                <Link href="/">
-                    <a className={styles.homeLink}>Home</a>
-                </Link>
-                <Cart />
-            </div>
             <div className={styles.contentContainer}>
                 {
                     loading ? (
@@ -39,7 +32,9 @@ const Shop = () => {
                     ) : error ? (
                         <div className={styles.errorWrapper}>Seems somthing broken</div>
                     ) : stuffs.map(stuff => (
-                        <div className={styles.productCard} key={ stuff.id }>
+                        <div 
+                            className={styles.productCard} 
+                            key={ stuff.id }>
                             <div className={styles.cardContentWrapper}>
                                 <Image 
                                     src={stuff.imgUrl} 
@@ -57,10 +52,10 @@ const Shop = () => {
                             <div className={styles.cardButtons}>
                                 <button 
                                     onClick={() => dispatch(inOrder(stuff))}
-                                    style={{
-                                        background: select.find(x => x.id === stuff.id) ? 'green' : 'none'
-                                    }}
-                                    className={styles.cartButton}>
+                                    className={select.find(x => x.id === stuff.id) ? 
+                                        `${styles.cartButton} ${styles.ordered}` :
+                                        `${styles.cartButton}`
+                                        }>
                                     <BsCart />
                                 </button>
                             </div>

@@ -19,12 +19,20 @@ div.layout {
 
 main {
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: centerx;
   padding: 40px 0;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: blue;
 }
 
 * {

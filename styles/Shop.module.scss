@@ -88,6 +88,11 @@
                 &:active {
                     box-shadow: 0 0 3px gray;
                 }
+
+                &.ordered {
+                    background-color: green;
+                    color: white;
+                }
             }
         }
     }

@@ -8,6 +8,12 @@
     margin-bottom: 25px;
     position: relative;
 
+    a {
+        &:hover {
+            color: blue;
+        }
+    }
+
     .title {
         font-size: 20px;
         font-weight: bold;
@@ -17,10 +23,12 @@
 
 .footer {
     width: 100%;
+    height: 100px;
     display: flex;
-    flex: 1;
-    padding: 2rem 0;
+    padding: 0 20px;
     border-top: 1px solid #eaeaea;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    bottom: 0;
   }

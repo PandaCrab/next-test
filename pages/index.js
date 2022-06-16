@@ -17,10 +17,6 @@ export default function Home() {
           <a>Check what you can buy</a>
         </Link>
       </main>
-
-      <footer className={styles.footer}>
-        Test Next application
-      </footer>
     </div>
   )
 }
