@@ -1,0 +1,61 @@
+.cartContainer {
+    width: 1600px;
+    min-height: 600px;
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .productCard {
+        width: 350px;
+        max-height: 250px;
+        margin: 0 0 20px 20px;
+        border-radius: 1px solid #bbb;
+        box-shadow: 2px 3px 10px gray;
+
+        .cardContentWrapper {
+            display: flex;
+            border-bottom: 1px solid #bbb;
+
+            .cardInfo {
+                width: 200px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+
+                .stuffTitle {
+                    text-align: end;
+                    margin-bottom: 15px;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .cardButtons {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+
+            .deleteButton {
+                width: 35px;
+                height: 35px;
+                background: red;
+                color: white;
+                font-weight: bold;
+                font-size: 20px;
+                border: 1px solid #bbb;
+                border-radius: 50%;
+
+                &:hover {
+                    box-shadow: 0 0 6px gray;
+                }
+
+                &:active {
+                    box-shadow: 0 0 3px gray;
+                }
+            }
+        }
+    }
+}

@@ -8,7 +8,8 @@ export const SHOW_LOADER = 'global/SHOW_LOADER';
 export const HIDE_LOADER = 'global/HIDE_LOADER';
 const REQUEST_PRODUCTS_STORAGE = 'stuff/REQUEST_PRODUCTS_STORAGE';
 const FETCH_PRODUCTS_STORAGE = 'stuff/FETCH_PRODUCTS_STORAGE';
-const CATCH_CLIENT_CHOOSE = 'stuff/CATCH_CLIENT_CHOOSE';
+const ADD_TO_ORDER = 'stuff/ADD_TO_ORDER';
+const DELETE_FROM_ORDER = 'stuff/DELETE_FROM_ORDER';
 
 const initialState: { stuff: Object[], loading: boolean, productsStorage: Object[], clientOrder: Object[] } = {
     stuff: [],
@@ -17,12 +18,14 @@ const initialState: { stuff: Object[], loading: boolean, productsStorage: Object
     clientOrder: []
 };
 
-export default function stuffReducer (state = initialState, action: { type: any, payload?: Object[] | String[] }) {
+export default function stuffReducer (state = initialState, action: { type: any, payload?: Object[] | String[] | any }) {
     switch ( action.type ) {
         case FETCH_STUFF: 
             return { ...state, stuff: action.payload };
-        case CATCH_CLIENT_CHOOSE:
-            return { ...state, clientBuy: action.payload }
+        case ADD_TO_ORDER:
+            return { ...state, clientOrder: state.clientOrder.concat(action.payload) };
+        case DELETE_FROM_ORDER:
+            return { ...state, clientOrder: state.clientOrder.filter(items => items !== action.payload) }
         case SHOW_LOADER: 
             return {...state, loading: true};
         case HIDE_LOADER: 
@@ -37,10 +40,15 @@ export const getStuff = () => ({
     type: REQUEST_STUFF
 });
 
-const catchCoosen = (item) => ({
-    type: CATCH_CLIENT_CHOOSE,
+export const inOrder = (item) => ({
+    type: ADD_TO_ORDER,
     payload: item
-})
+});
+
+export const deleteFromOrder = item => ({
+    type: DELETE_FROM_ORDER,
+    payload: item
+});
 
 export const getProductsStorage = () => ({
     type: REQUEST_PRODUCTS_STORAGE

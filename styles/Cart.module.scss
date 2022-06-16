@@ -1,0 +1,26 @@
+.cartContainer {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    right: 20px;
+    top: 10px;
+    
+    .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        font-size: 10px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: firebrick;
+        color: white;
+        top: 0;
+        right: 0;
+    }
+}

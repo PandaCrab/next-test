@@ -4,6 +4,7 @@ import {
   ApolloProvider
 } from '@apollo/client';
 import { Provider } from 'react-redux';
+import SiteLayout from '../components/site-layout';
 
 import store from '../redux/store';
 
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={apolloClient}>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <SiteLayout>
+          <Component {...pageProps} />
+        </SiteLayout>
       </Provider>
     </ApolloProvider>
   )

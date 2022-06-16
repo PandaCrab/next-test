@@ -4,31 +4,24 @@ import { BsCart } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { TAKE_PRODUCTS } from './api/api.ts';
+import { inOrder } from '../redux/ducks/stuff';
 
 import styles from '../styles/Shop.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import Cart from '../components/cart';
 
 const Shop = () => {
     const [stuffs, setStuffs] = useState([]);
-    const [inOrder, setInOrder] = useState({});
 
+    const select = useSelector(state => state.order.clientOrder)
     const dispatch = useDispatch();
     const { loading, error, data } = useQuery(TAKE_PRODUCTS);
 
     useEffect(() => {
         if (!loading) setStuffs(data.products)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading]);
-
-    const addToOrder = (item) => {
-        const { id } = item
-        setInOrder(prev => ({
-            ...prev,
-            [id]: {
-                id: [id],
-                item: item
-            }}));
-    };
 
     return (
         <>
@@ -37,6 +30,7 @@ const Shop = () => {
                 <Link href="/">
                     <a className={styles.homeLink}>Home</a>
                 </Link>
+                <Cart />
             </div>
             <div className={styles.contentContainer}>
                 {
@@ -62,7 +56,10 @@ const Shop = () => {
                             </div>
                             <div className={styles.cardButtons}>
                                 <button 
-                                    onClick={() => addToOrder(stuff)}
+                                    onClick={() => dispatch(inOrder(stuff))}
+                                    style={{
+                                        background: select.find(x => x.id === stuff.id) ? 'green' : 'none'
+                                    }}
                                     className={styles.cartButton}>
                                     <BsCart />
                                 </button>
