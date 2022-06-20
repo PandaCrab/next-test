@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useQuery } from '@apollo/client';
 import { BsCart } from 'react-icons/bs';
+import { interval, map, take } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { TAKE_PRODUCTS } from './api/api.ts';
@@ -8,30 +9,49 @@ import { inOrder } from '../redux/ducks/stuff';
 
 import styles from '../styles/Shop.module.scss';
 import Image from 'next/image';
-import Link from 'next/link';
-import Cart from '../components/cart';
 
 const Shop = () => {
     const [stuffs, setStuffs] = useState([]);
+    const [isLoading, setLoading] = useState(null)
 
     const select = useSelector(state => state.order.clientOrder)
     const dispatch = useDispatch();
     const { loading, error, data } = useQuery(TAKE_PRODUCTS);
 
     useEffect(() => {
-        if (!loading) setStuffs(data.products)
+        if (!loading && data) setStuffs(data.products);
+        return error
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading]);
+
+    const observable$ = interval(400);
+
+    const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
+
+    useEffect(() => {
+        const subscription = observable$
+            .pipe(
+                take(loadProgress.length),
+                map(v => {
+                    if (v) {
+                        return loadProgress[v]
+                    } 
+                    if (v === 3) clearInterval();
+                })
+            )
+            .subscribe((res) => setLoading(res));
+        return () => subscription.unsubscribe();
+    }, []);
 
     return (
         <>
             <div className={styles.contentContainer}>
                 {
                     loading ? (
-                        <div className={styles.loader}>Loading...</div>
+                        <div className={styles.loader}>{isLoading}</div>
                     ) : error ? (
                         <div className={styles.errorWrapper}>Seems somthing broken</div>
-                    ) : stuffs.map(stuff => (
+                    ) : stuffs ? stuffs.map(stuff => (
                         <div 
                             className={styles.productCard} 
                             key={ stuff.id }>
@@ -60,7 +80,7 @@ const Shop = () => {
                                 </button>
                             </div>
                         </div>
-                    ))
+                    )) : null
                 }
             </div>
         </>
