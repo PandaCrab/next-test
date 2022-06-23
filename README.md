@@ -8,4 +8,4 @@ run in terminal `yarn dev`.
 ### To warking correct
 
 To warking corectly, you need start a server.
-Run in terminal node `testServer.js`
+Run in terminal `json-server --watch db.json --port 4000`

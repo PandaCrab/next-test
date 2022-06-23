@@ -1,55 +1,92 @@
 import React, {useState, useEffect} from 'react';
-import { useQuery } from '@apollo/client';
 import { BsCart } from 'react-icons/bs';
-import { interval, map, take } from 'rxjs';
+import { 
+    interval,
+    switchMap,
+    of,
+    catchError, 
+    map, 
+    take, 
+    repeat 
+} from 'rxjs';
+import { fromFetch } from 'rxjs/fetch'
 import { useDispatch, useSelector } from 'react-redux';
+import Image from 'next/image';
 
-import { TAKE_PRODUCTS } from './api/api.ts';
 import { inOrder } from '../redux/ducks/stuff';
 
 import styles from '../styles/Shop.module.scss';
-import Image from 'next/image';
 
 const Shop = () => {
     const [stuffs, setStuffs] = useState([]);
-    const [isLoading, setLoading] = useState(null)
+    const [error, setError] = useState({
+        status: false,
+        message: null
+    })
+    const [isLoading, setLoading] = useState({
+        stsatus: true,
+        loader: null
+    })
 
     const select = useSelector(state => state.order.clientOrder)
+
     const dispatch = useDispatch();
-    const { loading, error, data } = useQuery(TAKE_PRODUCTS);
-
-    useEffect(() => {
-        if (!loading && data) setStuffs(data.products);
-        return error
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loading]);
-
-    const observable$ = interval(400);
 
     const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
+
+    const observable$ = interval(400);
 
     useEffect(() => {
         const subscription = observable$
             .pipe(
                 take(loadProgress.length),
-                map(v => {
-                    if (v) {
-                        return loadProgress[v]
-                    } 
-                    if (v === 3) clearInterval();
+                map(value => loadProgress[value]),
+                repeat()
+            )
+            .subscribe((res) => setLoading({
+                loading: true,
+                loader: res
+            }));
+        return () => subscription.unsubscribe();
+    }, [isLoading]);    
+
+    useEffect(() => {
+        setLoading({
+            status:true
+        })
+        const data$ = fromFetch('http://localhost:4000/products')
+            .pipe(
+                switchMap(response => {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    return of({ error: true, message: `Error: ${response.status}` })
+                }),
+                catchError(error => {
+                    setError({
+                        status: true,
+                        message: error.message
+                    })
                 })
             )
-            .subscribe((res) => setLoading(res));
-        return () => subscription.unsubscribe();
+        
+        data$.subscribe({
+            next: result => setStuffs(result),
+            complete: () => {
+                setLoading({ status: false, loader: null });
+            }
+        })
+        data$.unsubscribe
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <>
             <div className={styles.contentContainer}>
                 {
-                    loading ? (
-                        <div className={styles.loader}>{isLoading}</div>
-                    ) : error ? (
+                    isLoading.status ? (
+                        <div className={styles.loader}>{isLoading.loader}</div>
+                    ) : error.status ? (
                         <div className={styles.errorWrapper}>Seems somthing broken</div>
                     ) : stuffs ? stuffs.map(stuff => (
                         <div 
