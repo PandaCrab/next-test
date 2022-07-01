@@ -1,21 +1,15 @@
-FROM node:16
+FROM node:14.17-alpine
 
-ENV PORT 3000
+RUN mkdir -p /home/app/ && chown -R node:node /home/app
+WORKDIR /home/app
+COPY --chown=node:node . .
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+USER node
 
-# Installing dependencies
-COPY package*.json /usr/src/app/
-RUN npm install
+RUN yarn install --frozen-lockfile
+RUN yarn build
 
-# Copying source files
-COPY . /usr/src/app
+RUN ["yarn", "build"]
 
-# Building app
-RUN npm run build
 EXPOSE 3000
-
-# Running the app
-CMD "npm" "run" "dev"
+CMD [ "yarn", "start" ]
