@@ -1,15 +1,9 @@
-version: "3.3"
+version: "3.9"
 
 services:
-  nextjs:
-    ports:
-      - 3000:3000
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/.next
-    env_file:
-      - .env
+  web:
+    image: /home/app/some-name/
+  server:
+    image: /home/app/node-app/
+  ports:
+    - 3000:4000

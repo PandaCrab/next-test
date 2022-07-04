@@ -4,19 +4,19 @@ import { BsCart } from 'react-icons/bs';
 
 import Link from 'next/link';
 import styles from '../styles/Cart.module.scss';
+import { useRouter } from 'next/router';
 
 const Cart = () => {
     const ordered = useSelector(state => state.order.clientOrder);
+    const route = useRouter();
 
     return (
-        <Link href='/cartPage'>
-            <div className={styles.cartContainer}>
-                <div calssName={styles.cart}><BsCart /></div>
-                { ordered && ordered.length ? (
-                    <div className={styles.badge}>{ordered.length}</div>
-                ) : null }
-            </div>
-        </Link>
+        <div className={styles.cartContainer} onClick={() => route.push('/cartPage')}>
+            <div calssName={styles.cart}><BsCart /></div>
+            { ordered && ordered.length ? (
+                <div className={styles.badge}>{ordered.length}</div>
+            ) : null }
+        </div>
     );
 };
 

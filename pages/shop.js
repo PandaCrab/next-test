@@ -48,17 +48,17 @@ const Shop = () => {
                 loader: res
             }));
         return () => subscription.unsubscribe();
-    }, [isLoading]);    
+    }, [isLoading]);
 
     useEffect(() => {
         setLoading({
             status:true
         })
-        const data$ = fromFetch('/products')
+        const data$ = fromFetch('http://localhost:4000/storage')
             .pipe(
                 switchMap(response => {
                     if (response.ok) {
-                        return response.json()
+                        return response.json();
                     }
                     return of({ error: true, message: `Error: ${response.status}` })
                 }),
@@ -68,15 +68,15 @@ const Shop = () => {
                         message: error.message
                     })
                 })
-            )
+            );
         
         data$.subscribe({
-            next: result => setStuffs(result),
+            next: result => setStuffs(result.storage),
             complete: () => {
                 setLoading({ status: false, loader: null });
             }
-        })
-        data$.unsubscribe
+        });
+        data$.unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
