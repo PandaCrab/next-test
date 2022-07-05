@@ -2,8 +2,10 @@ version: "3.9"
 
 services:
   web:
-    image: /home/app/some-name/
+    build: .
+    command: yarn start
+    ports: [3000:3000]
   server:
-    image: /home/app/node-app/
-  ports:
-    - 3000:4000
+    build: ../node-test-app
+    command: npm start
+    ports: [4000:4000]

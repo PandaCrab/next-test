@@ -24,7 +24,7 @@ const Shop = () => {
         message: null
     })
     const [isLoading, setLoading] = useState({
-        stsatus: true,
+        status: false,
         loader: null
     })
 
@@ -70,7 +70,7 @@ const Shop = () => {
                 })
             );
         
-        data$.subscribe({
+        data$ && data$.subscribe({
             next: result => setStuffs(result.storage),
             complete: () => {
                 setLoading({ status: false, loader: null });
