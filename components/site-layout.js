@@ -13,6 +13,9 @@ const SiteLayout = ({children}) => {
                 <Link href="/">
                     <a className={styles.homeLink}>Home</a>
                 </Link>
+                <Link href="/admin">
+                    <a className={styles.homeLink}>Admin</a>
+                </Link>
                 <Cart />
             </div>
 

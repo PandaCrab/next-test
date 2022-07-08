@@ -1,48 +1,47 @@
-import { gql } from '@apollo/client';
+import {
+    switchMap,
+    of,
+    catchError
+} from 'rxjs';
+import { fromFetch } from 'rxjs/fetch'
 
-import type { data } from "../../types";
+import type { storageData, data } from "../../types";
 
-const url = 'http://localhost:3004';
+const url = 'http://localhost:4000';
+const autocompleteApiUrl = `https://app.geocodeapi.io/api/v1/`;
 const apiKey = 'e2d9f960-bc78-11ec-a0da-bd0e50737306';
-const addressApi = `https://app.geocodeapi.io/api/v1/`;
+
+export const data$ = fromFetch('http://localhost:4000/storage')
+    .pipe(
+        switchMap(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            return of({ error: true, message: `Error: ${response.status}` })
+        }),
+        catchError(error => {
+            return error.message;
+        })
+    );
+
+export const postProduct = (data: storageData) => fetchFunc( url + '/storage', 'POST', data);
 
 //Need write method to working correct
-const fetchFunc = (url: string, method: string, data?: data) => {
+const fetchFunc = (url: string, method: string, data?: any) => {
     if (method === 'GET') return fetch(url)
     if (method === 'POST') fetch(url, {
         method: 'POST',
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
     })
+    console.log('data send')
 };
 
 //fetch POST of personal info for billing to data
-export const fetchPostData = (data: data) => fetchFunc(url+'/personInfo', "POST", data);
-
-//fetch products in backet
-export const fetchStuff = async() => {
-    try {
-        const response: any = await fetchFunc(url+'/products', 'GET');
-        const json = await response.json();
-        return json;
-    } catch(errors) {
-        return null;
-    };
-};
-
-export const TAKE_PRODUCTS = gql`
-    query basketProducts {
-        products {
-            id
-            name
-            price
-            imgUrl
-            color
-        }
-    }
-`;
+export const fetchPostData = (data: data) => fetchFunc(url+'/personalInfo', 'POST', data);
 
 //fetch stuff from storage
 export const fetchProductsStorage = async() => {
@@ -55,17 +54,6 @@ export const fetchProductsStorage = async() => {
         return null;
     };
 };
-
-export const TAKE_PRODUCTS_FROM_STORAGE = gql`
-    query allProductsFromStorage{
-        productsStorage {
-            id
-            name
-            price
-            quantity
-        }
-    }
-`;
 
 //fetch by coordinates
 const coordinates: {lat: number, lon: number} = {
@@ -80,7 +68,7 @@ export const getGeolocation = (geolocation: {lat: number, lon: number}) => {
 export const fetchGeolocation: () => Promise<{}> = async() => {
     try {
         const response: any = await fetchFunc(
-            addressApi +
+            autocompleteApiUrl +
             `reverse?apikey=${apiKey}&point.lat=${coordinates.lat}&point.lon=${coordinates.lon}&layers=address`,
             'GET'
         );
@@ -100,7 +88,7 @@ export const getEndpoint = (addressInput: string) => {
 export const fetchAddress: () => Promise<{}> = async () => {
     try {
         const response: any = await fetchFunc(
-            addressApi+`autocomplete?apikey=${apiKey}&text=${endpoint.value.replace(/\s/g, '%20')}&size=5`,
+            autocompleteApiUrl+`autocomplete?apikey=${apiKey}&text=${endpoint.value.replace(/\s/g, '%20')}&size=5`,
             'GET');
         const json = await response.json();
         return json.features;

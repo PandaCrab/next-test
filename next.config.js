@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['guesseu.scene7.com']
+    domains: ['guesseu.scene7.com', 'store.storeimages.cdn-apple.com']
   }
 }
 

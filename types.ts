@@ -8,6 +8,14 @@ export type coordinates = {
     lon: number
 };
 
+export type storageData = {
+    name: string,
+    price: number,
+    imgUrl: string,
+    color: string,
+    quantity: number
+}
+
 export type endpoint = {
     value: string
 };

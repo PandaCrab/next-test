@@ -8,7 +8,9 @@
     margin-bottom: 25px;
     position: relative;
 
-    a {
+    .homeLink {
+        margin-right: 25px;
+
         &:hover {
             color: blue;
         }

@@ -2,18 +2,15 @@ import React, {useState, useEffect} from 'react';
 import { BsCart } from 'react-icons/bs';
 import { 
     interval,
-    switchMap,
-    of,
-    catchError, 
     map, 
     take, 
     repeat 
 } from 'rxjs';
-import { fromFetch } from 'rxjs/fetch'
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
-import { inOrder } from '../redux/ducks/stuff';
+import { inOrder, storeStuff } from '../redux/ducks/stuff';
+import { data$ } from './api/api';
 
 import styles from '../styles/Shop.module.scss';
 
@@ -32,15 +29,16 @@ const Shop = () => {
 
     const dispatch = useDispatch();
 
-    const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
-
     const observable$ = interval(400);
 
     useEffect(() => {
+        const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
+
         const subscription = observable$
             .pipe(
                 take(loadProgress.length),
                 map(value => loadProgress[value]),
+
                 repeat()
             )
             .subscribe((res) => setLoading({
@@ -54,24 +52,12 @@ const Shop = () => {
         setLoading({
             status:true
         })
-        const data$ = fromFetch('http://localhost:4000/storage')
-            .pipe(
-                switchMap(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    return of({ error: true, message: `Error: ${response.status}` })
-                }),
-                catchError(error => {
-                    setError({
-                        status: true,
-                        message: error.message
-                    })
-                })
-            );
         
         data$ && data$.subscribe({
-            next: result => setStuffs(result.storage),
+            next: result => {
+                setStuffs(result.data);
+                dispatch(storeStuff(result.data));
+            },
             complete: () => {
                 setLoading({ status: false, loader: null });
             }
@@ -117,7 +103,7 @@ const Shop = () => {
                                 </button>
                             </div>
                         </div>
-                    )) : null
+                    )) : <div className={styles.errorWrapper}>Error</div>
                 }
             </div>
         </>
