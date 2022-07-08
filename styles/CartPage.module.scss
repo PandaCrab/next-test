@@ -17,6 +17,8 @@
     }
 
     .productCard {
+        padding: 10px;
+        height: 350px;
         width: 350px;
         max-height: 250px;
         margin: 0 0 20px 20px;
@@ -24,7 +26,9 @@
         box-shadow: 2px 3px 10px gray;
 
         .cardContentWrapper {
+            padding-bottom: 10px;
             display: flex;
+            justify-content: space-between;
             border-bottom: 1px solid #bbb;
 
             .cardInfo {

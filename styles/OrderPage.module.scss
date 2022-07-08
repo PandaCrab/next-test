@@ -49,15 +49,14 @@
         overflow-y: scroll;
 
         .productCard {
+            padding-top: 15px;
             width: 300px;
-            max-height: 250px;
+            height: 200px;
             margin: 0 0 20px 20px;
-            border-radius: 1px solid #bbb;
             box-shadow: 2px 3px 10px gray;
     
             .cardContentWrapper {
                 display: flex;
-                border-bottom: 1px solid #bbb;
     
                 .cardInfo {
                     width: 200px;

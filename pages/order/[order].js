@@ -95,8 +95,8 @@ const OrderForm = () => {
                                     <Image 
                                         src={stuff.imgUrl} 
                                         alt={stuff.name}
-                                        width="150px"
-                                        height="200px" />
+                                        width={stuff.width ? `${stuff.width}px` : '150px'}
+                                        height={stuff.height ? `${stuff.height}px` : '200px'} />
                                     <div className={styles.cardInfo}>
                                         <div className={styles.stuffTitle}>
                                             { stuff.name }

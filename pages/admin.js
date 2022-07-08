@@ -1,41 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { BsCart } from 'react-icons/bs';
+import Image from 'next/image';
 
-import { data$, postProduct } from './api/api';
-import { storeStuff } from '../redux/ducks/stuff';
+import { postProduct } from './api/api';
 
 import styles from '../styles/Admin.module.scss';
 
 const AdminPage = () => {
     const [dropdown, setDropdown] = useState(false);
     const [addProduct, setProduct] = useState({
-        id: '',
         name: '',
-        price: 0,
+        price: '',
         imgUrl: '',
         color: '',
-        quantity: 0
+        quantity: '',
+        width: '',
+        height: ''
     });
-    
-    const select = useSelector(state => state.order.stuff)
-    const dispatch = useDispatch()
-    
-    useEffect(() => {
-        data$ && data$.subscribe({
-            next: result => {
-                dispatch(storeStuff(result.data));
-            },
-            complete: () => {
-                console.log('data compare');
-            }
-        });
-        data$.unsubscribe;
-        setProduct({
-            ...addProduct,
-            id: (select.length + 1)
-        });
-    }, []);
 
     const router = useRouter();
 
@@ -51,17 +33,7 @@ const AdminPage = () => {
                 </div>
                 {dropdown ? (
                     <div className={styles.addProductForm}>
-                        <form onSubmit={() => postProduct(addProduct)}>
-                            <input
-                                id="id"
-                                className={styles.addProductInput}
-                                name="id"
-                                value={addProduct.id}
-                                onChange={({target}) => setProduct({
-                                    ...addProduct,
-                                    id: target.value
-                                })}
-                            />
+                        <form className={styles.formWrapper} onSubmit={() => postProduct(addProduct)}>
                             <input
                                 id="name"
                                 className={styles.addProductInput}
@@ -117,15 +89,65 @@ const AdminPage = () => {
                                     quantity: target.value
                                 })}
                             />
+                            <input
+                                id="width"
+                                className={styles.addProductInput}
+                                name="width"
+                                placeholder="Enter width of product image"
+                                value={addProduct.width}
+                                onChange={({target}) => setProduct({
+                                    ...addProduct,
+                                    width: target.value
+                                })}
+                            />
+                            <input
+                                id="height"
+                                className={styles.addProductInput}
+                                name="height"
+                                placeholder="Enter height of product image"
+                                value={addProduct.height}
+                                onChange={({target}) => setProduct({
+                                    ...addProduct,
+                                    height: target.value
+                                })}
+                            />
                             <button type="submit" className={styles.submitButton}>
                                 Add product
                             </button>
                         </form>
+                        <div className={styles.previewCard}>
+                            <div 
+                                className={styles.productCard} 
+                                key={ addProduct.id }>
+                                <div className={styles.cardContentWrapper}>
+                                    { addProduct.imgUrl && <Image 
+                                        src={addProduct.imgUrl} 
+                                        alt={addProduct.name}
+                                        width={addProduct.width ? `${addProduct.width}px` : '100px'}
+                                        height={addProduct.height ? `${addProduct.height}px` : '100px'} />
+                                    }
+                                    <div className={styles.cardInfo}>
+                                        <div className={styles.stuffTitle}>
+                                            { addProduct.name }
+                                        </div>
+                                        <div className={styles.stuffColor}>{ addProduct.color }</div>
+                                        <div className={styles.stuffPrice}>${ addProduct.price }</div>
+                                    </div>
+                                </div>
+                                <div className={styles.cardButtons}>
+                                    <button 
+                                        onClick={() => dispatch(inOrder(addProduct))}
+                                        className={styles.cartButton}>
+                                        <BsCart />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 ) : null}
             </div>
         </div>
-    )
+    );
 };
 
 export default AdminPage;

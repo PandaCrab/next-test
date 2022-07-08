@@ -24,8 +24,8 @@ const CartPage = () => {
                                 <Image 
                                     src={stuff.imgUrl} 
                                     alt={stuff.name}
-                                    width="150px"
-                                    height="200px" />
+                                    width={stuff.width ? `${stuff.width}px` : '105px'}
+                                    height={stuff.height ? `${stuff.height}px` : '155px'} />
                                 <div className={styles.cardInfo}>
                                     <div className={styles.stuffTitle}>
                                         { stuff.name }
@@ -54,11 +54,11 @@ const CartPage = () => {
                     )
                 }
             </div>
-            {cart.length && 
-                    <button className={styles.orderButton} onClick={() => router.push(`/order/${Math.floor(Math.random() * 10000000)}`)}>
-                        Create order
-                    </button>
-            }
+            {cart.length ? ( 
+                <button className={styles.orderButton} onClick={() => router.push(`/order/${Math.floor(Math.random() * 10000000)}`)}>
+                    Create order
+                </button>
+            ) : null}
         </div>
     );
 };
