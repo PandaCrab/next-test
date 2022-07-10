@@ -55,7 +55,7 @@ const Shop = () => {
         
         data$ && data$.subscribe({
             next: result => {
-                setStuffs(result.data);
+                setStuffs(result);
                 dispatch(storeStuff(result.data));
             },
             complete: () => {
