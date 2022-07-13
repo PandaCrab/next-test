@@ -1,25 +1,100 @@
 .header {
-    padding: 0 12px;
+    padding: 0 30px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
     height: 50px;
     box-shadow: 0 3px 10px gray;
     margin-bottom: 25px;
-    position: relative;
 
-    .homeLink {
-        margin-right: 25px;
+    .menuLogoWrapper {
+        display: flex;
+        width: 500px;
+        align-items: center;
+        .homeLink {
+            margin-right: 25px;
 
-        &:hover {
-            color: blue;
+            &:hover {
+                color: blue;
+            }
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 25px;
         }
     }
 
-    .title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-right: 25px;
+    .loginCartWrapper {
+        width: 150px;
+        display: flex;
+        align-items: center;
+
+        .profile {
+            width: 100px;
+            position: relative;
+
+            .logBtn {
+                margin-left: 20px;
+                padding: 6px 3px;
+                width: 70px;
+                text-align: center;
+                border: 1px solid black;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .dropdown {
+                padding: 12px;
+                width: 250px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid;
+                border-radius: 5px;
+                position: absolute;
+                top: 50px;
+                right: 10px;
+
+                .loginForm {
+                    margin-top: 10px;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+
+                    .logInput {
+                        margin-bottom: 10px;
+                        padding: 4px 8px;
+                        border: 1px solid #bbbbbb;
+                        border-radius: 5px;
+                    }
+
+                    .logBtn {
+                        margin: auto;
+                        padding: 4px 8px;
+                        width: 70px;
+                        background: none;
+                        color: #bbbbbb;
+                        border: 1px solid #bbbbbb;
+                        border-radius: 5px;
+
+                        &:hover {
+                            color: black;
+                            border-color: black;
+                            box-shadow: 0 0 3px;
+                        }
+
+                        &:active {
+                            box-shadow: 0 0 1px;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

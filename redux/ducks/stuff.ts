@@ -1,13 +1,4 @@
-import { put, call,takeEvery } from 'redux-saga/effects';
-
-import { fetchProductsStorage } from '../../pages/api/api';
-
-export const FETCH_STUFF = 'stuff/FETCH_STUFF';
-const REQUEST_STUFF = 'stuff/REQUEST_STUFF';
-export const SHOW_LOADER = 'global/SHOW_LOADER';
-export const HIDE_LOADER = 'global/HIDE_LOADER';
-const REQUEST_PRODUCTS_STORAGE = 'stuff/REQUEST_PRODUCTS_STORAGE';
-const FETCH_PRODUCTS_STORAGE = 'stuff/FETCH_PRODUCTS_STORAGE';
+const FETCH_STUFF = 'stuff/FETCH_STUFF';
 const ADD_TO_ORDER = 'stuff/ADD_TO_ORDER';
 const DELETE_FROM_ORDER = 'stuff/DELETE_FROM_ORDER';
 const GET_ORDER_ID = 'stuff/GET_ORDER_ID';
@@ -38,12 +29,6 @@ export default function stuffReducer (state = initialState, action: { type: any,
             return { ...state, clientOrder: state.clientOrder.filter(items => items !== action.payload) };
         case GET_ORDER_ID: 
             return {...state, orderId: action.payload};
-        case SHOW_LOADER: 
-            return {...state, loading: true};
-        case HIDE_LOADER: 
-            return {...state, loading: false};
-        case FETCH_PRODUCTS_STORAGE:
-            return { ...state, productsStorage: action.payload };
         default: return state
     }
 };
@@ -67,43 +52,3 @@ export const deleteFromOrder = item => ({
     type: DELETE_FROM_ORDER,
     payload: item
 });
-
-export const getProductsStorage = () => ({
-    type: REQUEST_PRODUCTS_STORAGE
-});
-
-// const showLoader = () => ({
-//     type: SHOW_LOADER
-// });
-
-// const hideLoader = () => ({
-//     type: HIDE_LOADER
-// });
-
-// export function* stuffWatcher() {
-//     yield takeEvery(REQUEST_STUFF, fillStuff);
-// };
-
-// export function* productsStorageWatcher() {
-//     yield takeEvery(REQUEST_PRODUCTS_STORAGE, fillProductsStorage);
-// };
-
-// function* fillProductsStorage() {
-//     try {
-//         const payload: [] = yield call(fetchProductsStorage);
-//         yield put({type: FETCH_PRODUCTS_STORAGE, payload});
-//     } catch(error) {
-//         console.error(error);
-//     }
-// };
-
-// export function* fillStuff() {
-//     try {
-//         yield put(showLoader());
-//         const payload: [] = yield call(fetchStuff);
-//         yield put({ type: FETCH_STUFF, payload });
-//         yield put(hideLoader());
-//     } catch(error) {
-//         yield put(showLoader());
-//     }
-// };

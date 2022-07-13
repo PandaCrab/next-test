@@ -1,0 +1,35 @@
+.loginForm {
+    padding: 12px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .formInput {
+        padding: 6px 12px;
+        margin-bottom: 30px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+    }
+
+    .logBtn {
+        margin: auto;
+        padding: 6px 12px;
+        width: 100px;
+        background: none;
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+
+        &:hover {
+            color: black;
+            border-color: black;
+            box-shadow: 0 2px 4px;
+        }
+
+        &:active {
+            box-shadow: 0 0 1px;
+        }
+    }
+}
