@@ -13,8 +13,10 @@ const OrderForm = () => {
     const dispatch = useDispatch();
     const selector = useSelector((state) => state.order.clientOrder);
 
-    const handleChange = ({name, value}) => {
+    const handleChange = ({ target }) => {
+        const { name, value } = target;
         setSuccess({
+            ...success,
             [name]: value
         });
     };

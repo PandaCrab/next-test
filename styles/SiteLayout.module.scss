@@ -73,23 +73,29 @@
                         border-radius: 5px;
                     }
 
-                    .logBtn {
-                        margin: auto;
-                        padding: 4px 8px;
-                        width: 70px;
-                        background: none;
-                        color: #bbbbbb;
-                        border: 1px solid #bbbbbb;
-                        border-radius: 5px;
+                    .dropdownBtnWrapper {
+                        width: 100%;
+                        display: flex;
+                        justify-content: space-around;
 
-                        &:hover {
-                            color: black;
-                            border-color: black;
-                            box-shadow: 0 0 3px;
-                        }
+                        .logBtn {
+                            margin: auto;
+                            padding: 4px 8px;
+                            width: 70px;
+                            background: none;
+                            color: #bbbbbb;
+                            border: 1px solid #bbbbbb;
+                            border-radius: 5px;
 
-                        &:active {
-                            box-shadow: 0 0 1px;
+                            &:hover {
+                                color: black;
+                                border-color: black;
+                                box-shadow: 0 0 3px;
+                            }
+
+                            &:active {
+                                box-shadow: 0 0 1px;
+                            }
                         }
                     }
                 }

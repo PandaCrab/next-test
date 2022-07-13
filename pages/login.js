@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import { loginUser } from './api/api';
+import { getInfo, getToken } from '../redux/ducks/user';
 
 import styles from '../styles/Login.module.scss';
-import { getInfo, getToken } from '../redux/ducks/user';
-import { useRouter } from 'next/router';
 
 const LoginPage = () => {
     const [login, setLogin] = useState({

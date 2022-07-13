@@ -1,0 +1,44 @@
+.regForm {
+    padding: 12px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #bbbbbb;
+    border-radius: 5px;
+
+    .regTitle {
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .regInput {
+        margin-bottom: 20px;
+        padding: 5px 10px;
+        width: 100%;
+        font-size: 18px;
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+    }
+
+    .regBtn {
+        padding: 5px 10px;
+        width: 100px;
+        background: none;
+        color: #bbbbbb;
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+
+        &:hover {
+            color: black;
+            border-color: black;
+            box-shadow: 0 0 6px;
+        }
+
+        &:active {
+            box-shadow: 0 0 3px;
+        }
+    }
+}

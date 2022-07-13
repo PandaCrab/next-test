@@ -40,6 +40,20 @@ export const loginUser = async (credentials) => {
     return catchRes.json();
 };
 
+export const registrateUser = async (info) => {
+    const catchRes = await fetch('http://localhost:4000/registration', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(info)
+    });
+    
+    return catchRes.json();
+};
+
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?: any) => {
     if (method === 'GET') return fetch(url)

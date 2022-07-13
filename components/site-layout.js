@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Cart from './cart';
@@ -17,8 +18,9 @@ const SiteLayout = ({children}) => {
 
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const router = useRouter();
 
-    const handleLogin = async () => {
+    const onLogin = async () => {
         const token = await loginUser({ username, password });
 
         if (token.token) {
@@ -43,13 +45,6 @@ const SiteLayout = ({children}) => {
         if (!profileRef.current.contains(event.target)) {
             setOpen(false);
         }
-    };
-
-    const onSubmit = async () => {
-        const token = await handleLogin({ username, password });
-
-        console.log(token);
-        setOpen(false)
     };
 
     useEffect(() => {
@@ -131,13 +126,21 @@ const SiteLayout = ({children}) => {
                                             value={password}
                                             onChange={({ target }) => setPassword(target.value)}
                                         />
-                                        <button 
-                                            disabled={username.length && false} 
-                                            onClick={() => onSubmit()} 
-                                            className={styles.logBtn}
-                                        >
-                                            Log In
-                                        </button>
+                                        <div className={styles.dropdownBtnWrapper}>
+                                            <button 
+                                                onClick={() => router.push('/registration')} 
+                                                className={styles.logBtn}
+                                            >
+                                                Sign In
+                                            </button>
+                                            <button 
+                                                disabled={username.length && false} 
+                                                onClick={() => onLogin()} 
+                                                className={styles.logBtn}
+                                            >
+                                                Log In
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </>
