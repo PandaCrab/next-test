@@ -14,12 +14,13 @@
 }
 
 .contentContainer {
-    width: 1600px;
+    width: 95%;
     min-height: 600px;
-    padding: 40px;
+    padding: 10px;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     
     .loader {
         margin: auto;

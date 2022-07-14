@@ -54,6 +54,23 @@ export const registrateUser = async (info) => {
     return catchRes.json();
 };
 
+export const getUserInfo = async (id) => {
+    try {
+        const response = await fetch(url + '/users', {
+            mode: 'cors',
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        });
+        
+        return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?: any) => {
     if (method === 'GET') return fetch(url)
@@ -61,11 +78,10 @@ const fetchFunc = (url: string, method: string, data?: any) => {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
-    console.log('data send')
 };
 
 //fetch POST of personal info for billing to data

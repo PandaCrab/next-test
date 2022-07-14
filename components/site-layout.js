@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Cart from './cart';
-import { loginUser } from '../pages/api/api';
+import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 
 import styles from '../styles/SiteLayout.module.scss';
@@ -13,12 +13,55 @@ const SiteLayout = ({children}) => {
     const [isOpen, setOpen] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('')
 
     const profileRef = useRef();
 
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
     const router = useRouter();
+
+    const setToken = (token) => {
+        localStorage.setItem('token', JSON.stringify(token));
+    };
+
+    const takeUserInfo = async (id) => {
+        const info = await getUserInfo(id);
+
+        dispatch(getInfo(info));
+    };
+
+    const onLogout = () => {
+        localStorage.removeItem('token');
+
+        dispatch(logout());
+    };
+
+    const getTokenFromStorage = () => {
+        const fromStorage = localStorage.getItem('token');
+        const userToken = JSON.parse(fromStorage);
+
+        if(userToken) {
+            return userToken;
+        }
+
+        return;
+    };
+
+    useEffect(() => {
+        if (!user.token) {
+            const token = getTokenFromStorage();
+
+            if (token) {
+                dispatch(getToken(token));
+                takeUserInfo({_id: token});
+            }
+
+            return;
+        }
+
+        return;
+    }, []);
 
     const onLogin = async () => {
         const token = await loginUser({ username, password });
@@ -27,11 +70,16 @@ const SiteLayout = ({children}) => {
             dispatch(getToken(token.token));
             dispatch(getInfo(token.user));
 
+            setToken(token.token);
+
             setUsername('');
             setPassword('');
+            setError('');
+
+            setOpen(false)
         } else {
             setError(token.message);
-            setLogin({...login, password: ''});
+            setPassword('');
         }
 
         console.log(token);
@@ -100,7 +148,7 @@ const SiteLayout = ({children}) => {
                                     <div className={styles.dropdownItems}>
                                         Item
                                     </div>
-                                    <button onClick={() => dispatch(logout())} className={styles.logBtn}>Log Out</button>
+                                    <button onClick={() => onLogout()} className={styles.logBtn}>Log Out</button>
                                 </div>
                             </>
                         ) : (
@@ -141,6 +189,9 @@ const SiteLayout = ({children}) => {
                                                 Log In
                                             </button>
                                         </div>
+                                        {error && (
+                                            <div>{error}</div>
+                                        )}
                                     </div>
                                 </div>
                             </>
@@ -149,7 +200,7 @@ const SiteLayout = ({children}) => {
                 </div>
             </div>
 
-            <main>{children}</main>
+            <main className={styles.main}>{children}</main>
 
             <footer className={styles.footer}>
                 Test Next application

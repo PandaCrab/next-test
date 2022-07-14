@@ -8,7 +8,13 @@ import { getToken, getInfo } from '../redux/ducks/user';
 import styles from '../styles/Registration.module.scss';
 
 const RegistrationPage = () => {
-    const [reg, setReg] = useState({});
+    const [reg, setReg] = useState({
+        username: '',
+        email: '',
+        password: '',
+        phone: '',
+        age: ''
+    });
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -23,8 +29,8 @@ const RegistrationPage = () => {
   
     const handleSubmit = async () => {
         const newUser = await registrateUser(reg);
-        console.log(newUser)
-        if (newUser.message === 'ok') {
+
+        if (newUser && newUser.message === 'ok') {
             dispatch(getToken(newUser.token));
             dispatch(getInfo(newUser.user));
             router.push('/');

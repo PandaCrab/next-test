@@ -17,6 +17,10 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const setToken = (token) => {
+        localStorage.setItem('token', JSON.stringify(token));
+    };
+
     const handleLogin = async () => {
         const token = await loginUser(login);
 
@@ -24,9 +28,13 @@ const LoginPage = () => {
             dispatch(getToken(token.token));
             dispatch(getInfo(token.user));
 
+            setToken(token.token);
+
             setLogin({ username: '', password: '' });
             
-            router.push('/');
+            if (router.pathname === '/login') {
+                router.push('/');
+            }
         } else {
             setError(token.message);
             setLogin({...login, password: ''});

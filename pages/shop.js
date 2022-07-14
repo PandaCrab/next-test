@@ -77,7 +77,7 @@ const Shop = () => {
                     ) : stuffs ? stuffs.map(stuff => (
                         <div 
                             className={styles.productCard} 
-                            key={ stuff.id }>
+                            key={ stuff._id }>
                             <div className={styles.cardContentWrapper}>
                                 <Image 
                                     src={stuff.imgUrl} 
