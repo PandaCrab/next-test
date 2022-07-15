@@ -2,19 +2,16 @@ const FETCH_STUFF = 'stuff/FETCH_STUFF';
 const ADD_TO_ORDER = 'stuff/ADD_TO_ORDER';
 const DELETE_FROM_ORDER = 'stuff/DELETE_FROM_ORDER';
 const GET_ORDER_ID = 'stuff/GET_ORDER_ID';
+const CLEAR_USER_ORDER = 'stuff/CLEAR_USER_ORDER';
 
 interface state { 
     stuff: Object[], 
-    loading: boolean, 
-    productsStorage: Object[], 
     clientOrder: Object[],
-    orderId: Object
+    orderId: {}
 }
 
 const initialState: state = {
     stuff: [],
-    loading: false,
-    productsStorage: [],
     clientOrder: [],
     orderId: {}
 };
@@ -28,7 +25,9 @@ export default function stuffReducer (state = initialState, action: { type: any,
         case DELETE_FROM_ORDER:
             return { ...state, clientOrder: state.clientOrder.filter(items => items !== action.payload) };
         case GET_ORDER_ID: 
-            return {...state, orderId: action.payload};
+            return { ...state, orderId: action.payload };
+        case CLEAR_USER_ORDER:
+            return { ...state, clientOrder: [] };
         default: return state
     }
 };
@@ -43,10 +42,12 @@ export const inOrder = (item) => ({
     payload: item
 });
 
+export const clearOrder = () => ({ type: CLEAR_USER_ORDER })
+
 export const getOrderId = id => ({
     type: GET_ORDER_ID,
     payload: id
-})
+});
 
 export const deleteFromOrder = item => ({
     type: DELETE_FROM_ORDER,

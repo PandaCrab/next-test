@@ -1,97 +1,146 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
 import styles from '../../styles/OrderPage.module.scss';
-import { getOrderId } from '../../redux/ducks/stuff';
+import { clearOrder, getOrderId } from '../../redux/ducks/stuff';
+import { createOrder } from '../api/api';
 
 const OrderForm = () => {
-    const [success, setSuccess] = useState({});
+    const [address, setAddress] = useState({
+        street: '',
+        city: '',
+        country: '',
+        zip: ''
+    });
+    const [shipping, setShipping] = useState({
+        name: '',
+        phone: '',
+        optional: '',
+        address: address
+    });
+
+    useEffect(() => {
+        setShipping({
+            ...shipping,
+            address: address
+        })
+    }, [address])
+
     const router = useRouter();
-
     const dispatch = useDispatch();
-    const selector = useSelector((state) => state.order.clientOrder);
+    const clientOrder = useSelector((state) => state.order.clientOrder);
+    const userId = useSelector(state => state.user._id);
 
-    const handleChange = ({ target }) => {
+    const handleChange = (target) => {
         const { name, value } = target;
-        setSuccess({
-            ...success,
+        setShipping({
+            ...shipping,
             [name]: value
         });
     };
 
-    console.log(router.query);
+    console.log(shipping)
+
+    const onOrderSuccess = async () => {
+        const response = await createOrder({
+            userId: userId ? userId : 'not logined',
+            orderId: router.query.order,
+            shippingInfo: shipping,
+            orderInfo: {
+                products: clientOrder
+            }
+        });
+        if (response) {
+            console.log('ok');
+
+            dispatch(getOrderId(router.query));
+            dispatch(clearOrder());
+
+            router.push('/order/success')
+        }
+
+    };
+
     return (
         <div className={styles.orderContainer}>
-            <form className={styles.orderForm} onSubmit={(e) => {
-                e.preventDefault();
-                dispatch(getOrderId(router.query));
-                router.push(`/order/success`);
-            }}>
+            <div className={styles.orderForm}>
                 <label className={styles.formLabel}>Full Name</label>
                 <input
                     className={styles.formInput} 
                     name='name'
-                    value={success.name}
-                    onChange={() => handleChange}
+                    value={shipping.name}
+                    onChange={({ target }) => handleChange(target)}
                 />
 
                 <label className={styles.formLabel}>Contact phone</label>
                 <input
                     className={styles.formInput} 
                     name='phone'
-                    value={success.phone}
-                    onChange={() => handleChange}
+                    value={shipping.phone}
+                    onChange={({ target }) => handleChange(target)}
                 />
 
                 <label className={styles.formLabel}>Delivery address</label>
                 <input
                     className={styles.formInput} 
                     name='address'
-                    value={success.address}
-                    onChange={() => handleChange}
+                    value={address.street}
+                    onChange={({ target }) => setAddress({
+                        ...address,
+                        street: target.value
+                    })}
                 />
 
                 <label className={styles.formLabel}>optional</label>
                 <input
                     className={styles.formInput} 
                     name='optional'
-                    value={success.optional}
-                    onChange={() => handleChange}
+                    value={shipping.optional}
+                    onChange={({ target }) => handleChange(target)}
                 />
 
                 <label className={styles.formLabel}>City</label>
                 <input
                     className={styles.formInput} 
                     name='city'
-                    value={success.city}
-                    onChange={() => handleChange}
+                    value={address.city}
+                    onChange={({ target  }) => setAddress({
+                            ...address,
+                            city: target.value
+                        })}
                 />
 
                 <label className={styles.formLabel}>Country</label>
                 <input
                     className={styles.formInput} 
                     name='country'
-                    value={success.country}
-                    onChange={() => handleChange}
+                    value={address.country}
+                    onChange={({ target }) => setAddress({
+                            ...address,
+                            country: target.value
+                    })}
                 />
 
                 <label className={styles.formLabel}>ZIP</label>
                 <input
                     className={styles.formInput} 
                     name='zip'
-                    value={success.zip}
-                    onChange={() => handleChange}
+                    value={address.zip}
+                    onChange={({ target }) => setAddress({
+                            ...address,
+                            zip: target.value
+                    })}
                 />
 
-                <button type="submit">
+                <button className={styles.submitBtn} onClick={() => onOrderSuccess()}>
                     Confirm Indormation
                 </button>
-            </form>
+            </div>
             <div className={styles.stuffWrapper}>
                     {
-                        selector.length && selector.map(stuff => (
+                        clientOrder.length && clientOrder.map(stuff => (
                             <div className={styles.productCard} key={ stuff.id }>
                                 <div className={styles.cardContentWrapper}>
                                     <Image 

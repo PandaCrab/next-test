@@ -13,6 +13,7 @@ const SiteLayout = ({children}) => {
     const [isOpen, setOpen] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [admin, setAdmin] = useState(false);
     const [error, setError] = useState('')
 
     const profileRef = useRef();
@@ -27,7 +28,6 @@ const SiteLayout = ({children}) => {
 
     const takeUserInfo = async (id) => {
         const info = await getUserInfo(id);
-
         dispatch(getInfo(info));
     };
 
@@ -51,7 +51,6 @@ const SiteLayout = ({children}) => {
     useEffect(() => {
         if (!user.token) {
             const token = getTokenFromStorage();
-
             if (token) {
                 dispatch(getToken(token));
                 takeUserInfo({_id: token});
@@ -62,6 +61,14 @@ const SiteLayout = ({children}) => {
 
         return;
     }, []);
+
+    useEffect(() => {
+        if (user.info?.admin) {
+            setAdmin(true);
+        } else {
+            setAdmin(false);
+        }
+    }, [user.info?.admin]);
 
     const onLogin = async () => {
         const token = await loginUser({ username, password });
@@ -116,7 +123,7 @@ const SiteLayout = ({children}) => {
                     <Link href="/">
                         <a className={styles.homeLink}>Home</a>
                     </Link>
-                    {user.admin && (
+                    {admin && (
                         <Link href="/admin">
                             <a className={styles.homeLink}>Admin</a>
                         </Link>
@@ -129,7 +136,6 @@ const SiteLayout = ({children}) => {
                             <div onClick={() => toggleDropdown()} className={styles.accountBtn}>
                                 {user.info.username}
                             </div>
-                                
                         ) : (
                             <div onClick={() => toggleDropdown()} className={styles.logBtn}>
                                 Log In

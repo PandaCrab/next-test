@@ -31,12 +31,24 @@
             border-radius: 8px;
         }
 
-        button {
+        .submitBtn {
             margin: auto;
             padding: 6px 12px;
-            width: 200px;
-            border: 1px solid #bbb;
-            border-radius: 8px;
+            width: auto;
+            background: none;
+            color: #bbbbbb;
+            border: 1px solid #bbbbbb;
+            border-radius: 5px;
+
+            &:hover {
+                color: black;
+                border-color: black;
+                box-shadow: 0 0 3px;
+            }
+
+            &:active {
+                box-shadow: 0 0 1px;
+            }
         }
     }
 

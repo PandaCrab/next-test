@@ -40,6 +40,19 @@ export const loginUser = async (credentials) => {
     return catchRes.json();
 };
 
+export const createOrder = async (order) => {
+    const catchRes = await fetch(url + '/order', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    });
+    return catchRes;
+}
+
 export const registrateUser = async (info) => {
     const catchRes = await fetch('http://localhost:4000/registration', {
         method: 'POST',
