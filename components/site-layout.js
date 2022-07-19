@@ -104,7 +104,6 @@ const SiteLayout = ({children}) => {
 
     useEffect(() => {
         setPassword('');
-        console.log(isOpen)
 
         if (isOpen) {
             document.addEventListener('click', clickOutside);
@@ -145,11 +144,11 @@ const SiteLayout = ({children}) => {
                         {user.token ? (
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
-                                    <div className={styles.dropdownItems}>
-                                        Item
+                                    <div onClick={() => router.push('/userOrders')} className={styles.dropdownItems}>
+                                        Order history
                                     </div>
                                     <div className={styles.dropdownItems}>
-                                        Item
+                                        My account
                                     </div>
                                     <div className={styles.dropdownItems}>
                                         Item

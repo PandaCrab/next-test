@@ -22,16 +22,16 @@ const OrderForm = () => {
     });
 
     useEffect(() => {
-        setShipping({
-            ...shipping,
+        setShipping(prev => ({
+            ...prev,
             address: address
-        })
+        }))
     }, [address])
 
     const router = useRouter();
     const dispatch = useDispatch();
     const clientOrder = useSelector((state) => state.order.clientOrder);
-    const userId = useSelector(state => state.user._id);
+    const userId = useSelector(state => state.user.info.id);
 
     const handleChange = (target) => {
         const { name, value } = target;
@@ -41,12 +41,13 @@ const OrderForm = () => {
         });
     };
 
-    console.log(shipping)
-
     const onOrderSuccess = async () => {
+        console.log(userId);
         const response = await createOrder({
+            date: new Date(),
             userId: userId ? userId : 'not logined',
             orderId: router.query.order,
+            username: shipping.name,
             shippingInfo: shipping,
             orderInfo: {
                 products: clientOrder

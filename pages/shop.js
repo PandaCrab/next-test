@@ -95,7 +95,7 @@ const Shop = () => {
                             <div className={styles.cardButtons}>
                                 <button 
                                     onClick={() => dispatch(inOrder(stuff))}
-                                    className={select.find(x => x.id === stuff.id) ? 
+                                    className={select.find(x => x._id === stuff._id) ? 
                                         `${styles.cartButton} ${styles.ordered}` :
                                         `${styles.cartButton}`
                                         }>

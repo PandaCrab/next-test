@@ -4,20 +4,20 @@ import Link from 'next/link';
 
 const SuccessPage = () => {
 
-    const selector = useSelector(state => state.order.orderId)
+    const orderId = useSelector(state => state.order.orderId.order);
 
     return (
         <div>
-            Congratulations, Your order is:{' ' + selector.order}
+            Congratulations, Your order is:{' ' + orderId}
             <div>
                 <Link href='/'>
                     <a>
-                        back to home
+                        Back to home
                     </a>
                 </Link>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default SuccessPage;
