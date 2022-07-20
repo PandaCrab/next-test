@@ -1,32 +1,30 @@
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import styles from '../styles/userOrder.module.scss';
-import { getUserOrders } from './api/api';
-import LoginPage from './login';
+import styles from '../../styles/myOrder.module.scss';
+import { getUserOrders } from '../api/api';
+import LoginPage from '../login';
 
 const UserOrdersPage = () => {
     const [loged, setloged] = useState(false);
     const [orders, setOrders] = useState();
 
     const user = useSelector(state => state.user);
+    const router = useRouter();
 
     const takeOrders = async (id) => {
         const catchResponse = await getUserOrders(id);
-        console.log(catchResponse)
-        if (catchResponse) {
+        if (catchResponse.length) {
             setOrders(catchResponse);
         }
     };
 
     useEffect(() => {
-        const id = user.info.id;
-        if (id) {
-            takeOrders({ userId: id });
-
-            console.log(orders);
+        if (user.info.id) {
+            takeOrders({ userId: user.info.id });
         }
-    }, []);
+    }, [user.info?.id]);
 
     useEffect(() => {
         if (user.token) {
@@ -42,11 +40,23 @@ const UserOrdersPage = () => {
         <div className={styles.ordersContainer}>
             {loged ? orders ? (
                 <div className={styles.ordersWrapper}>
-                    <div>Welcom, that your orders:</div>
+                    <div style={{ marginBottom: 20 }}>Welcome, that your orders:</div>
                     {orders && orders.map(order => (
-                        <div className={styles.orderWrapper} key={order._id}>
-                            <div className={styles.shippingSection}>
-                                shipping info
+                        <div 
+                            className={styles.orderWrapper} 
+                            key={order.orderId}
+                            onClick={() => router.push(`/myOrders/${order.orderId}`)}
+                        >
+                            <div className={styles.statusSection}>
+                                <div>Status: {order.status || 'Unknown'}</div>
+                                <div>Order №{order.orderId}</div>
+                                <div>
+                                    {`Shipping address: 
+                                        ${order.shippingInfo.address.street}, 
+                                        ${order.shippingInfo.address.city}, 
+                                        ${order.shippingInfo.address.country}`
+                                    }
+                                </div>
                             </div>
                             <div className={styles.orderSection}>
                                 Items in order: {order.orderInfo.products.map(items => (

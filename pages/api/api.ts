@@ -66,6 +66,16 @@ export const getUserOrders = async (userId) => {
     }
 };
 
+export const getUserOrder = async (id) => {
+    try {
+        const catchRes = await fetchFunc(url + '/userOrders/:id', "POST", id);
+
+        return catchRes.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const registrateUser = async (info) => {
     try {
         const catchRes = await fetchFunc(url + '/registration', 'POST', info);

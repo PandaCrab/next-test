@@ -109,6 +109,7 @@
 
 .main {
     margin-bottom: 20px;
+    min-height: 700px;
 }
 
 .footer {
@@ -116,8 +117,9 @@
     height: 100px;
     display: flex;
     padding: 0 20px;
+    background: white;
     border-top: 1px solid #eaeaea;
     justify-content: center;
     align-items: center;
-    justify-self: flex-end;
+
   }

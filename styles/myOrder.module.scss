@@ -1,0 +1,35 @@
+.ordersContainer {
+    font-size: 18px;
+
+    .ordersWrapper {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+
+        .orderWrapper {
+            margin-bottom: 15px;
+            padding: 12px;
+            width: 750px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid #bbbbbb;
+            border-radius: 5px;
+
+            &:hover {
+                box-shadow: 0 0 10px gray;
+                cursor: pointer;
+            }
+
+            &:active {
+                box-shadow: 0 0 5px gray;
+            }
+
+            .statusSection {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+
+            }
+        }
+    }
+}

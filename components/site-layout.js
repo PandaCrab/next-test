@@ -144,7 +144,13 @@ const SiteLayout = ({children}) => {
                         {user.token ? (
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
-                                    <div onClick={() => router.push('/userOrders')} className={styles.dropdownItems}>
+                                    <div 
+                                        onClick={() => {
+                                            router.push(`/myOrders/`);
+                                            setOpen(false);
+                                        }} 
+                                        className={styles.dropdownItems}
+                                    >
                                         Order history
                                     </div>
                                     <div className={styles.dropdownItems}>
