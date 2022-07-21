@@ -40,6 +40,20 @@ export const data$ = fromFetch('http://localhost:4000/storage')
 
 export const postProduct = (data: storageData) => fetchFunc( url + '/storage', 'POST', data);
 
+export const deleteProduct = async (id) => {
+    const res = await fetch(url +`/storage`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(id)
+    });
+
+    return res;
+};
+
 export const loginUser = async (credentials) => {
     const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);
     

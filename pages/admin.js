@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { BsCart } from 'react-icons/bs';
+import { AiOutlineDelete } from 'react-icons/ai'
 import Image from 'next/image';
 
-import { postProduct } from './api/api';
+import { deleteProduct, postProduct } from './api/api';
 import LoginPage from './login';
 
 import styles from '../styles/Admin.module.scss';
 
 const AdminPage = () => {
-    const [dropdown, setDropdown] = useState(false);
+    const [show, setShow] = useState('addProduct');
+    const [resMessage, setResMessage] = useState('');
     const [addProduct, setProduct] = useState({
         name: '',
         price: '',
@@ -22,8 +24,36 @@ const AdminPage = () => {
     });
     const [permission, setPermission] = useState(false);
     const [loged, setloged] = useState(false);
+    const [allProducts, setAllProducts] = useState();
 
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.user);
+
+    const deleteFromStorage = async (id) => {
+        const res = await deleteProduct(id);
+        const responseMessage = await res.json();
+
+        if (res.ok) {
+            setResMessage(responseMessage.message);
+            takeProducts();
+            console.log(responseMessage)
+            setTimeout(() => setResMessage(''), 3000);
+        }
+    };
+
+    const takeProducts = async () => {
+        const allProducts = await fetch('http://localhost:4000/storage');
+        const catchRes = await allProducts.json();
+
+        console.log(catchRes)
+
+        if (allProducts.ok) {
+            setAllProducts(catchRes);
+        }
+    };
+
+    useEffect(() => {
+        takeProducts();
+    }, []);
 
     useEffect(() => {
         if (user.info?.admin) {
@@ -49,6 +79,7 @@ const AdminPage = () => {
 
     return (
         <div className={styles.adminPageContainer}>
+            {resMessage && (<div className={styles.popup}>{ resMessage }</div>)}
             { !loged ? (
                 <div className={styles.logFormWrapper}>
                     <LoginPage />
@@ -61,9 +92,19 @@ const AdminPage = () => {
                 </div>
                 <div className={styles.adminPanel}>
                     <div className={styles.adminPanelHeader}>
-                        <div onClick={() => setDropdown(!dropdown)} className={styles.menuButton}>Add product</div>
+                        <div onClick={() => setShow('addProduct')} className={styles.menuButton}>
+                            Add product
+                        </div>
+                        <div 
+                            onClick={() => {
+                                setShow('deleteProduct')
+                            }} 
+                            className={styles.menuButton}
+                        >
+                            Delete product
+                        </div>
                     </div>
-                    {dropdown ? (
+                    {show === 'addProduct' ? (
                         <div className={styles.addProductForm}>
                             <form className={styles.formWrapper} onSubmit={() => postProduct(addProduct)}>
                                 <input
@@ -176,11 +217,46 @@ const AdminPage = () => {
                                 </div>
                             </div>
                         </div>
+                    ) : show === 'deleteProduct' ? (
+                        <div className={styles.productsTable}>
+                            {allProducts ? allProducts.map(product => (
+                                <div className={styles.productRow} key={product._id}>
+                                    <Image
+                                        src={product.imgUrl} 
+                                        alt={product.name}
+                                        width='80px'
+                                        height='70px'
+                                    />
+                                    <div className={styles.rowItems}>
+                                        {product.name}
+                                    </div>
+                                    <div className={styles.rowItems}>
+                                        {product.price}
+                                    </div>
+                                    {product.color && (
+                                    <div className={styles.rowItems}>
+                                        {product.color}
+                                    </div>
+                                    )}
+                                    <div className={styles.rowItems}>
+                                        {product.quantity}
+                                    </div>
+                                    <button
+                                        className={styles.deleteBtn}
+                                        onClick={() => deleteFromStorage({ _id: product._id })}
+                                    >
+                                        <AiOutlineDelete />
+                                    </button>
+                                </div>
+                            )) : (
+                                <div>Seems site doesn`t have any products, please add somthing for your clients</div>
+                            )}
+                        </div>
                     ) : null}
                 </div>
                 </>
             ) : (
-                <div>You don&rsquo;t have the permission for this page</div>
+                <div>You don`t have the permission for this page</div>
             )}
         </div>
     );
