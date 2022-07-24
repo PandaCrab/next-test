@@ -1,0 +1,24 @@
+.alert {
+    padding: 6px 12px;
+    color: white;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 30;
+
+    &.success {
+        background: rgb(38, 185, 38);
+        border: 1px solid rgb(28, 138, 28);
+    }
+
+    &.warning {
+        color: black;
+        background: rgb(255, 255, 0);
+        border: 1px solid yellow;
+    }
+
+    &.error {
+        background: rgb(255, 0, 0);
+    }
+}

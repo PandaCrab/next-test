@@ -55,9 +55,31 @@ export const deleteProduct = async (id) => {
 };
 
 export const loginUser = async (credentials) => {
-    const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);
-    
-    return catchRes.json();
+    try {
+        const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);
+        
+        return catchRes.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const updateProductInStorage = async (product) => {
+    try {
+        const res = await fetch(url + '/storage', {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        });
+
+        return res.json();
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 export const createOrder = async (order) => {

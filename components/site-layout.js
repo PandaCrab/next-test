@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Cart from './cart';
+import PopupAlert from './popup';
 import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 
@@ -14,7 +15,7 @@ const SiteLayout = ({children}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [admin, setAdmin] = useState(false);
-    const [error, setError] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     const profileRef = useRef();
 
@@ -81,11 +82,11 @@ const SiteLayout = ({children}) => {
 
             setUsername('');
             setPassword('');
-            setError('');
+            setErrorMessage('');
 
             setOpen(false)
         } else {
-            setError(token.message);
+            setErrorMessage(token.message);
             setPassword('');
         }
 
@@ -116,6 +117,7 @@ const SiteLayout = ({children}) => {
 
     return (
         <div className='layout'>
+            <PopupAlert />
             <div className={styles.header}>
                 <div className={styles.menuLogoWrapper}>
                     <div className={styles.title}>Some logo and name of company</div>
@@ -200,8 +202,8 @@ const SiteLayout = ({children}) => {
                                                 Log In
                                             </button>
                                         </div>
-                                        {error && (
-                                            <div>{error}</div>
+                                        {errorMessage && (
+                                            <div>{errorMessage}</div>
                                         )}
                                     </div>
                                 </div>
