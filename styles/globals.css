@@ -13,7 +13,7 @@ div.layout {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-content: space-between;
+  justify-content: space-between;
   width: 100%;
 }
 

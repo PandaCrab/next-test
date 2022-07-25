@@ -24,7 +24,8 @@
     "redux-thunk": "^2.4.1",
     "rxjs": "^7.5.5",
     "sass": "^1.52.3",
-    "server": "^1.0.37"
+    "server": "^1.0.37",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/react": "^18.0.12",

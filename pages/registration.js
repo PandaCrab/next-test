@@ -4,8 +4,10 @@ import { useRouter } from 'next/router';
 
 import { registrateUser } from './api/api';
 import { getToken, getInfo } from '../redux/ducks/user';
+import { registrationSchema } from '../helpers/validation';
 
 import styles from '../styles/Registration.module.scss';
+import { catchError, catchSuccess } from '../redux/ducks/alerts';
 
 const RegistrationPage = () => {
     const [reg, setReg] = useState({
@@ -15,6 +17,11 @@ const RegistrationPage = () => {
         phone: '',
         age: ''
     });
+
+    const [invalid, setInvalid] = useState({
+        path: {},
+        isInvalid: true
+    })
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -28,13 +35,50 @@ const RegistrationPage = () => {
     };
   
     const handleSubmit = async () => {
-        const newUser = await registrateUser(reg);
+        await registrationSchema
+            .validate(reg)
+            .then(async (value) => {
+                if (value) {
+                    const newUser = await registrateUser(reg);
 
-        if (newUser && newUser.message === 'ok') {
-            dispatch(getToken(newUser.token));
-            dispatch(getInfo(newUser.user));
-            router.push('/');
-        }
+                    if (newUser && newUser.message === 'ok') {
+                        dispatch(getToken(newUser.token));
+                        dispatch(getInfo(newUser.user));
+                        router.push('/');
+                    }
+
+                    setReg({
+                        username: '',
+                        email: '',
+                        password: '',
+                        phone: '',
+                        age: ''
+                    });
+                }
+
+                setInvalid({
+                    path: {},
+                    isInvalid: false
+                });
+
+                catchSuccess('Submited');
+            })
+            .catch(error => {
+                const validationError = {};
+
+                error.inner.forEach(err => {
+                    if (err.path) {
+                        validationError[err.path] = err.message
+                    }
+                });
+
+                setInvalid({
+                    path: validationError,
+                    isInvalid: true
+                });
+
+                catchError('Form is Invalid');
+            });        
     };
 
     return (
