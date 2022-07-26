@@ -21,6 +21,14 @@
         font-size: 18px;
         border: 1px solid #bbbbbb;
         border-radius: 5px;
+
+        &.invalid {
+            border-color: red;
+            
+            &::placeholder {
+                color: red;
+            }
+        }
     }
 
     .regBtn {

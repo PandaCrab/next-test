@@ -63,11 +63,14 @@ const UserOrder = () => {
                             {order.orderInfo.products.map(product => (
                                 <div className={styles.productCard} key={ product.id }>
                                     <div className={styles.cardContentWrapper}>
-                                        <Image 
-                                            src={product.imgUrl} 
-                                            alt={product.name}
-                                            width='150px'
-                                            height='155px' />
+                                        {product.imgUrl && (
+                                            <Image 
+                                                src={product.imgUrl} 
+                                                alt={product.name}
+                                                width='150px'
+                                                height='155px' 
+                                            />
+                                        )}
                                         <div className={styles.cardInfo}>
                                             <div className={styles.productTitle}>
                                                 { product.name }

@@ -189,7 +189,10 @@ const SiteLayout = ({children}) => {
                                         />
                                         <div className={styles.dropdownBtnWrapper}>
                                             <button 
-                                                onClick={() => router.push('/registration')} 
+                                                onClick={() => {
+                                                    isOpen(false);
+                                                    router.push('/registration');
+                                                }} 
                                                 className={styles.logBtn}
                                             >
                                                 Sign In

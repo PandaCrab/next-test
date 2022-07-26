@@ -52,9 +52,9 @@ const UserOrdersPage = () => {
                                 <div>Order №{order.orderId}</div>
                                 <div>
                                     {`Shipping address: 
-                                        ${order.shippingInfo.address.street}, 
-                                        ${order.shippingInfo.address.city}, 
-                                        ${order.shippingInfo.address.country}`
+                                        ${order.shippingInfo.street}, 
+                                        ${order.shippingInfo.city}, 
+                                        ${order.shippingInfo.country}`
                                     }
                                 </div>
                             </div>
