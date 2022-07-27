@@ -112,21 +112,39 @@ export const getUserOrder = async (id) => {
     }
 };
 
-export const registrateUser = async (info) => {
-    try {
-        const catchRes = await fetchFunc(url + '/registration', 'POST', info);
-        
-        return catchRes.json();
-    } catch (err) {
-        console.log(err);
-    }
-};
-
 export const getUserInfo = async (id) => {
     try {
         const response = await fetchFunc(url + '/users', 'POST', id);
         
         return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const getUserLikes = async (obj) => {
+    try {
+        const response = await fetch(url + '/userLikes', {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+        });
+
+        return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const registrateUser = async (info) => {
+    try {
+        const catchRes = await fetchFunc(url + '/registration', 'POST', info);
+        
+        return catchRes.json();
     } catch (err) {
         console.log(err);
     }

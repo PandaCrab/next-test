@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { BsCart } from 'react-icons/bs';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { 
     interval,
     map, 
@@ -10,7 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
 import { inOrder, storeStuff } from '../redux/ducks/stuff';
-import { data$ } from './api/api';
+import { getInfo } from '../redux/ducks/user';
+import { data$, getUserInfo, getUserLikes } from './api/api';
 
 import styles from '../styles/Shop.module.scss';
 
@@ -19,17 +21,42 @@ const Shop = () => {
     const [error, setError] = useState({
         status: false,
         message: null
-    })
+    });
+
     const [isLoading, setLoading] = useState({
         status: false,
         loader: null
-    })
+    });
 
     const select = useSelector(state => state.order.clientOrder)
+    const user = useSelector(state => state.user.info);
 
     const dispatch = useDispatch();
 
     const observable$ = interval(400);
+
+    const takeUserInfo = async (id) => {
+        const info = await getUserInfo(id);
+
+        dispatch(getInfo(info));
+    };
+
+    const hendleLike = async (stuffId) => {
+        try {
+            const postLikes = await getUserLikes({
+                userId: user.id,
+                like: stuffId
+            });
+
+            if (postLikes.message === 'like' || 'unlike') {
+                await takeUserInfo({_id: user.id});  
+            } 
+
+            return
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
         const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
@@ -51,7 +78,7 @@ const Shop = () => {
     useEffect(() => {
         setLoading({
             status:true
-        })
+        });
         
         data$ && data$.subscribe({
             next: result => {
@@ -98,8 +125,18 @@ const Shop = () => {
                                     className={select.find(x => x._id === stuff._id) ? 
                                         `${styles.cartButton} ${styles.ordered}` :
                                         `${styles.cartButton}`
-                                        }>
+                                    }
+                                >
                                     <BsCart />
+                                </button>
+                                <button
+                                    className={user.likes?.find(x => x._id === stuff._id) ? 
+                                        `${styles.cartButton} ${styles.liked}`
+                                        : `${styles.cartButton}`
+                                    }
+                                    onClick={() => hendleLike(stuff._id)}
+                                >
+                                    {<AiFillHeart />}
                                 </button>
                             </div>
                         </div>

@@ -83,8 +83,13 @@
             padding: 10px;
 
             .cartButton {
+                margin-right: 5px;
                 width: 35px;
                 height: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
                 background: none;
                 border: 1px solid #bbb;
                 border-radius: 50%;
@@ -99,6 +104,11 @@
 
                 &.ordered {
                     background-color: green;
+                    color: white;
+                }
+
+                &.liked {
+                    background-color: red;
                     color: white;
                 }
             }
