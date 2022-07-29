@@ -82,6 +82,16 @@ export const updateProductInStorage = async (product) => {
     }
 };
 
+export const takeOneProduct = async (id) => {
+    try {
+        const product = await fetchFunc(url + `/storage/${id}`, 'GET');
+        
+        return product.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const createOrder = async (order) => {
     try {
         const catchRes = await fetchFunc(url + '/orders','POST' , order);

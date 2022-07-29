@@ -26,7 +26,7 @@ const UserOrder = () => {
 
     useEffect(() => {
         const orderId = router.query.userOrder;
-        const userId = user.info.id
+        const userId = user.info?.id
         if (userId) {
             takeUserOrder({ orderId, userId });
         }
@@ -53,11 +53,11 @@ const UserOrder = () => {
                     <div className={styles.orderWrapper}>
                         <div className={styles.shippingInfo}>
                             <div>{ order.username }</div>
-                            <div>{ order.shippingInfo.phone }</div>
-                            <div>{`${order.shippingInfo.address.street},
-                                ${order.shippingInfo.address.city},
-                                ${order.shippingInfo.address.country}`}</div>
-                            <div>{ order.shippingInfo.address.zip }</div>
+                            <div>{ order.phone }</div>
+                            <div>{`${order.shippingInfo.street},
+                                ${order.shippingInfo.city},
+                                ${order.shippingInfo.country}`}</div>
+                            <div>{ order.shippingInfo.zip }</div>
                         </div>
                         <div className={styles.productsList}>
                             {order.orderInfo.products.map(product => (

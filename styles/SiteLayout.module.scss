@@ -38,14 +38,14 @@
             width: auto;
             position: relative;
 
-            .logBtn {
+            .accountBtn {
                 margin-left: 20px;
-                padding: 6px 3px;
-                width: 70px;
-                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
                 border: 1px solid black;
-                border-radius: 5px;
-                cursor: pointer;
+                border-radius: 50%;
             }
 
             .dropdown {
@@ -54,12 +54,28 @@
                 height: auto;
                 display: flex;
                 flex-direction: column;
+                align-items: center;
                 background: white;
                 border: 1px solid;
                 border-radius: 5px;
                 position: absolute;
-                top: 50px;
-                right: 10px;
+                top: 45px;
+                right: -30px;
+
+                .greeting {
+                    margin-bottom: 10px;
+                    font-size: 18px;
+                }
+
+                .dropdownItems {
+                    margin-bottom: 5px;
+                    font-size: 16px;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: rgb(150, 150, 150);
+                    }
+                }
 
                 .loginForm {
                     margin-top: 10px;

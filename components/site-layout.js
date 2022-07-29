@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import { RiUser3Line } from 'react-icons/ri';
 
 import Cart from './cart';
 import PopupAlert from './popup';
@@ -135,7 +136,7 @@ const SiteLayout = ({children}) => {
                     <div className={styles.profile} ref={profileRef}>
                         {user.token ? (
                             <div onClick={() => toggleDropdown()} className={styles.accountBtn}>
-                                {user.info.username}
+                                <RiUser3Line />
                             </div>
                         ) : (
                             <div onClick={() => toggleDropdown()} className={styles.logBtn}>
@@ -146,6 +147,7 @@ const SiteLayout = ({children}) => {
                         {user.token ? (
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
+                                    <div className={styles.greeting}>Welcome <b>{user.info?.username}</b></div>
                                     <div 
                                         onClick={() => {
                                             router.push(`/myOrders/`);

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { BsCart } from 'react-icons/bs';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import { 
     interval,
     map, 
@@ -8,13 +8,14 @@ import {
     repeat 
 } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import { inOrder, storeStuff } from '../redux/ducks/stuff';
-import { getInfo } from '../redux/ducks/user';
-import { data$, getUserInfo, getUserLikes } from './api/api';
+import { inOrder, storeStuff } from '../../redux/ducks/stuff';
+import { getInfo } from '../../redux/ducks/user';
+import { data$, getUserInfo, getUserLikes } from '../api/api';
 
-import styles from '../styles/Shop.module.scss';
+import styles from '../../styles/Shop.module.scss';
 
 const Shop = () => {
     const [stuffs, setStuffs] = useState([]);
@@ -32,6 +33,7 @@ const Shop = () => {
     const user = useSelector(state => state.user.info);
 
     const dispatch = useDispatch();
+    const router = useRouter()
 
     const observable$ = interval(400);
 
@@ -56,6 +58,10 @@ const Shop = () => {
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const routeToProductInfo = (id) => {
+        router.push(`shop/${id}`)
     };
 
     useEffect(() => {
@@ -105,7 +111,7 @@ const Shop = () => {
                         <div 
                             className={styles.productCard} 
                             key={ stuff._id }>
-                            <div className={styles.cardContentWrapper}>
+                            <div onClick={() => routeToProductInfo(stuff._id)} className={styles.cardContentWrapper}>
                                 <Image 
                                     src={stuff.imgUrl} 
                                     alt={stuff.name}
@@ -129,7 +135,7 @@ const Shop = () => {
                                 >
                                     <BsCart />
                                 </button>
-                                <button
+                                {user && <button
                                     className={user.likes?.find(x => x._id === stuff._id) ? 
                                         `${styles.cartButton} ${styles.liked}`
                                         : `${styles.cartButton}`
@@ -137,7 +143,7 @@ const Shop = () => {
                                     onClick={() => hendleLike(stuff._id)}
                                 >
                                     {<AiFillHeart />}
-                                </button>
+                                </button>}
                             </div>
                         </div>
                     )) : <div className={styles.errorWrapper}>Error</div>

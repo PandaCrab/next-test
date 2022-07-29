@@ -4,7 +4,7 @@ const USER_LOGOUT = 'user/USER_LOGOUT';
 
 const initialState = {
     token: '',
-    info: {}
+    info: null
 };
 
 export default function userReducer (state=initialState, action) {
