@@ -134,13 +134,8 @@ const AdminPage = () => {
                             <div onClick={() => setShow('addProduct')} className={styles.menuButton}>
                                 Add product
                             </div>
-                            <div 
-                                onClick={() => {
-                                    setShow('deleteProduct')
-                                }} 
-                                className={styles.menuButton}
-                            >
-                                Delete product
+                            <div onClick={() => setShow('products')} className={styles.menuButton}>
+                                Products
                             </div>
                         </div>
                         {show === 'addProduct' ? (
@@ -256,7 +251,7 @@ const AdminPage = () => {
                                     </div>
                                 </div>
                             </div>
-                        ) : show === 'deleteProduct' ? (
+                        ) : show === 'products' ? (
                             <div 
                                 className={styles.productsTable}
                             >
@@ -279,7 +274,7 @@ const AdminPage = () => {
                                                 {product.name}
                                             </div>
                                             <div className={styles.rowItems}>
-                                                {product.price}
+                                                {product.price}$
                                             </div>
                                             <div className={styles.rowItems}>
                                                 {product.color ? product.color : 'none'}

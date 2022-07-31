@@ -157,7 +157,13 @@ const SiteLayout = ({children}) => {
                                     >
                                         Order history
                                     </div>
-                                    <div className={styles.dropdownItems}>
+                                    <div
+                                        onClick={() => {
+                                            router.push(`/account/${user.info.id}`);
+                                            setOpen(false);
+                                        }}  
+                                        className={styles.dropdownItems}
+                                    >
                                         My account
                                     </div>
                                     <div className={styles.dropdownItems}>

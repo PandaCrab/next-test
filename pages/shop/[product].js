@@ -13,13 +13,16 @@ const SingleProduct = () => {
 
     const router = useRouter();
 
-    const takeProduct = async() => {
-        if(productId) {
-            const res = await takeOneProduct(productId);
+    const takeProduct = async(id) => {
+        try {
+        const res = await takeOneProduct(id);
 
-            setProduct(res);
+        if (res) {
+            setProduct(res)
         }
-        return;
+        } catch (err) {
+            console.log(err)
+        }        
     };
 
     useEffect(() => {
@@ -27,7 +30,10 @@ const SingleProduct = () => {
     }, [router]);
 
     useEffect(() => {
-        takeProduct();
+        if (productId) {
+            takeProduct(productId);
+        }
+        return
     }, [productId]);
 
     return product ? (

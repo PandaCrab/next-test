@@ -21,7 +21,7 @@ const UserOrdersPage = () => {
     };
 
     useEffect(() => {
-        if (user.info.id) {
+        if (user.info?.id) {
             takeOrders({ userId: user.info.id });
         }
     }, [user.info?.id]);

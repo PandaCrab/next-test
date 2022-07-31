@@ -1,0 +1,186 @@
+.accountContainer {
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .headerWrapper {
+        padding: 5px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 16px;
+        border-bottom: 1px solid #bbbbbb;
+    }
+
+    .infoWrapper {
+        padding: 12px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-size: 16px;
+        line-height: 24px;
+        position: relative;
+
+        .userInfoWrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+
+            .userProfileHeader {
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                font-size: 24px;
+
+                .userPhotoWrapper {
+                    margin-right: 15px;
+                    font-size: 82px;
+                    border: 5px solid;
+                    border-radius: 50%;
+                }
+            }
+
+            .userPhoneWrapper {
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                font-size: 28px;
+                font-weight: bold;
+
+                .changeBtn {
+                    margin-left: 15px;
+                    padding: 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                    background: none;
+                    border: 1px solid;
+                    border-radius: 50%; 
+                }
+            }
+
+            .descriptionWrapper {
+                display: flex;
+                align-items: center;
+                font-size: 18px;
+                position: relative;
+
+                .descriptionOutput {
+                    margin-left: 10px;
+                    padding: 5px;
+                    width: 15px;
+                    height: 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    border: 1px solid;
+                    border-radius: 50%;
+                    cursor: default;
+                }
+
+                .description {
+                    padding: 12px;
+                    width: 400px;
+                    background-color: rgb(243, 243, 243);
+                    text-align: center;
+                    border: 1px solid #bbbbbb;
+                    border-radius: 5px;
+                    box-shadow: 0 0 5px gray;
+                    position: absolute;
+                    top: -120px;
+                    right: 0;
+                }
+            }
+
+            .addressFormWrapper {
+                padding: 30px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background: white;
+                border: 1px solid;
+                border-radius: 5px;
+                box-shadow: 2px 2px 10px gray;
+                position: absolute;
+                top: 25%;
+                left: 25%;
+
+                .closeBtn {
+                    margin: 5px;
+                    padding: 2px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    justify-self: flex-end;
+                    background: none;
+                    border: 1px solid;
+                    border-radius: 50%;
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                }
+
+                .addressForm {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .addressFormInput {
+                        margin-bottom: 10px;
+                        padding: 6px 12px;
+                        width: 350px;
+                        font-size: 18px;
+                        border: 1px solid;
+                        border-radius: 5px;
+                    }
+                }
+            }
+        }
+
+        .subInfoWrapper {
+            width: 250px;
+            max-height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+
+            .inBucket, 
+            .likes {
+                margin-bottom: 5px;
+
+                .itemsHeader {
+                    padding: 5px;
+                    background: #ececec;
+                    border: 1px solid #bbbbbb;
+                    border-radius: 5px 5px 0 0;
+                    text-align: center;
+                }
+
+                .itemsWrapper {
+                    padding: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    border: 1px solid #bbbbbb;
+
+                    .items{
+                        margin-bottom: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        .imageWrapper {
+                            width: 80%;
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

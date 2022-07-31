@@ -1,3 +1,4 @@
+import { isConstValueNode } from 'graphql';
 import {
     switchMap,
     of,
@@ -38,20 +39,34 @@ export const data$ = fromFetch('http://localhost:4000/storage')
         })
     );
 
+export const takeSomeProducts = async (id) => {
+    try {
+        const products = await fetchFunc(url + '/storage', 'POST', id);
+
+        return products.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const postProduct = (data: storageData) => fetchFunc( url + '/storage', 'POST', data);
 
 export const deleteProduct = async (id) => {
-    const res = await fetch(url +`/storage`, {
-        method: 'DELETE',
-        mode: 'cors',
-        headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify(id)
-    });
+    try {
+        const res = await fetch(url +`/storage`, {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        });
 
-    return res;
+        return res;
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 export const loginUser = async (credentials) => {
