@@ -7,18 +7,13 @@ import { BsPencil } from 'react-icons/bs';
 import Image from 'next/image';
 
 import { deleteProduct, postProduct, updateProductInStorage } from './api/api';
+import { catchSuccess, catchWarning } from '../redux/ducks/alerts';
 import LoginPage from './login';
 
 import styles from '../styles/Admin.module.scss';
-import { catchSuccess, catchWarning } from '../redux/ducks/alerts';
 
 const AdminPage = () => {
     const [show, setShow] = useState('addProduct');
-    const [resMessage, setResMessage] = useState({
-        success: '',
-        warning: '',
-        error: ''
-    });
     const [inUpdate, setUpdate] = useState({
         updating: false,
         updateItem: {
@@ -28,7 +23,7 @@ const AdminPage = () => {
             color: '',
             quantity: ''
         }
-    })
+    });
     const [addProduct, setProduct] = useState({
         name: '',
         price: '',

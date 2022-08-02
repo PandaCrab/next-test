@@ -119,7 +119,7 @@ export const createOrder = async (order) => {
 
 export const getUserOrders = async (userId) => {
     try {
-        const takeUserOrders = await fetchFunc(url + '/userOrders', 'POST', userId); 
+        const takeUserOrders = await fetchFunc(url + '/user/orders', 'POST', userId); 
 
         return takeUserOrders.json();
     } catch (err) {
@@ -129,7 +129,7 @@ export const getUserOrders = async (userId) => {
 
 export const getUserOrder = async (id) => {
     try {
-        const catchRes = await fetchFunc(url + '/userOrders/:id', "POST", id);
+        const catchRes = await fetchFunc(url + '/user/orders/:id', "POST", id);
 
         return catchRes.json();
     } catch (err) {
@@ -139,7 +139,7 @@ export const getUserOrder = async (id) => {
 
 export const getUserInfo = async (id) => {
     try {
-        const response = await fetchFunc(url + '/users', 'POST', id);
+        const response = await fetchFunc(url + `/user/${id}`, 'GET');
         
         return response.json();
     } catch (err) {
@@ -147,9 +147,27 @@ export const getUserInfo = async (id) => {
     }
 };
 
+export const updateUserInfo = async (id, info) => {
+    try {
+        const response = await fetch(url + `/user/${id}`, {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(info)
+        });
+
+        return response.json();
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 export const getUserLikes = async (obj) => {
     try {
-        const response = await fetch(url + '/userLikes', {
+        const response = await fetch(url + '/user/likes', {
             mode: 'cors',
             method: 'PUT',
             headers: {

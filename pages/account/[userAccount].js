@@ -2,32 +2,41 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { RiUser3Line, RiCloseLine } from 'react-icons/ri';
+import { RiUser3Line, RiCloseLine, RiCheckFill } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 
-import styles from '../../styles/AccountPage.module.scss';
+import { takeSomeProducts, updateUserInfo } from '../api/api';
+import { getInfo } from '../../redux/ducks/user';
+import { catchSuccess, catchError } from '../../redux/ducks/alerts';
 import LoginPage from '../login';
-import { takeSomeProducts } from '../api/api';
+
+import styles from '../../styles/AccountPage.module.scss';
 
 const AccountPage = () => {
     const [loged, setLoged] = useState(false);
+    const [descriptionHide, setDescriptionHide] = useState(true);
+
     const [likes, setLikes] = useState();
     const [ordersInBucket, setOrders] = useState();
-    const [descriptionHide, setDescriptionHide] = useState(true);
+
     const [view, setView] = useState({
         inBucket: false,
         likes: false,
-        addressForm: false
-    })
-    const [addressForm, setAddressForm] = useState({
+        addressForm: false,
+        phoneChanging: false
+    });
+    const [phone, setPhone] = useState({ phone: '' })
+    const [addressForm, setaddressForm] = useState({
         street: '',
         city: '',
         country: '',
-        cip: ''
+        zip: ''
     });
 
     const router = useRouter();
-    const token = useSelector(state => state.user.token)
+    const dispatch = useDispatch();
+
+    const token = useSelector(state => state.user.token);
     const user = useSelector(state => state.user.info);
     const order = useSelector(state => state.order.userOrder);
 
@@ -40,13 +49,53 @@ const AccountPage = () => {
 
         return;
     };
+    
+    const confirmUpdates = async (info) => {
+        const id = router.query.userAccount;
+        if (info) {
+            const feedback = await updateUserInfo(id, info)
+
+            if (feedback.message) {
+                dispatch(catchSuccess(feedback.message));
+                dispatch(getInfo(feedback.updated));
+
+                if (info.phone) {
+                    setPhone({ phone: '' });
+                    setView({
+                        ...view,
+                        phoneChanging: false
+                    });
+                }
+
+                if (info === addressForm) {
+                    setaddressForm({
+                        street: '',
+                        city: '',
+                        country: '',
+                        zip: ''
+                    });
+                    setView({
+                        ...view,
+                        addressForm: false
+                    });
+                }
+            }
+
+            if (feedback.error) {
+                dispatch(catchError(feedback.error))
+            }
+        }
+
+        return;
+    };
 
     useEffect(() => {
-        if (user?.likes.length) {
+        if (user?.likes?.length) {
             catchLikedProducts(user.likes)
+        } else {
+            return
         }
-        return
-    }, [user?.likes]);
+    }, [user]);
 
     useEffect(() => {
         if (order?.length) {
@@ -67,7 +116,7 @@ const AccountPage = () => {
     const addressInputChange = (target) => {
         const { name, value } = target;
 
-        setAddressForm({
+        setaddressForm({
             ...addressForm,
             [name]: value
         });
@@ -93,17 +142,51 @@ const AccountPage = () => {
                         <div className={styles.usernameWrapper}>{user.username}</div>
                     </div>
                     <div className={styles.userPhoneWrapper}>
-                        {user.phone}
-                        <button className={styles.changeBtn}><BsPencil /></button>
+                        {view.phoneChanging ? (
+                            <>
+                                <input 
+                                    className={styles.phoneInput}
+                                    name='phone'
+                                    value={phone.phone}
+                                    onChange={({ target }) => setPhone({ phone: target.value })}
+                                />
+                                <div
+                                    onClick={() => confirmUpdates(phone)}
+                                    className={styles.changePhoneBtn}
+                                >
+                                    <RiCheckFill />
+                                </div>
+                                <div
+                                    onClick={() => setView({
+                                        ...view,
+                                        phoneChanging: false
+                                    })}
+                                    className={styles.changePhoneBtn}
+                                >
+                                    <RiCloseLine />
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div>{user.phone}</div>
+                                <button 
+                                    onClick={() => setView({
+                                        ...view,
+                                        phoneChanging: true
+                                    })}
+                                    className={styles.changePhoneBtn}
+                                ><BsPencil /></button>
+                            </>
+                        )}
                     </div>
                     <div className={styles.addressWrapper}>
                         {user.shippingAddress ? (
                             <>
                                 <div>
-                                    <div className={styles.addressItems}>{user.address.street}</div>
-                                    <div className={styles.addressItems}>{user.address.city}</div>
-                                    <div className={styles.addressItems}>{user.address.country}</div>
-                                    <div className={styles.addressItems}>{user.address.zip}</div>
+                                    <div className={styles.addressItems}>{user.shippingAddress.street}</div>
+                                    <div className={styles.addressItems}>{user.shippingAddress.city}</div>
+                                    <div className={styles.addressItems}>{user.shippingAddress.country}</div>
+                                    <div className={styles.addressItems}>{user.shippingAddress.zip}</div>
                                 </div>
                                 <div>
                                     <button>Clear</button>
@@ -180,10 +263,13 @@ const AccountPage = () => {
                                             placeholder={!addressForm.zip && 'Enter ZIP code'}
                                         />
                                     </div>
-                                    <button onClick={() => setView({
-                                        ...view,
-                                        addressForm: false
-                                    })}>Confirm</button>
+                                    <button 
+                                        onClick={() => confirmUpdates({ 
+                                            shippingAddress: addressForm 
+                                        })}
+                                    >
+                                        Confirm
+                                    </button>
                                 </div>
                             </>
                         )}
@@ -261,7 +347,7 @@ const AccountPage = () => {
                                     <div>${product.price}</div>
                                 </div>
                             )) : (
-                                <div>You didn`t liked anything</div>
+                                <div>You didn`t liked anything yet</div>
                             )}
                         </div>
                     </div>

@@ -55,7 +55,7 @@ const SiteLayout = ({children}) => {
             const token = getTokenFromStorage();
             if (token) {
                 dispatch(getToken(token));
-                takeUserInfo({_id: token});
+                takeUserInfo(token);
             }
 
             return;
@@ -198,7 +198,7 @@ const SiteLayout = ({children}) => {
                                         <div className={styles.dropdownBtnWrapper}>
                                             <button 
                                                 onClick={() => {
-                                                    isOpen(false);
+                                                    setOpen(false);
                                                     router.push('/registration');
                                                 }} 
                                                 className={styles.logBtn}

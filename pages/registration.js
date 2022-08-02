@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
@@ -25,6 +25,15 @@ const RegistrationPage = () => {
 
     const dispatch = useDispatch();
     const router = useRouter();
+
+    useEffect(() => {
+        const takeToken = localStorage.getItem('token');
+        const token = JSON.parse(takeToken);
+
+        if (token) {
+            router.push('/');
+        }
+    }, []);
 
     const handleChange = target => {
         const { name, value } = target;
@@ -58,8 +67,8 @@ const RegistrationPage = () => {
                             age: ''
                         });
         
-                        dispatch(catchSuccess('Submited'));
-
+                        dispatch(catchSuccess('Account created'));
+                        localStorage.setItem('token', JSON.stringify(newUser.token));
                         router.push('/');
                     } 
                     
