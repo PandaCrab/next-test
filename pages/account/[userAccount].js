@@ -1,13 +1,13 @@
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { RiUser3Line, RiCloseLine, RiCheckFill } from 'react-icons/ri';
+import { RiUser3Line, RiCloseLine, RiCheckFill, RiSettings4Line } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 
-import { takeSomeProducts, updateUserInfo } from '../api/api';
-import { getInfo } from '../../redux/ducks/user';
-import { catchSuccess, catchError } from '../../redux/ducks/alerts';
+import { deleteUser, takeSomeProducts, updateUserInfo } from '../api/api';
+import { getInfo, logout } from '../../redux/ducks/user';
+import { catchSuccess, catchError, catchWarning } from '../../redux/ducks/alerts';
 import LoginPage from '../login';
 
 import styles from '../../styles/AccountPage.module.scss';
@@ -23,7 +23,8 @@ const AccountPage = () => {
         inBucket: false,
         likes: false,
         addressForm: false,
-        phoneChanging: false
+        phoneChanging: false,
+        settings: false
     });
     const [phone, setPhone] = useState({ phone: '' })
     const [addressForm, setaddressForm] = useState({
@@ -32,6 +33,8 @@ const AccountPage = () => {
         country: '',
         zip: ''
     });
+
+    const settingsRef = useRef();
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -50,14 +53,14 @@ const AccountPage = () => {
         return;
     };
     
-    const confirmUpdates = async (info) => {
+    const updateInfo = async (info) => {
         const id = router.query.userAccount;
         if (info) {
-            const feedback = await updateUserInfo(id, info)
+            const res = await updateUserInfo(id, info);
 
-            if (feedback.message) {
-                dispatch(catchSuccess(feedback.message));
-                dispatch(getInfo(feedback.updated));
+            if (res.message) {
+                dispatch(catchSuccess(res.message));
+                dispatch(getInfo(res.updated));
 
                 if (info.phone) {
                     setPhone({ phone: '' });
@@ -67,7 +70,7 @@ const AccountPage = () => {
                     });
                 }
 
-                if (info === addressForm) {
+                if (info.shippingAddress === addressForm) {
                     setaddressForm({
                         street: '',
                         city: '',
@@ -81,13 +84,43 @@ const AccountPage = () => {
                 }
             }
 
-            if (feedback.error) {
-                dispatch(catchError(feedback.error))
+            if (res.error) {
+                dispatch(catchError(res.error))
             }
         }
 
         return;
     };
+
+    const deleteAccount = async () => {
+        const id = router.query.userAccount
+
+        const deleted = await deleteUser(id);
+
+        dispatch(catchWarning(deleted?.message));
+        dispatch(logout());
+        await localStorage.removeItem('token');
+        await router.push('/');
+    };
+
+    const clickOutside = (event) => {
+        if (!settingsRef.current.contains(event.target)) {
+            setView({
+                ...view,
+                settings: false
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (view.settings) {
+            document.addEventListener('click', clickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', clickOutside);
+        }
+    }, [view.settings]);
 
     useEffect(() => {
         if (user?.likes?.length) {
@@ -129,7 +162,81 @@ const AccountPage = () => {
                 {user?.admin && (
                     <div>Admin</div>
                 )}
+                <div className={styles.settingsWrapper} ref={settingsRef}>
+                    <button 
+                        className={styles.settingsBtn} 
+                        onClick={() => setView({
+                            ...view,
+                            settings: !view.settings
+                        })}
+                    > 
+                        <RiSettings4Line />
+                    </button>
+                    {view.settings && (
+                        <div className={styles.settings}>
+                            <div 
+                                className={styles.settingsItem}
+                                onClick={() => deleteAccount()}
+                            >
+                                Delete account
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
+            {view.addressForm && (
+                <div 
+                    style={{ display: view.addressForm ? 'flex' : 'none' }} 
+                    className={styles.addressFormWrapper}
+                >
+                    <button
+                        onClick={() => setView({
+                            ...view,
+                            addressForm: false
+                        })}
+                        className={styles.closeBtn}
+                    >
+                        <RiCloseLine />
+                    </button>
+                    <div className={styles.addressForm}>
+                        <input
+                            className={styles.addressFormInput}
+                            name="street"
+                            value={addressForm.street}
+                            onChange={({ target }) => addressInputChange(target)}
+                            placeholder={addressForm.street ? addressForm.street : 'Enter street'}
+                        />
+                        <input
+                            className={styles.addressFormInput}
+                            name="city"
+                            value={addressForm.city}
+                            onChange={({ target }) => addressInputChange(target)}
+                            placeholder={addressForm.city ? addressForm.city : 'Enter city'}
+                        />
+                        <input
+                            className={styles.addressFormInput}
+                            name="country"
+                            value={addressForm.country}
+                            onChange={({ target }) => addressInputChange(target)}
+                            placeholder={addressForm.country ? addressForm.country : 'Choose country'}
+                        />
+                        <input
+                            className={styles.addressFormInput}
+                            name="zip"
+                            value={addressForm.zip}
+                            onChange={({ target }) => addressInputChange(target)}
+                            placeholder={addressForm.zip ? addressForm.zip : 'Enter ZIP code'}
+                        />
+                    </div>
+                    <button 
+                        onClick={() => updateInfo({ 
+                            shippingAddress: addressForm 
+                        })}
+                    >
+                        Confirm
+                    </button>
+                </div>
+            )}
             <div className={styles.infoWrapper}>
                 <div className={styles.userInfoWrapper}>
                     <div className={styles.userProfileHeader}>
@@ -151,7 +258,7 @@ const AccountPage = () => {
                                     onChange={({ target }) => setPhone({ phone: target.value })}
                                 />
                                 <div
-                                    onClick={() => confirmUpdates(phone)}
+                                    onClick={() => updateInfo(phone)}
                                     className={styles.changePhoneBtn}
                                 >
                                     <RiCheckFill />
@@ -180,98 +287,62 @@ const AccountPage = () => {
                         )}
                     </div>
                     <div className={styles.addressWrapper}>
-                        {user.shippingAddress ? (
+                        {user.shippingAddress && Object.keys(user.shippingAddress).length ? (
                             <>
                                 <div>
-                                    <div className={styles.addressItems}>{user.shippingAddress.street}</div>
-                                    <div className={styles.addressItems}>{user.shippingAddress.city}</div>
-                                    <div className={styles.addressItems}>{user.shippingAddress.country}</div>
-                                    <div className={styles.addressItems}>{user.shippingAddress.zip}</div>
+                                    <div className={styles.userAddressInfo}>
+                                        {
+                                        `${ user.shippingAddress.street }, ${ user.shippingAddress.city }, 
+                                        ${ user.shippingAddress.country }, ${ user.shippingAddress.zip }`
+                                        }
+                                    </div>
                                 </div>
                                 <div>
-                                    <button>Clear</button>
-                                    <button>Change</button>
+                                    <button
+                                        className={styles.btns}
+                                        onClick={() => updateInfo({
+                                            shippingAddress: {}
+                                        })}
+                                    >
+                                        Clear
+                                    </button>
+                                    <button
+                                        className={styles.btns}
+                                        onClick={() => setView({
+                                            ...view, 
+                                            addressForm: true 
+                                        })}
+                                    >
+                                        Change
+                                    </button>
                                 </div>
                             </>
                         ) : (
-                            <>
-                                <div className={styles.createAddressWrapper}>
-                                    <div className={styles.descriptionWrapper}>
-                                        <div>Do you want create autocomplete for shipping address?</div>
-                                        <div
-                                            onMouseEnter={() => setDescriptionHide(false)}
-                                            onMouseLeave={() => setDescriptionHide(true)}
-                                            onTouchStart={() => setDescriptionHide(false)}
-                                            onTouchEnd={() => setDescriptionHide(true)}
-                                            className={styles.descriptionOutput}
-                                        >
-                                            <b>i</b>
-                                        </div>
-                                        <div hidden={descriptionHide} className={styles.description}>
-                                            That information need for autocomplete your shipping address,
-                                            when you buying somthing. It`s saves Your time, and do orders 
-                                            more easy and fast to fill.
-                                        </div>
-                                    </div>
-                                    <button onClick={() => setView({
-                                        ...view,
-                                        addressForm: true
-                                    })}>
-                                        Add address
-                                    </button>
-                                </div>
-                                <div 
-                                    style={{ display: view.addressForm ? 'flex' : 'none' }} 
-                                    className={styles.addressFormWrapper}
-                                >
-                                    <button
-                                        onClick={() => setView({
-                                            ...view,
-                                            addressForm: false
-                                        })}
-                                        className={styles.closeBtn}
+                            <div className={styles.createAddressWrapper}>
+                                <div className={styles.descriptionWrapper}>
+                                    <div>Do you want create autocomplete for shipping address?</div>
+                                    <div
+                                        onMouseEnter={() => setDescriptionHide(false)}
+                                        onMouseLeave={() => setDescriptionHide(true)}
+                                        onTouchStart={() => setDescriptionHide(false)}
+                                        onTouchEnd={() => setDescriptionHide(true)}
+                                        className={styles.descriptionOutput}
                                     >
-                                        <RiCloseLine />
-                                    </button>
-                                    <div className={styles.addressForm}>
-                                        <input
-                                            className={styles.addressFormInput}
-                                            name="street"
-                                            value={addressForm.street}
-                                            onChange={({ target }) => addressInputChange(target)}
-                                            placeholder={!addressForm.street && 'Enter street'}
-                                        />
-                                        <input
-                                            className={styles.addressFormInput}
-                                            name="city"
-                                            value={addressForm.city}
-                                            onChange={({ target }) => addressInputChange(target)}
-                                            placeholder={!addressForm.city && 'Enter city'}
-                                        />
-                                        <input
-                                            className={styles.addressFormInput}
-                                            name="country"
-                                            value={addressForm.country}
-                                            onChange={({ target }) => addressInputChange(target)}
-                                            placeholder={!addressForm.country && 'Choose country'}
-                                        />
-                                        <input
-                                            className={styles.addressFormInput}
-                                            name="zip"
-                                            value={addressForm.zip}
-                                            onChange={({ target }) => addressInputChange(target)}
-                                            placeholder={!addressForm.zip && 'Enter ZIP code'}
-                                        />
+                                        <b>i</b>
                                     </div>
-                                    <button 
-                                        onClick={() => confirmUpdates({ 
-                                            shippingAddress: addressForm 
-                                        })}
-                                    >
-                                        Confirm
-                                    </button>
+                                    <div hidden={descriptionHide} className={styles.description}>
+                                        That information need for autocomplete your shipping address,
+                                        when you buying somthing. It`s saves Your time, and do orders 
+                                        more easy and fast to fill.
+                                    </div>
                                 </div>
-                            </>
+                                <button onClick={() => setView({
+                                    ...view,
+                                    addressForm: true
+                                })}>
+                                    Add address
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>

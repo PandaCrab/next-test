@@ -140,7 +140,7 @@ export const getUserOrder = async (id) => {
 export const getUserInfo = async (id) => {
     try {
         const response = await fetchFunc(url + `/user/${id}`, 'GET');
-        
+        console.log(id)
         return response.json();
     } catch (err) {
         console.log(err);
@@ -164,6 +164,23 @@ export const updateUserInfo = async (id, info) => {
         console.log(err)
     }
 }
+
+export const deleteUser = async (id) => {
+    try {
+        const deleted = fetch(url + `/user/${id}`, {
+            mode: 'cors',
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            }
+        });
+
+        return deleted;
+    } catch (err) {
+        console.log(err)
+    }
+};
 
 export const getUserLikes = async (obj) => {
     try {
