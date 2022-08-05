@@ -27,6 +27,13 @@ export const addressSchema = yup.object().shape({
         .required('ZIP field is required')
 });
 
+export const phoneSchema = yup.object().shape({
+    phone: yup.string()
+        .min(10, 'Invalide phone number')
+        .max(19, 'You enter to long phone')
+        .required('Enter a contact phone')
+});
+
 export const userInfoSchema = yup.object().shape({
     name: yup.string()
         .matches(/^[a-z,.'-]+\s[a-z ,.'-]+$/i, 'Name invalid or not full')

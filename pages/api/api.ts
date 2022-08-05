@@ -1,4 +1,3 @@
-import { isConstValueNode } from 'graphql';
 import {
     switchMap,
     of,
@@ -109,7 +108,7 @@ export const takeOneProduct = async (id) => {
 
 export const createOrder = async (order) => {
     try {
-        const catchRes = await fetchFunc(url + '/orders','POST' , order);
+        const catchRes = await fetchFunc(url + '/orders/create', 'POST', order);
 
         return catchRes;
     } catch (err) {
@@ -119,7 +118,7 @@ export const createOrder = async (order) => {
 
 export const getUserOrders = async (userId) => {
     try {
-        const takeUserOrders = await fetchFunc(url + '/user/orders', 'POST', userId); 
+        const takeUserOrders = await fetchFunc(url + '/orders/userOrders', 'POST', userId); 
 
         return takeUserOrders.json();
     } catch (err) {
@@ -127,9 +126,9 @@ export const getUserOrders = async (userId) => {
     }
 };
 
-export const getUserOrder = async (id) => {
+export const getUserOrder = async (orderId, userId) => {
     try {
-        const catchRes = await fetchFunc(url + '/user/orders/:id', "POST", id);
+        const catchRes = await fetchFunc(url + `/orders/userOrders/${orderId}`, "POST", userId);
 
         return catchRes.json();
     } catch (err) {
@@ -140,7 +139,7 @@ export const getUserOrder = async (id) => {
 export const getUserInfo = async (id) => {
     try {
         const response = await fetchFunc(url + `/user/${id}`, 'GET');
-        console.log(id)
+        
         return response.json();
     } catch (err) {
         console.log(err);
@@ -165,7 +164,7 @@ export const updateUserInfo = async (id, info) => {
     }
 }
 
-export const deleteUser = async (id) => {
+export const deleteUser = async (id, pass) => {
     try {
         const deleted = fetch(url + `/user/${id}`, {
             mode: 'cors',
@@ -173,10 +172,11 @@ export const deleteUser = async (id) => {
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
-            }
+            },
+            body: JSON.stringify(pass)
         });
 
-        return deleted;
+        return (await deleted).json();
     } catch (err) {
         console.log(err)
     }

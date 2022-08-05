@@ -135,14 +135,14 @@ const Shop = () => {
                                 >
                                     <BsCart />
                                 </button>
-                                {user && <button
+                                {user?.id && <button
                                     className={user.likes?.find(x => x._id === stuff._id) ? 
                                         `${styles.cartButton} ${styles.liked}`
                                         : `${styles.cartButton}`
                                     }
                                     onClick={() => hendleLike(stuff._id)}
                                 >
-                                    {<AiFillHeart />}
+                                    <AiFillHeart />
                                 </button>}
                             </div>
                         </div>

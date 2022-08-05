@@ -15,22 +15,21 @@ const UserOrder = () => {
     const user = useSelector(state => state.user);
     const router = useRouter();
 
-    const takeUserOrder = async (ids) => {
-        const res = await getUserOrder(ids);
-        if (res.length) {
-            setOrder(res[0]);
+    const userOrderId = router.query.userOrder;
+    const takeUserOrder = async (orderId, userId) => {
+        const res = await getUserOrder(orderId, userId);
+        if (res) {
+            setOrder(res);
         } else {
             router.push('/myOrders');
         }
     };
-
+    
     useEffect(() => {
-        const orderId = router.query.userOrder;
-        const userId = user.info?.id
-        if (userId) {
-            takeUserOrder({ orderId, userId });
+        if (userOrderId) {
+            takeUserOrder(userOrderId, { userId: user.info?.id });
         }
-    }, [user.info?.id]);
+    }, [userOrderId]);
 
     useEffect(() => {
         if (user.token) {
@@ -41,7 +40,7 @@ const UserOrder = () => {
             setLoged(false);
         }
     }, [user?.token]);
-    
+
     return (
         <div className={styles.container}>
             {loged ? order ? (

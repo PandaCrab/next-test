@@ -8,9 +8,11 @@ import { BsPencil } from 'react-icons/bs';
 import { deleteUser, takeSomeProducts, updateUserInfo } from '../api/api';
 import { getInfo, logout } from '../../redux/ducks/user';
 import { catchSuccess, catchError, catchWarning } from '../../redux/ducks/alerts';
+import { addressSchema, phoneSchema } from '../../helpers/validation'
 import LoginPage from '../login';
 
 import styles from '../../styles/AccountPage.module.scss';
+import { clearOrder } from '../../redux/ducks/stuff';
 
 const AccountPage = () => {
     const [loged, setLoged] = useState(false);
@@ -24,10 +26,13 @@ const AccountPage = () => {
         likes: false,
         addressForm: false,
         phoneChanging: false,
-        settings: false
+        settings: false,
+        agreeDeletion: false,
+        confirmPassword: false
     });
-    const [phone, setPhone] = useState({ phone: '' })
-    const [addressForm, setaddressForm] = useState({
+    const [phone, setPhone] = useState({ phone: '' });
+    const [confirmPass, setConfirmPass] = useState('');
+    const [addressForm, setAddressForm] = useState({
         street: '',
         city: '',
         country: '',
@@ -52,40 +57,107 @@ const AccountPage = () => {
 
         return;
     };
+    const [invalid, setInvalid] = useState({
+        path: {},
+        isValid: false
+    });
     
     const updateInfo = async (info) => {
         const id = router.query.userAccount;
-        if (info) {
+
+        if (info.shippingAddress && Object.keys(info.shippingAddress).length === 0) {
             const res = await updateUserInfo(id, info);
 
-            if (res.message) {
-                dispatch(catchSuccess(res.message));
-                dispatch(getInfo(res.updated));
+            dispatch(catchSuccess(res.message));
+            dispatch(getInfo(res.updated));
+        }
 
-                if (info.phone) {
-                    setPhone({ phone: '' });
-                    setView({
-                        ...view,
-                        phoneChanging: false
-                    });
-                }
+        if (info) {
+            if (info.phone) {
+                await phoneSchema.validate(phone, { abortEarly: false })
+                .then(async value => {
+                    if (value) {
+                        const res = await updateUserInfo(id, info);
 
-                if (info.shippingAddress === addressForm) {
-                    setaddressForm({
-                        street: '',
-                        city: '',
-                        country: '',
-                        zip: ''
+                        if (res.message) {
+                            dispatch(catchSuccess(res.message));
+                            dispatch(getInfo(res.updated));
+
+                            setPhone({ phone: '' });
+                            setView({
+                                ...view,
+                                phoneChanging: false
+                            });
+                        }
+                        
+                        if (res.error) {
+                            dispatch(catchError(res.error));
+                        }
+                    }
+                })
+                .catch((error) => {
+                    const validationError = {};
+    
+                    error.inner.forEach((err) => {
+                        if (err.path) {
+                            validationError[err.path] = err.message;
+                        }
                     });
-                    setView({
-                        ...view,
-                        addressForm: false
+    
+                    setInvalid({
+                        path: validationError,
+                        isValid: false
                     });
-                }
+                });
             }
 
-            if (res.error) {
-                dispatch(catchError(res.error))
+            if (info.shippingAddress === addressForm) {
+                await addressSchema.validate(addressForm, { abortEarly: false })
+                .then(async value => {
+                    if (value) {
+                        const res = await updateUserInfo(id, info);
+
+                        if (res.message) {
+                            dispatch(catchSuccess(res.message));
+                            dispatch(getInfo(res.updated));
+
+                            setAddressForm({
+                                street: '',
+                                city: '',
+                                country: '',
+                                zip: ''
+                            });
+
+                            setView({
+                                ...view,
+                                addressForm: false
+                            });
+
+                            setInvalid({
+                                path: {},
+                                isValid: true
+                            });
+                        }
+                            
+                        if (res.error) {
+                            dispatch(catchError(res.error));
+                        }
+                    }  
+                })
+                .catch((error) => {
+                    const validationError = {};
+    
+                    error.inner.forEach((err) => {
+                        if (err.path) {
+                            validationError[err.path] = err.message;
+                        }
+                    });
+    
+                    setInvalid({
+                        path: validationError,
+                        isValid: false
+                    });
+                });
             }
         }
 
@@ -93,17 +165,24 @@ const AccountPage = () => {
     };
 
     const deleteAccount = async () => {
-        const id = router.query.userAccount
+        const id = router.query.userAccount;
 
-        const deleted = await deleteUser(id);
+        const deleted = await deleteUser(id, { password: confirmPass });
 
-        dispatch(catchWarning(deleted?.message));
-        dispatch(logout());
-        await localStorage.removeItem('token');
-        await router.push('/');
+        if (deleted.error) {
+            dispatch(catchError(deleted.error));
+        }
+
+        if (deleted.message) {
+            dispatch(catchWarning(deleted.message));
+            dispatch(logout());
+            dispatch(clearOrder());
+            await localStorage.removeItem('token');
+            router.push('/');
+        }
     };
 
-    const clickOutside = (event) => {
+    const clickOutsideSettings = (event) => {
         if (!settingsRef.current.contains(event.target)) {
             setView({
                 ...view,
@@ -114,25 +193,25 @@ const AccountPage = () => {
 
     useEffect(() => {
         if (view.settings) {
-            document.addEventListener('click', clickOutside);
+            document.addEventListener('click', clickOutsideSettings);
         }
 
         return () => {
-            document.removeEventListener('click', clickOutside);
+            document.removeEventListener('click', clickOutsideSettings);
         }
     }, [view.settings]);
 
     useEffect(() => {
         if (user?.likes?.length) {
-            catchLikedProducts(user.likes)
+            catchLikedProducts(user.likes);
         } else {
-            return
+            return;
         }
     }, [user]);
 
     useEffect(() => {
         if (order?.length) {
-            setOrders(order)
+            setOrders(order);
         }
     }, [order]);
 
@@ -149,7 +228,7 @@ const AccountPage = () => {
     const addressInputChange = (target) => {
         const { name, value } = target;
 
-        setaddressForm({
+        setAddressForm({
             ...addressForm,
             [name]: value
         });
@@ -176,7 +255,11 @@ const AccountPage = () => {
                         <div className={styles.settings}>
                             <div 
                                 className={styles.settingsItem}
-                                onClick={() => deleteAccount()}
+                                onClick={() => setView({
+                                    ...view,
+                                    agreeDeletion: true,
+                                    settings: false
+                                })}
                             >
                                 Delete account
                             </div>
@@ -184,11 +267,68 @@ const AccountPage = () => {
                     )}
                 </div>
             </div>
+            {view.agreeDeletion && (
+                <div className={styles.agreeDeletionWrapper}>
+                    <div className={styles.agree}>
+                        <div>
+                            When You delete account, all personal and order information will localStorage
+                            forever. Agreed this, You confirm deletion of your account.
+                        </div>
+                        <div>
+                            <button 
+                                onClick={() => setView({
+                                    ...view,
+                                    confirmPassword: true
+                                })}
+                                className={styles.btns}
+                            >
+                                Agree
+                            </button>
+                            <button 
+                                onClick={() => setView({
+                                    ...view,
+                                    agreeDeletion: false
+                                })}
+                                className={styles.btns}
+                            >
+                                Close
+                            </button>
+                        </div>
+                        {view.confirmPassword && (
+                        <div className={styles.confirm}>
+                            <input 
+                                className={styles.confirmInput}
+                                name='confirmPass'
+                                type='password'
+                                value={confirmPass}
+                                onChange={({ target }) => setConfirmPass(target.value)}
+                                placeholder='Please enter your password'
+                            />
+                            <div>
+                                <button 
+                                    onClick={() => deleteAccount()}
+                                    className={styles.btns}
+                                >
+                                    Confirm
+                                </button>
+                                <button 
+                                    onClick={() => setView({
+                                        ...view,
+                                        agreeDeletion: false,
+                                        confirmPassword: false
+                                    })}
+                                    className={styles.btns}
+                                >
+                                    Decline
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    </div>
+                </div>
+            )}
             {view.addressForm && (
-                <div 
-                    style={{ display: view.addressForm ? 'flex' : 'none' }} 
-                    className={styles.addressFormWrapper}
-                >
+                <div className={styles.addressFormWrapper}>
                     <button
                         onClick={() => setView({
                             ...view,
@@ -200,32 +340,40 @@ const AccountPage = () => {
                     </button>
                     <div className={styles.addressForm}>
                         <input
-                            className={styles.addressFormInput}
+                            className={invalid.path.street ? 
+                                `${styles.addressFormInput} ${styles.invalid}`
+                                : `${styles.addressFormInput}`}
                             name="street"
                             value={addressForm.street}
                             onChange={({ target }) => addressInputChange(target)}
-                            placeholder={addressForm.street ? addressForm.street : 'Enter street'}
+                            placeholder={invalid.path.street ? invalid.path.street : 'Enter street'}
                         />
                         <input
-                            className={styles.addressFormInput}
+                            className={invalid.path.city ? 
+                                `${styles.addressFormInput} ${styles.invalid}`
+                                : `${styles.addressFormInput}`}
                             name="city"
                             value={addressForm.city}
                             onChange={({ target }) => addressInputChange(target)}
-                            placeholder={addressForm.city ? addressForm.city : 'Enter city'}
+                            placeholder={invalid.path.city ? invalid.path.city : 'Enter city'}
                         />
                         <input
-                            className={styles.addressFormInput}
+                            className={invalid.path.country ? 
+                                `${styles.addressFormInput} ${styles.invalid}`
+                                : `${styles.addressFormInput}`}
                             name="country"
                             value={addressForm.country}
                             onChange={({ target }) => addressInputChange(target)}
-                            placeholder={addressForm.country ? addressForm.country : 'Choose country'}
+                            placeholder={invalid.path.country ? invalid.path.country : 'Choose country'}
                         />
                         <input
-                            className={styles.addressFormInput}
+                            className={invalid.path.zip ? 
+                                `${styles.addressFormInput} ${styles.invalid}`
+                                : `${styles.addressFormInput}`}
                             name="zip"
                             value={addressForm.zip}
                             onChange={({ target }) => addressInputChange(target)}
-                            placeholder={addressForm.zip ? addressForm.zip : 'Enter ZIP code'}
+                            placeholder={invalid.path.zip ? invalid.path.zip : 'Enter ZIP code'}
                         />
                     </div>
                     <button 
@@ -252,14 +400,17 @@ const AccountPage = () => {
                         {view.phoneChanging ? (
                             <>
                                 <input 
-                                    className={styles.phoneInput}
+                                    className={invalid.path.phone ? 
+                                        `${styles.phoneInput} ${styles.invalid}` 
+                                        : `${styles.phoneInput}`}
                                     name='phone'
                                     value={phone.phone}
                                     onChange={({ target }) => setPhone({ phone: target.value })}
+                                    placeholder={invalid.path.phone ? invalid.path.phone : 'Enter your phone'}
                                 />
                                 <div
                                     onClick={() => updateInfo(phone)}
-                                    className={styles.changePhoneBtn}
+                                    className={styles.changeBtn}
                                 >
                                     <RiCheckFill />
                                 </div>
@@ -268,7 +419,7 @@ const AccountPage = () => {
                                         ...view,
                                         phoneChanging: false
                                     })}
-                                    className={styles.changePhoneBtn}
+                                    className={styles.changeBtn}
                                 >
                                     <RiCloseLine />
                                 </div>
@@ -281,8 +432,10 @@ const AccountPage = () => {
                                         ...view,
                                         phoneChanging: true
                                     })}
-                                    className={styles.changePhoneBtn}
-                                ><BsPencil /></button>
+                                    className={styles.changeBtn}
+                                >
+                                    <BsPencil />
+                                </button>
                             </>
                         )}
                     </div>
@@ -383,7 +536,7 @@ const AccountPage = () => {
                                     <div>${product.price}</div>
                                 </div>
                                 )) : (
-                                    <div>Your bucket is empty</div>
+                                    <div>Your shopping cart is empty</div>
                                 )}
                             </div>
                     </div>

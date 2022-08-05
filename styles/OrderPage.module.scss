@@ -15,11 +15,36 @@
         justify-content: flex-start;
         text-align: start;
 
+        .row {
+            width: 100%;
+            display: flex; 
+            justify-content: space-between; 
+
+            .inputWrapper {
+                &:first-child {
+                    width: 60%;
+                }
+
+                &:last-child {
+                    width: 30%;
+                }
+            }
+        }
+
         .formLabel {
             width: 100%;
             margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
             font-size: 16px;
             font-weight: bold;
+
+            .autocompleteBtn {
+                padding: 2px;
+                font-weight: normal;
+                border: 1px solid #bbbbbb;
+                border-radius: 5px;
+            }
         }
 
         .formInput {
