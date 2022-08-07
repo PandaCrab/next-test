@@ -38,6 +38,10 @@ const AccountPage = () => {
         country: '',
         zip: ''
     });
+    const [invalid, setInvalid] = useState({
+        path: {},
+        isValid: false
+    });
 
     const settingsRef = useRef();
 
@@ -57,10 +61,6 @@ const AccountPage = () => {
 
         return;
     };
-    const [invalid, setInvalid] = useState({
-        path: {},
-        isValid: false
-    });
     
     const updateInfo = async (info) => {
         const id = router.query.userAccount;
@@ -71,10 +71,10 @@ const AccountPage = () => {
             dispatch(catchSuccess(res.message));
             dispatch(getInfo(res.updated));
         }
-
+console.log(info)
         if (info) {
             if (info.phone) {
-                await phoneSchema.validate(phone, { abortEarly: false })
+                await phoneSchema.validate(phone)
                 .then(async value => {
                     if (value) {
                         const res = await updateUserInfo(id, info);
@@ -97,7 +97,7 @@ const AccountPage = () => {
                 })
                 .catch((error) => {
                     const validationError = {};
-    
+                    
                     error.inner.forEach((err) => {
                         if (err.path) {
                             validationError[err.path] = err.message;
@@ -377,6 +377,7 @@ const AccountPage = () => {
                         />
                     </div>
                     <button 
+                        className={styles.btns}
                         onClick={() => updateInfo({ 
                             shippingAddress: addressForm 
                         })}
@@ -489,10 +490,13 @@ const AccountPage = () => {
                                         more easy and fast to fill.
                                     </div>
                                 </div>
-                                <button onClick={() => setView({
-                                    ...view,
-                                    addressForm: true
-                                })}>
+                                <button 
+                                    className={styles.btns}
+                                    onClick={() => setView({
+                                        ...view,
+                                        addressForm: true
+                                    })}
+                                >
                                     Add address
                                 </button>
                             </div>

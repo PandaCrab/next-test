@@ -1,3 +1,5 @@
+@use 'MediaMixins' as media;
+
 .orderContainer {
     margin: auto;
     width: 1360px;
@@ -7,13 +9,24 @@
     align-items: center;
     justify-content: space-around;
 
+    @include media.mobileS {
+        width: 100%;
+        min-height: 300px;
+    }
+
     .orderForm {
+        margin-bottom: 15px;
         padding: 20px;
         width: 500px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         text-align: start;
+
+        @include media.mobileS {
+            padding: 10px;
+            width: 100%;
+        }
 
         .row {
             width: 100%;
@@ -39,6 +52,11 @@
             font-size: 16px;
             font-weight: bold;
 
+            @include media.mobileS {
+                padding-left: 10px;
+                font-size: 13px;
+            }
+
             .autocompleteBtn {
                 padding: 2px;
                 font-weight: normal;
@@ -51,9 +69,14 @@
             padding: 6px 12px;
             margin-bottom: 30px;
             width: 100%;
-            height: 35px;
             border: 2px solid #bbb;
             border-radius: 8px;
+
+            @include media.mobileS {
+                padding: 3px 6px;
+                margin-bottom: 15px;
+                font-size: 12px;
+            }
 
             &.invalid {
                 border-color: red;
@@ -69,12 +92,10 @@
             padding: 6px 12px;
             width: auto;
             background: none;
-            color: #bbbbbb;
             border: 1px solid #bbbbbb;
             border-radius: 5px;
 
             &:hover {
-                color: black;
                 border-color: black;
                 box-shadow: 0 0 3px;
             }
@@ -92,6 +113,10 @@
         flex-direction: column;
         align-items: center;
         overflow-y: scroll;
+
+        @include media.mobileS {
+            display: none;
+        }
 
         .productCard {
             padding-top: 15px;

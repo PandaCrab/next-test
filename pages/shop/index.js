@@ -112,11 +112,14 @@ const Shop = () => {
                             className={styles.productCard} 
                             key={ stuff._id }>
                             <div onClick={() => routeToProductInfo(stuff._id)} className={styles.cardContentWrapper}>
-                                <Image 
-                                    src={stuff.imgUrl} 
-                                    alt={stuff.name}
-                                    width={stuff.width ? `${stuff.width}px` :  '100px'}
-                                    height={stuff.height ? `${stuff.height}px` : '150px'} />
+                                <div className={styles.imageWrapper}>
+                                    <Image 
+                                        src={stuff.imgUrl} 
+                                        alt={stuff.name}
+                                        width={stuff.width ? `${stuff.width}px` :  '100px'}
+                                        height={stuff.height ? `${stuff.height}px` : '150px'}
+                                    />
+                                </div>
                                 <div className={styles.cardInfo}>
                                     <div className={styles.stuffTitle}>
                                         { stuff.name }

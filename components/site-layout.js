@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { RiUser3Line } from 'react-icons/ri';
+import { RiUser3Line, RiMenuFill } from 'react-icons/ri';
 
 import Cart from './cart';
 import PopupAlert from './popup';
@@ -13,6 +13,7 @@ import styles from '../styles/SiteLayout.module.scss';
 
 const SiteLayout = ({children}) => {
     const [isOpen, setOpen] = useState(false);
+    const [menuDropdown, setMenuDropdown] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [admin, setAdmin] = useState(false);
@@ -120,8 +121,38 @@ const SiteLayout = ({children}) => {
         <div className='layout'>
             <PopupAlert />
             <div className={styles.header}>
-                <div className={styles.menuLogoWrapper}>
-                    <div className={styles.title}>Some logo and name of company</div>
+                <div className={styles.menuWrapper}>
+                    <div onClick={() => setMenuDropdown(!menuDropdown)} className={styles.menuBtn}>
+                        <RiMenuFill />
+                    </div>
+                    {menuDropdown && (
+                        <div  className={styles.menuDropdown}>
+                            <Link href="/">
+                                <a 
+                                    onClick={() => setMenuDropdown(false)}
+                                    className={styles.menuItems}
+                                >
+                                    Home
+                                </a>
+                            </Link>
+                            {admin && (
+                                <Link href="/admin">
+                                    <a 
+                                        onClick={() => setMenuDropdown(false)}
+                                        className={styles.menuItems}
+                                    >
+                                        Admin
+                                    </a>
+                                </Link>
+                            )}
+                        </div>
+                    )}
+                </div>
+                <div className={styles.logoWrapper}>
+                    <div className={styles.logoNameWrapper}>
+                        <div className={styles.logo} />
+                        <div className={styles.siteName}>Some site name</div>
+                    </div>
                     <Link href="/">
                         <a className={styles.homeLink}>Home</a>
                     </Link>

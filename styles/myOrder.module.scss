@@ -1,5 +1,12 @@
+@use 'MediaMixins' as media;
+
 .ordersContainer {
     font-size: 18px;
+
+    @include media.mobileS {
+        padding: 5px;
+        font-size: 12px;
+    }
 
     .ordersWrapper {
         margin-bottom: 15px;
@@ -14,6 +21,11 @@
             justify-content: space-between;
             border: 1px solid #bbbbbb;
             border-radius: 5px;
+
+            @include media.mobileS {
+                padding: 6px;
+                width: 100%;
+            }
 
             &:hover {
                 box-shadow: 0 0 10px gray;

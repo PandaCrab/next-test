@@ -1,29 +1,107 @@
+@use 'MediaMixins' as media;
+
 .header {
     padding: 0 30px;
+    margin-bottom: 25px;
+    width: 100%;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    height: 50px;
+    background: white;
     box-shadow: 0 3px 10px gray;
-    margin-bottom: 25px;
+    position: fixed;
+    z-index: 1000;
 
-    .menuLogoWrapper {
+    @include media.mobileS {
+        padding: 0 15px;
+        margin-bottom: 15px;
+        height: 40px;
+        font-size: 12px;
+    }
+
+    .menuWrapper {
+        display: flex;
+        position: relative;
+
+        .menuBtn {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+
+        }
+
+        .menuDropdown {
+            padding: 5px;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            border: 1px solid #bbbbbb;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px gray;
+            position: absolute;
+            top: 30px;
+            left: -10px;
+
+            &>a {
+                margin-bottom: 5px;
+                font-size: 14px;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .logoWrapper {
         display: flex;
         width: 500px;
         align-items: center;
+
+        @include media.mobileS {
+            width: auto;
+        }
+
         .homeLink {
             margin-right: 25px;
+
+            @include media.mobileS {
+                display: none;
+            }
 
             &:hover {
                 color: blue;
             }
         }
 
-        .title {
+        .logoNameWrapper {
+            display: flex;
             font-size: 20px;
             font-weight: bold;
             margin-right: 25px;
+
+            @include media.mobileS {
+                font-size: 14px;
+
+                .siteName {
+                    font-size: 14px;
+                }
+            }
+
+            .logo {
+                content: url('../public/panda-logo-poly.png');
+                width: 30px;
+                height: 30px;
+                position: absolute;
+                top: px;
+                left: 50%;
+
+                @include media.mobileS {
+                    display: none;
+                }
+            }
         }
     }
 
@@ -38,6 +116,10 @@
             width: auto;
             position: relative;
 
+            @include media.mobileS {
+                margin-right: 5px;
+            }
+
             .accountBtn {
                 margin-left: 20px;
                 display: flex;
@@ -46,6 +128,10 @@
                 font-size: 20px;
                 border: 1px solid black;
                 border-radius: 50%;
+
+                @include media.mobileS {
+                    margin-left: 5px;
+                }
             }
 
             .dropdown {
@@ -63,9 +149,20 @@
                 right: -30px;
                 z-index: 100;
 
+                @include media.mobileS {
+                    padding: 6px;
+                    width: 150px;
+                    right: 0;
+                }
+
                 .greeting {
                     margin-bottom: 10px;
                     font-size: 18px;
+
+                    @include media.mobileS {
+                        margin-bottom: 5px;
+                        font-size: 14px;
+                    }
                 }
 
                 .dropdownItems {
@@ -73,8 +170,37 @@
                     font-size: 16px;
                     cursor: pointer;
 
+                    @include media.mobileS {
+                        font-size: 12px;
+                    }
+
                     &:hover {
                         color: rgb(150, 150, 150);
+                    }
+                }
+
+                .logBtn {
+                    margin: auto;
+                    padding: 4px 8px;
+                    width: 70px;
+                    background: none;
+                    border: 1px solid #bbbbbb;
+                    border-radius: 5px;
+
+                    @include media.mobileS {
+                        padding: 2px 4px;
+                        width: auto;
+                        font-size: 12px;
+                    }
+
+                    &:hover {
+                        color: black;
+                        border-color: black;
+                        box-shadow: 0 0 3px;
+                    }
+
+                    &:active {
+                        box-shadow: 0 0 1px;
                     }
                 }
 
@@ -91,32 +217,17 @@
                         padding: 4px 8px;
                         border: 1px solid #bbbbbb;
                         border-radius: 5px;
+
+                        @include media.mobileS {
+                            padding: 2px 4px;
+                            font-size: 12px;
+                        }
                     }
 
                     .dropdownBtnWrapper {
                         width: 100%;
                         display: flex;
                         justify-content: space-around;
-
-                        .logBtn {
-                            margin: auto;
-                            padding: 4px 8px;
-                            width: 70px;
-                            background: none;
-                            color: #bbbbbb;
-                            border: 1px solid #bbbbbb;
-                            border-radius: 5px;
-
-                            &:hover {
-                                color: black;
-                                border-color: black;
-                                box-shadow: 0 0 3px;
-                            }
-
-                            &:active {
-                                box-shadow: 0 0 1px;
-                            }
-                        }
                     }
                 }
             }
@@ -125,8 +236,8 @@
 }
 
 .main {
+    margin-top: 50px;
     margin-bottom: 20px;
-    min-height: 700px;
 }
 
 .footer {

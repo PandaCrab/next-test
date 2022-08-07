@@ -1,13 +1,18 @@
+@use 'MediaMixins' as media;
+
 .cartContainer {
+    padding: 40px;
+    width: 1600px;
+    min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: auto;
-    width: 1600px;
-    min-height: 600px;
-    padding: 40px;
-    display: flex;
     flex-wrap: wrap;
+
+    @include media.mobileS {
+        padding: 5px;
+        width: 100%;
+    }
 
     .emptyCart {
         display: flex;
@@ -18,12 +23,19 @@
 
     .productCard {
         padding: 10px;
-        height: 350px;
         width: 350px;
-        max-height: 250px;
-        margin: 0 0 20px 20px;
+        height: auto;
         border-radius: 1px solid #bbb;
         box-shadow: 2px 3px 10px gray;
+
+        @include media.mobileS {
+            margin-bottom: 20px;
+            padding: 5px;
+            width: 250px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
         .cardContentWrapper {
             padding-bottom: 10px;
@@ -32,16 +44,16 @@
             border-bottom: 1px solid #bbb;
 
             .cardInfo {
-                width: 200px;
                 padding: 12px;
+                width: 200px;
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
 
                 .stuffTitle {
-                    text-align: end;
                     margin-bottom: 15px;
-                    font-weight: 500;
+                    text-align: end;
+                    font-weight: 500; 
                 }
             }
         }
@@ -50,8 +62,13 @@
             width: 100%;
             height: 50px;
             display: flex;
-            justify-content: flex-end;
+            align-items: center;
+            justify-content: center;
             padding: 10px;
+
+            @include media.mobileS {
+                padding: 5px;
+            }
 
             .deleteButton {
                 display: flex;
@@ -85,6 +102,11 @@
     background: none;
     border: 1px solid;
     border-radius: 5px;
+
+    @include media.mobileS {
+        width: auto;
+        font-size: 12px;
+    }
 
     &:hover {
         box-shadow: 0 0 6px gray;

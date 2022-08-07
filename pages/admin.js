@@ -305,7 +305,9 @@ const AdminPage = () => {
                                             </div>
                                         </div>
                                     )) : (
-                                        <div>Seems site doesn`t have any products, please add somthing for your clients</div>
+                                        <div>
+                                            Seems site doesn`t have any products, please add somthing for your clients
+                                        </div>
                                     )}
                                 </div>
                                 {inUpdate.updating ? (
