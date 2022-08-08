@@ -1,9 +1,14 @@
+@use "MediaMixins" as media;
+
 .loginForm {
     padding: 12px;
     width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    @include media.mobileS {
+    }
 
     .formInput {
         padding: 6px 12px;

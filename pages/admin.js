@@ -4,16 +4,19 @@ import { useRouter } from 'next/router';
 import { BsCart } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { BsPencil } from 'react-icons/bs';
+import { RiCloseLine } from 'react-icons/ri';
 import Image from 'next/image';
 
 import { deleteProduct, postProduct, updateProductInStorage } from './api/api';
 import { catchSuccess, catchWarning } from '../redux/ducks/alerts';
 import LoginPage from './login';
+import useWindowSize from '../hooks/windowSize';
 
 import styles from '../styles/Admin.module.scss';
 
 const AdminPage = () => {
     const [show, setShow] = useState('addProduct');
+    const [productPriview, setPreview] = useState(false);
     const [inUpdate, setUpdate] = useState({
         updating: false,
         updateItem: {
@@ -21,8 +24,8 @@ const AdminPage = () => {
             name: '',
             price: '',
             color: '',
-            quantity: ''
-        }
+            quantity: '',
+        },
     });
     const [addProduct, setProduct] = useState({
         name: '',
@@ -31,13 +34,15 @@ const AdminPage = () => {
         color: '',
         quantity: '',
         width: '',
-        height: ''
+        height: '',
     });
     const [permission, setPermission] = useState(false);
     const [loged, setloged] = useState(false);
     const [allProducts, setAllProducts] = useState();
 
-    const user = useSelector(state => state.user);
+    const size = useWindowSize();
+
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -46,8 +51,27 @@ const AdminPage = () => {
         const { message } = await res.json();
 
         if (res.ok) {
-            dispatch(catchWarning(message))
+            dispatch(catchWarning(message));
             takeProducts();
+        }
+    };
+
+    const onPostProduct = (info) => {
+        if (info) {
+            const { message } = postProduct(info);
+
+            setProduct({
+                name: '',
+                price: '',
+                imgUrl: '',
+                color: '',
+                quantity: '',
+                width: '',
+                height: '',
+            });
+            setPreview(false);
+
+            dispatch(catchSuccess(message));
         }
     };
 
@@ -55,11 +79,11 @@ const AdminPage = () => {
         try {
             const res = await updateProductInStorage(product);
 
-            dispatch(catchSuccess(res.message))
+            dispatch(catchSuccess(res.message));
             takeProducts();
             setUpdate({
                 updating: false,
-                updateItem: {}
+                updateItem: {},
             });
         } catch (err) {
             console.log(err);
@@ -70,7 +94,7 @@ const AdminPage = () => {
         const allProducts = await fetch('http://localhost:4000/storage');
         const catchRes = await allProducts.json();
 
-        console.log(catchRes)
+        console.log(catchRes);
 
         if (allProducts.ok) {
             setAllProducts(catchRes);
@@ -83,10 +107,18 @@ const AdminPage = () => {
             ...inUpdate,
             updateItem: {
                 ...inUpdate.updateItem,
-                [name]: value
-            }
+                [name]: value,
+            },
         });
     };
+
+    useEffect(() => {
+        if (size.width < 767) {
+            setPreview(false);
+        } else {
+            setPreview(true);
+        }
+    }, [size]);
 
     useEffect(() => {
         takeProducts();
@@ -114,7 +146,7 @@ const AdminPage = () => {
 
     return (
         <div className={styles.adminPageContainer}>
-            { !loged ? (
+            {!loged ? (
                 <div className={styles.logFormWrapper}>
                     <LoginPage />
                 </div>
@@ -122,7 +154,9 @@ const AdminPage = () => {
                 <>
                     <div className={styles.welcomWrapper}>
                         <div>Hello in admin panel</div>
-                        <button className={styles.homeBtn} onClick={() => router.push('/')}>Home</button>
+                        <button className={styles.homeBtn} onClick={() => router.push('/')}>
+                            Home
+                        </button>
                     </div>
                     <div className={styles.adminPanel}>
                         <div className={styles.adminPanelHeader}>
@@ -135,17 +169,19 @@ const AdminPage = () => {
                         </div>
                         {show === 'addProduct' ? (
                             <div className={styles.addProductForm}>
-                                <form className={styles.formWrapper} onSubmit={() => postProduct(addProduct)}>
+                                <div className={styles.formWrapper}>
                                     <input
                                         id="name"
                                         className={styles.addProductInput}
                                         name="name"
                                         placeholder="Name of product"
                                         value={addProduct.name}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            name: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                name: target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         id="price"
@@ -153,10 +189,12 @@ const AdminPage = () => {
                                         name="price"
                                         placeholder="Enter product price"
                                         value={addProduct.price}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            price: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                price: target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         id="imgUrl"
@@ -164,10 +202,12 @@ const AdminPage = () => {
                                         name="imgUrl"
                                         placeholder="Image path"
                                         value={addProduct.imgUrl}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            imgUrl: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                imgUrl: target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         id="color"
@@ -175,10 +215,12 @@ const AdminPage = () => {
                                         name="color"
                                         placeholder="Enter product color (optional)"
                                         value={addProduct.color}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            color: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                color: target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         id="quantity"
@@ -186,10 +228,12 @@ const AdminPage = () => {
                                         name="quantity"
                                         placeholder="Enter quantity of available products"
                                         value={addProduct.quantity}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            quantity: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                quantity: target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         id="width"
@@ -197,10 +241,12 @@ const AdminPage = () => {
                                         name="width"
                                         placeholder="Enter width of product image"
                                         value={addProduct.width}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            width: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                width: target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         id="height"
@@ -208,38 +254,62 @@ const AdminPage = () => {
                                         name="height"
                                         placeholder="Enter height of product image"
                                         value={addProduct.height}
-                                        onChange={({target}) => setProduct({
-                                            ...addProduct,
-                                            height: target.value
-                                        })}
+                                        onChange={({ target }) =>
+                                            setProduct({
+                                                ...addProduct,
+                                                height: target.value,
+                                            })
+                                        }
                                     />
-                                    <button type="submit" className={styles.submitButton}>
-                                        Add product
-                                    </button>
-                                </form>
-                                <div className={styles.previewCard}>
-                                    <div 
-                                        className={styles.productCard} 
-                                        key={ addProduct.id }>
+                                    <div className={styles.btnsWrapper}>
+                                        {size.width < 767 && (
+                                            <button
+                                                className={styles.previewBtn}
+                                                onClick={() => setPreview(!productPriview)}
+                                            >
+                                                Preview
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => onPostProduct(addProduct)}
+                                            className={styles.submitButton}
+                                        >
+                                            Add product
+                                        </button>
+                                    </div>
+                                </div>
+                                <div
+                                    className={styles.previewCard}
+                                    style={{
+                                        display: productPriview ? 'flex' : 'none',
+                                    }}
+                                >
+                                    <div className={styles.productCard} key={addProduct.id}>
+                                        <div
+                                            onClick={() => {
+                                                setPreview(false);
+                                            }}
+                                            className={styles.closeBtn}
+                                        >
+                                            <RiCloseLine />
+                                        </div>
                                         <div className={styles.cardContentWrapper}>
-                                            { addProduct.imgUrl && <Image 
-                                                src={addProduct.imgUrl} 
-                                                alt={addProduct.name}
-                                                width={addProduct.width ? `${addProduct.width}px` : '100px'}
-                                                height={addProduct.height ? `${addProduct.height}px` : '100px'} />
-                                            }
+                                            {addProduct.imgUrl && (
+                                                <Image
+                                                    src={addProduct.imgUrl}
+                                                    alt={addProduct.name}
+                                                    width={addProduct.width ? `${addProduct.width}px` : '100px'}
+                                                    height={addProduct.height ? `${addProduct.height}px` : '100px'}
+                                                />
+                                            )}
                                             <div className={styles.cardInfo}>
-                                                <div className={styles.stufflabel}>
-                                                    { addProduct.name }
-                                                </div>
-                                                <div className={styles.stuffColor}>{ addProduct.color }</div>
-                                                <div className={styles.stuffPrice}>${ addProduct.price }</div>
+                                                <div className={styles.stuffTitle}>{addProduct.name}</div>
+                                                <div className={styles.stuffColor}>{addProduct.color}</div>
+                                                <div className={styles.stuffPrice}>${addProduct.price}</div>
                                             </div>
                                         </div>
                                         <div className={styles.cardButtons}>
-                                            <button 
-                                                onClick={() => dispatch(inOrder(addProduct))}
-                                                className={styles.cartButton}>
+                                            <button className={styles.cartButton}>
                                                 <BsCart />
                                             </button>
                                         </div>
@@ -247,9 +317,7 @@ const AdminPage = () => {
                                 </div>
                             </div>
                         ) : show === 'products' ? (
-                            <div 
-                                className={styles.productsTable}
-                            >
+                            <div className={styles.productsTable}>
                                 <div className={styles.productsWrapper}>
                                     <div className={`${styles.productRow} ${styles.header}`}>
                                         <div className={`${styles.rowItems} ${styles.header}`}>Name</div>
@@ -257,54 +325,56 @@ const AdminPage = () => {
                                         <div className={`${styles.rowItems} ${styles.header}`}>Color</div>
                                         <div className={`${styles.rowItems} ${styles.header}`}>Quantity</div>
                                     </div>
-                                    {allProducts ? allProducts.map(product => (
-                                        <div className={styles.productRow} key={product._id}>
-                                            <Image
-                                                src={product.imgUrl} 
-                                                alt={product.name}
-                                                width='80px'
-                                                height='70px'
-                                            />
-                                            <div className={styles.rowItems}>
-                                                {product.name}
-                                            </div>
-                                            <div className={styles.rowItems}>
-                                                {product.price}$
-                                            </div>
-                                            <div className={styles.rowItems}>
-                                                {product.color ? product.color : 'none'}
-                                            </div>
-                                            <div className={styles.rowItems}>
-                                                {product.quantity}
-                                            </div>
-                                            <div className={styles.rowItems}>
-                                                <button
-                                                    className={`${styles.rowBtn} ${styles.delete}`}
-                                                    onClick={() => deleteFromStorage({ _id: product._id })}
-                                                >
-                                                    <AiOutlineDelete />
-                                                </button>
-                                                <button 
-                                                    className={`${styles.rowBtn} ${styles.update}`}
-                                                    onClick={() => {
-                                                        setUpdate({
-                                                            updating: true,
-                                                            updateItem: {
+                                    {allProducts ? (
+                                        allProducts.map((product) => (
+                                            <div className={styles.productRow} key={product._id}>
+                                                <div className={styles.imageWrapper}>
+                                                    <Image
+                                                        src={product.imgUrl}
+                                                        alt={product.name}
+                                                        width="80px"
+                                                        height="70px"
+                                                    />
+                                                </div>
+                                                <div className={styles.rowItems}>{product.name}</div>
+                                                <div className={styles.rowItems}>{product.price}$</div>
+                                                <div className={styles.rowItems}>
+                                                    {product.color ? product.color : 'none'}
+                                                </div>
+                                                <div className={styles.rowItems}>{product.quantity}</div>
+                                                <div className={styles.rowItems}>
+                                                    <button
+                                                        className={`${styles.rowBtn} ${styles.delete}`}
+                                                        onClick={() =>
+                                                            deleteFromStorage({
                                                                 _id: product._id,
-                                                                imgUrl: product?.imgUrl,
-                                                                name: product?.name,
-                                                                price: product?.price,
-                                                                color: product?.color,
-                                                                quantity: product?.quantity
-                                                            }
-                                                        })
-                                                    }}
-                                                >
-                                                    <BsPencil />
-                                                </button>
+                                                            })
+                                                        }
+                                                    >
+                                                        <AiOutlineDelete />
+                                                    </button>
+                                                    <button
+                                                        className={`${styles.rowBtn} ${styles.update}`}
+                                                        onClick={() => {
+                                                            setUpdate({
+                                                                updating: true,
+                                                                updateItem: {
+                                                                    _id: product._id,
+                                                                    imgUrl: product?.imgUrl,
+                                                                    name: product?.name,
+                                                                    price: product?.price,
+                                                                    color: product?.color,
+                                                                    quantity: product?.quantity,
+                                                                },
+                                                            });
+                                                        }}
+                                                    >
+                                                        <BsPencil />
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )) : (
+                                        ))
+                                    ) : (
                                         <div>
                                             Seems site doesn`t have any products, please add somthing for your clients
                                         </div>
@@ -314,7 +384,7 @@ const AdminPage = () => {
                                     <div className={styles.updateContainer}>
                                         <div className={styles.formContainer}>
                                             <div className={styles.imageFormWrapper}>
-                                                <Image 
+                                                <Image
                                                     src={inUpdate.updateItem.imgUrl}
                                                     alt={inUpdate.updateItem.name}
                                                     width="200ox"
@@ -356,18 +426,20 @@ const AdminPage = () => {
                                                 </div>
                                             </div>
                                             <div className={styles.updateBtnWrapper}>
-                                                <button 
+                                                <button
                                                     className={styles.saveBtn}
-                                                    onClick={() => updateProduct(inUpdate.updateItem)}    
+                                                    onClick={() => updateProduct(inUpdate.updateItem)}
                                                 >
                                                     Save
                                                 </button>
-                                                <button 
+                                                <button
                                                     className={styles.saveBtn}
-                                                    onClick={() => setUpdate({
-                                                        ...inUpdate,
-                                                        updating: false
-                                                    })}    
+                                                    onClick={() =>
+                                                        setUpdate({
+                                                            ...inUpdate,
+                                                            updating: false,
+                                                        })
+                                                    }
                                                 >
                                                     close
                                                 </button>
