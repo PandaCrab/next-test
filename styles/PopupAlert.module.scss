@@ -1,11 +1,23 @@
+@use 'MediaMixins' as media;
+
 .alert {
     padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
     border-radius: 5px;
     position: absolute;
     bottom: 20px;
     right: 20px;
     z-index: 30;
+
+    @include media.mobileS {
+        max-width: 300px;
+        max-height: 50px;
+        top: 50px;
+        right: 10px;
+    }
 
     &.success {
         background: rgb(38, 185, 38);

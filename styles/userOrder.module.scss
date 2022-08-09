@@ -1,3 +1,5 @@
+@use 'MediaMixins' as media;
+
 .container {
     width: 100%;
     display: flex;
@@ -6,18 +8,27 @@
     border: 1px solid #bbbbbb;
     border-radius: 5px;
 
+    @include media.mobileS {
+        margin: 5px;
+    }
+
 
     .orderedTimeWrapper {
-        padding: 20px;
+        padding: 10px;
         width: 100%;
         display: flex;
         justify-content: space-between;
+
+        @include media.mobileS {
+            font-size: 14px;
+        }
     }
 
     .orderWrapper {
         width: 100%;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         border-top: 1px solid #bbbbbb;
 
         .shippingInfo {
@@ -25,10 +36,16 @@
             margin-left: 20px;
             font-size: 24px;
             line-height: 48px;
+
+            @include media.mobileS {
+                margin: 0 5px;
+                font-size: 14px;
+                line-height: 20px;
+            }
         }
 
         .productsList {
-            padding: 12px;
+            padding: 5px;
             max-height: 500px;
             display: flex;
             flex-direction: column;
@@ -36,33 +53,58 @@
             border-left: 1px solid #bbbbbb;
             overflow-y: scroll;
 
+            @include media.mobileS {
+                width: auto;
+                max-height: 300px;
+            }
+
             .productCard {
-                padding: 10px;
-                height: 350px;
-                width: 250px;
-                max-height: 250px;
                 margin: 0 0 20px 20px;
+                padding: 10px;
+                width: 250px;
+                height: 350px;
+                max-height: 250px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 border-radius: 1px solid #bbb;
                 box-shadow: 2px 3px 10px gray;
 
-                .productContentWrapper {
-                    padding-bottom: 10px;
+                @include media.mobileS {
+                    margin: 0;
+                    margin-bottom: 10px;
+                    padding: 5px;
+                    width: 100px;
+                    max-height: 150px;
+                    font-size: 10px;
+                    box-shadow: 0 0 3px gray;
+                }
+
+                .imageWrapper {
+                    width: 150px;
+
+                    @include media.mobileS {
+                        width: 50px;
+                    }
+                }
+
+                .productInfo {
+                    padding: 12px;
+                    width: 200px;
                     display: flex;
-                    justify-content: space-between;
-                    border-bottom: 1px solid #bbb;
+                    flex-direction: column;
+                    align-items: center;
 
-                    .productInfo {
-                        width: 200px;
-                        padding: 12px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: flex-end;
+                    @include media.mobileS {
+                        padding: 0;
+                        width: auto;
+                    }
 
-                        .stuffTitle {
-                            text-align: end;
-                            margin-bottom: 15px;
-                            font-weight: 500;
-                        }
+                    .productTitle {
+                        text-align: center;
+                        width: 100%;
+                        margin-bottom: 3px;
+                        font-weight: bold;
                     }
                 }
             }

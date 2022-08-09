@@ -56,8 +56,8 @@
     }
 
     .logoWrapper {
-        display: flex;
         width: 500px;
+        display: flex;
         align-items: center;
 
         @include media.mobileS {
@@ -236,8 +236,14 @@
 }
 
 .main {
+    height: 100vh;
     margin-top: 50px;
     margin-bottom: 20px;
+
+    @include media.mobileS {
+        height: auto;
+        overflow-y: visible;
+    }
 }
 
 .footer {
@@ -251,4 +257,10 @@
     align-items: center;
     position: relative;
     bottom: 0;
+
+    @include media.mobileS {
+        padding: 0 10px;
+        height: 50px;
+        font-size: 12px;
+    }
   }

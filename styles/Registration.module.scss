@@ -1,3 +1,5 @@
+@use 'MediaMixins' as media;
+
 .regForm {
     padding: 12px;
     width: 500px;
@@ -7,6 +9,11 @@
     align-items: center;
     border: 1px solid #bbbbbb;
     border-radius: 5px;
+
+    @include media.mobileS {
+        padding: 5px;
+        width: 300px;
+    }
 
     .regTitle {
         margin-bottom: 20px;
@@ -21,6 +28,11 @@
         font-size: 18px;
         border: 1px solid #bbbbbb;
         border-radius: 5px;
+
+        @include media.mobileS {
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
 
         &.invalid {
             border-color: red;
@@ -38,6 +50,10 @@
         color: #bbbbbb;
         border: 1px solid #bbbbbb;
         border-radius: 5px;
+
+        @include media.mobileS {
+            width: auto;
+        }
 
         &:hover {
             color: black;

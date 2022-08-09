@@ -182,16 +182,16 @@ export const deleteUser = async (id, pass) => {
     }
 };
 
-export const getUserLikes = async (obj) => {
+export const getUserLikes = async (userId, stuffId) => {
     try {
-        const response = await fetch(url + '/user/likes', {
+        const response = await fetch(url + '/user', {
             mode: 'cors',
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(obj)
+            body: JSON.stringify({ userId, stuffId })
         });
 
         return response.json();

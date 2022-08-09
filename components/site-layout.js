@@ -11,17 +11,17 @@ import { getToken, getInfo, logout } from '../redux/ducks/user';
 
 import styles from '../styles/SiteLayout.module.scss';
 
-const SiteLayout = ({children}) => {
+const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState(false);
     const [menuDropdown, setMenuDropdown] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [admin, setAdmin] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
 
     const profileRef = useRef();
 
-    const user = useSelector(state => state.user);
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -44,7 +44,7 @@ const SiteLayout = ({children}) => {
         const fromStorage = localStorage.getItem('token');
         const userToken = JSON.parse(fromStorage);
 
-        if(userToken) {
+        if (userToken) {
             return userToken;
         }
 
@@ -86,7 +86,7 @@ const SiteLayout = ({children}) => {
             setPassword('');
             setErrorMessage('');
 
-            setOpen(false)
+            setOpen(false);
         } else {
             setErrorMessage(token.message);
             setPassword('');
@@ -114,11 +114,11 @@ const SiteLayout = ({children}) => {
 
         return () => {
             document.removeEventListener('click', clickOutside);
-        }
+        };
     }, [isOpen]);
 
     return (
-        <div className='layout'>
+        <div className="layout">
             <PopupAlert />
             <div className={styles.header}>
                 <div className={styles.menuWrapper}>
@@ -126,21 +126,15 @@ const SiteLayout = ({children}) => {
                         <RiMenuFill />
                     </div>
                     {menuDropdown && (
-                        <div  className={styles.menuDropdown}>
+                        <div className={styles.menuDropdown}>
                             <Link href="/">
-                                <a 
-                                    onClick={() => setMenuDropdown(false)}
-                                    className={styles.menuItems}
-                                >
+                                <a onClick={() => setMenuDropdown(false)} className={styles.menuItems}>
                                     Home
                                 </a>
                             </Link>
                             {admin && (
                                 <Link href="/admin">
-                                    <a 
-                                        onClick={() => setMenuDropdown(false)}
-                                        className={styles.menuItems}
-                                    >
+                                    <a onClick={() => setMenuDropdown(false)} className={styles.menuItems}>
                                         Admin
                                     </a>
                                 </Link>
@@ -173,17 +167,18 @@ const SiteLayout = ({children}) => {
                             <div onClick={() => toggleDropdown()} className={styles.logBtn}>
                                 Log In
                             </div>
-                                
                         )}
                         {user.token ? (
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
-                                    <div className={styles.greeting}>Welcome <b>{user.info?.username}</b></div>
-                                    <div 
+                                    <div className={styles.greeting}>
+                                        Welcome <b>{user.info?.username}</b>
+                                    </div>
+                                    <div
                                         onClick={() => {
                                             router.push(`/myOrders/`);
                                             setOpen(false);
-                                        }} 
+                                        }}
                                         className={styles.dropdownItems}
                                     >
                                         Order history
@@ -192,15 +187,15 @@ const SiteLayout = ({children}) => {
                                         onClick={() => {
                                             router.push(`/account/${user.info.id}`);
                                             setOpen(false);
-                                        }}  
+                                        }}
                                         className={styles.dropdownItems}
                                     >
                                         My account
                                     </div>
-                                    <div className={styles.dropdownItems}>
-                                        Item
-                                    </div>
-                                    <button onClick={() => onLogout()} className={styles.logBtn}>Log Out</button>
+                                    <div className={styles.dropdownItems}>Item</div>
+                                    <button onClick={() => onLogout()} className={styles.logBtn}>
+                                        Log Out
+                                    </button>
                                 </div>
                             </>
                         ) : (
@@ -208,7 +203,7 @@ const SiteLayout = ({children}) => {
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
                                     <div className={styles.formTitle}>Welcome</div>
                                     <div className={styles.loginForm}>
-                                        <input 
+                                        <input
                                             className={styles.logInput}
                                             id="username"
                                             name="username"
@@ -217,7 +212,7 @@ const SiteLayout = ({children}) => {
                                             value={username}
                                             onChange={({ target }) => setUsername(target.value)}
                                         />
-                                        <input 
+                                        <input
                                             className={styles.logInput}
                                             id="password"
                                             name="password"
@@ -227,26 +222,24 @@ const SiteLayout = ({children}) => {
                                             onChange={({ target }) => setPassword(target.value)}
                                         />
                                         <div className={styles.dropdownBtnWrapper}>
-                                            <button 
+                                            <button
                                                 onClick={() => {
                                                     setOpen(false);
                                                     router.push('/registration');
-                                                }} 
+                                                }}
                                                 className={styles.logBtn}
                                             >
                                                 Sign In
                                             </button>
-                                            <button 
-                                                disabled={username.length && false} 
-                                                onClick={() => onLogin()} 
+                                            <button
+                                                disabled={username.length && false}
+                                                onClick={() => onLogin()}
                                                 className={styles.logBtn}
                                             >
                                                 Log In
                                             </button>
                                         </div>
-                                        {errorMessage && (
-                                            <div>{errorMessage}</div>
-                                        )}
+                                        {errorMessage && <div>{errorMessage}</div>}
                                     </div>
                                 </div>
                             </>
@@ -257,9 +250,7 @@ const SiteLayout = ({children}) => {
 
             <main className={styles.main}>{children}</main>
 
-            <footer className={styles.footer}>
-                Test Next application
-            </footer>
+            <footer className={styles.footer}>Test Next application</footer>
         </div>
     );
 };

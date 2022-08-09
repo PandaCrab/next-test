@@ -1,12 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsCart } from 'react-icons/bs';
 import { AiFillHeart } from 'react-icons/ai';
-import { 
-    interval,
-    map, 
-    take, 
-    repeat 
-} from 'rxjs';
+import { interval, map, take, repeat } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -21,47 +16,44 @@ const Shop = () => {
     const [stuffs, setStuffs] = useState([]);
     const [error, setError] = useState({
         status: false,
-        message: null
+        message: null,
     });
 
     const [isLoading, setLoading] = useState({
         status: false,
-        loader: null
+        loader: null,
     });
 
-    const select = useSelector(state => state.order.clientOrder)
-    const user = useSelector(state => state.user.info);
+    const select = useSelector((state) => state.order.clientOrder);
+    const user = useSelector((state) => state.user.info);
 
     const dispatch = useDispatch();
-    const router = useRouter()
+    const router = useRouter();
 
     const observable$ = interval(400);
 
-    const takeUserInfo = async (id) => {
-        const info = await getUserInfo(id);
+    const takeUserInfo = async () => {
+        const info = await getUserInfo(user.id);
 
         dispatch(getInfo(info));
     };
 
-    const hendleLike = async (stuffId) => {
+    const handleLike = async (stuffId) => {
         try {
-            const postLikes = await getUserLikes({
-                userId: user.id,
-                like: stuffId
-            });
+            const postLikes = await getUserLikes(user.id, stuffId);
 
             if (postLikes.message === 'like' || 'unlike') {
-                await takeUserInfo({_id: user.id});  
-            } 
+                await takeUserInfo();
+            }
 
-            return
+            return;
         } catch (err) {
             console.log(err);
         }
     };
 
     const routeToProductInfo = (id) => {
-        router.push(`shop/${id}`)
+        router.push(`shop/${id}`);
     };
 
     useEffect(() => {
@@ -70,87 +62,92 @@ const Shop = () => {
         const subscription = observable$
             .pipe(
                 take(loadProgress.length),
-                map(value => loadProgress[value]),
+                map((value) => loadProgress[value]),
 
                 repeat()
             )
-            .subscribe((res) => setLoading({
-                loading: true,
-                loader: res
-            }));
+            .subscribe((res) =>
+                setLoading({
+                    loading: true,
+                    loader: res,
+                })
+            );
         return () => subscription.unsubscribe();
     }, [isLoading]);
 
     useEffect(() => {
         setLoading({
-            status:true
+            status: true,
         });
-        
-        data$ && data$.subscribe({
-            next: result => {
-                setStuffs(result);
-                dispatch(storeStuff(result.data));
-            },
-            complete: () => {
-                setLoading({ status: false, loader: null });
-            }
-        });
+
+        data$ &&
+            data$.subscribe({
+                next: (result) => {
+                    setStuffs(result);
+                    dispatch(storeStuff(result.data));
+                },
+                complete: () => {
+                    setLoading({ status: false, loader: null });
+                },
+            });
         data$.unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <>
             <div className={styles.contentContainer}>
-                {
-                    isLoading.status ? (
-                        <div className={styles.loader}>{isLoading.loader}</div>
-                    ) : error.status ? (
-                        <div className={styles.errorWrapper}>Seems somthing broken</div>
-                    ) : stuffs ? stuffs.map(stuff => (
-                        <div 
-                            className={styles.productCard} 
-                            key={ stuff._id }>
+                {isLoading.status ? (
+                    <div className={styles.loader}>{isLoading.loader}</div>
+                ) : error.status ? (
+                    <div className={styles.errorWrapper}>Seems somthing broken</div>
+                ) : stuffs ? (
+                    stuffs.map((stuff) => (
+                        <div className={styles.productCard} key={stuff._id}>
                             <div onClick={() => routeToProductInfo(stuff._id)} className={styles.cardContentWrapper}>
                                 <div className={styles.imageWrapper}>
-                                    <Image 
-                                        src={stuff.imgUrl} 
+                                    <Image
+                                        src={stuff.imgUrl}
                                         alt={stuff.name}
-                                        width={stuff.width ? `${stuff.width}px` :  '100px'}
+                                        width={stuff.width ? `${stuff.width}px` : '100px'}
                                         height={stuff.height ? `${stuff.height}px` : '150px'}
                                     />
                                 </div>
                                 <div className={styles.cardInfo}>
-                                    <div className={styles.stuffTitle}>
-                                        { stuff.name }
-                                    </div>
-                                    <div className={styles.stuffColor}>{ stuff.color }</div>
-                                    <div className={styles.stuffPrice}>${ stuff.price }</div>
+                                    <div className={styles.stuffTitle}>{stuff.name}</div>
+                                    <div className={styles.stuffColor}>{stuff.color}</div>
+                                    <div className={styles.stuffPrice}>${stuff.price}</div>
                                 </div>
                             </div>
                             <div className={styles.cardButtons}>
-                                <button 
+                                <button
                                     onClick={() => dispatch(inOrder(stuff))}
-                                    className={select.find(x => x._id === stuff._id) ? 
-                                        `${styles.cartButton} ${styles.ordered}` :
-                                        `${styles.cartButton}`
+                                    className={
+                                        select.find((x) => x._id === stuff._id)
+                                            ? `${styles.cartButton} ${styles.ordered}`
+                                            : `${styles.cartButton}`
                                     }
                                 >
                                     <BsCart />
                                 </button>
-                                {user?.id && <button
-                                    className={user.likes?.find(x => x._id === stuff._id) ? 
-                                        `${styles.cartButton} ${styles.liked}`
-                                        : `${styles.cartButton}`
-                                    }
-                                    onClick={() => hendleLike(stuff._id)}
-                                >
-                                    <AiFillHeart />
-                                </button>}
+                                {user?.id && (
+                                    <button
+                                        className={
+                                            user.likes?.find((x) => x._id === stuff._id)
+                                                ? `${styles.cartButton} ${styles.liked}`
+                                                : `${styles.cartButton}`
+                                        }
+                                        onClick={() => handleLike(stuff._id)}
+                                    >
+                                        <AiFillHeart />
+                                    </button>
+                                )}
                             </div>
                         </div>
-                    )) : <div className={styles.errorWrapper}>Error</div>
-                }
+                    ))
+                ) : (
+                    <div className={styles.errorWrapper}>Error</div>
+                )}
             </div>
         </>
     );

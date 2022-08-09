@@ -10,6 +10,7 @@
     flex-wrap: wrap;
 
     @include media.mobileS {
+        margin: 0;
         padding: 5px;
         width: 100%;
     }
@@ -19,6 +20,10 @@
         flex-direction: column;
         align-items: center;
         font-size: 28px;
+
+        @include media.mobileS {
+            font-size: 16px;
+        }
     }
 
     .productCard {
@@ -116,3 +121,5 @@
         box-shadow: 0 0 3px gray;
     }
 }
+
+

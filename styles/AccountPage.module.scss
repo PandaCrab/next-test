@@ -352,10 +352,8 @@
 
         .subInfoWrapper {
             width: 250px;
-            max-height: 600px;
             display: flex;
             flex-direction: column;
-            overflow-y: scroll;
 
             @include media.mobileS {
                 width: 100%;
@@ -379,6 +377,12 @@
                     flex-direction: column;
                     align-items: center;
                     border: 1px solid #bbbbbb;
+                    max-height: 600px;
+                    overflow-y: scroll;
+
+                    @include media.mobileS {
+                        max-height: 250px;
+                    }
 
                     .items{
                         margin-bottom: 10px;
@@ -389,6 +393,9 @@
                         .imageWrapper {
                             width: 80%;
 
+                            @include media.mobileS {
+                                width: 100px;
+                            }
                         }
                     }
                 }

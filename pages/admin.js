@@ -332,8 +332,8 @@ const AdminPage = () => {
                                                     <Image
                                                         src={product.imgUrl}
                                                         alt={product.name}
-                                                        width="80px"
-                                                        height="70px"
+                                                        width={product.width ? `${product.width}px` : '50px'}
+                                                        height={product.height ? `${product.height}px` : '80px'}
                                                     />
                                                 </div>
                                                 <div className={styles.rowItems}>{product.name}</div>
@@ -384,12 +384,6 @@ const AdminPage = () => {
                                     <div className={styles.updateContainer}>
                                         <div className={styles.formContainer}>
                                             <div className={styles.imageFormWrapper}>
-                                                <Image
-                                                    src={inUpdate.updateItem.imgUrl}
-                                                    alt={inUpdate.updateItem.name}
-                                                    width="200ox"
-                                                    height="180px"
-                                                />
                                                 <div className={styles.updateForm}>
                                                     <label>Name</label>
                                                     <input

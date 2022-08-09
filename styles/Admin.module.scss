@@ -282,7 +282,7 @@
 
             .formContainer {
                 padding: 12px;
-                width: 80%;
+                width: 90%;
                 background: white;
                 display: flex;
                 flex-direction: column;
@@ -312,6 +312,12 @@
                             width: 300px;
                             border: 1px solid #bbbbbb;
                             border-radius: 5px;
+
+                            @include media.mobileS {
+                                padding: 3px 6px;
+                                width: 250px;
+                                font-size: 12px;
+                            }
                         }
                     }
                 }
@@ -345,9 +351,13 @@
             padding: 12px;
             min-height: 50px;
             max-height: 500px;
-            min-width: 725px;
             position: absolute;
             overflow-y: auto;
+
+            @include media.mobileS {
+                padding: 6px;
+                overflow-y: scroll;
+            }
 
             .productRow {
                 margin-bottom: 15px;
@@ -358,13 +368,29 @@
                 border: 1px solid #bbbbbb;
                 border-radius: 5px;
 
+                @include media.mobileS {
+                    margin-bottom: 5px;
+                    max-width: 296px;
+                    min-width: 296px;
+                    font-size: 8px;
+                }
+
                 &.header {
-                    height: 40px;
+                    height: 50px;
                     display: flex;
                     align-items: center;
+
+                    @include media.mobileS {
+                        height: 20px;
+                    }
+                }
+
+                .imageWrapper {
+                    width: 60px;
                 }
 
                 .rowItems {
+                    padding: 3px;
                     width: 120px;
                     height: inherit;
                     display: flex;
@@ -373,8 +399,13 @@
                     border-right: 1px solid #bbbbbb;
 
                     &.header {
+                        width: 54px;
                         &:first-child {
                             margin-left: 80px;
+
+                            @include media.mobileS {
+                                margin-left: 25px;
+                            }
                         }
                     }
 
@@ -395,6 +426,13 @@
                     background: none;
                     border: 1px solid;
                     border-radius: 50%;
+
+                    @include media.mobileS {
+                        padding: 2px;
+                        width: auto;
+                        height: auto;
+                        font-size: 10px;
+                    }
 
                     &:hover {
                         box-shadow: 0 0 10px gray;
