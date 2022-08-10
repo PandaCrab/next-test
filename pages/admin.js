@@ -460,28 +460,32 @@ const AdminPage = () => {
                                     </div>
                                 ) : null}
                                 {deleteItem.onSubmit && (
-                                    <div className={styles.agreeItemDeletion}>
-                                        <div>Are You agree to delete {deleteItem.item.name} </div>
-                                        <div className={styles.updateBtnWrapper}>
-                                            <button
-                                                onClick={deleteFromStorage({
-                                                    _id: deleteItem.item.id,
-                                                })}
-                                                className={styles.saveBtn}
-                                            >
-                                                Yes
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    setDeleteItem({
-                                                        item: null,
-                                                        onSubmit: false,
-                                                    })
-                                                }
-                                                className={styles.saveBtn}
-                                            >
-                                                No
-                                            </button>
+                                    <div className={styles.deletionContainer}>
+                                        <div className={styles.agreeItemDeletion}>
+                                            <div>Are You agree to delete {deleteItem.item.name} </div>
+                                            <div className={styles.updateBtnWrapper}>
+                                                <button
+                                                    onClick={() =>
+                                                        deleteFromStorage({
+                                                            _id: deleteItem.item.id,
+                                                        })
+                                                    }
+                                                    className={styles.deletionBtn}
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        setDeleteItem({
+                                                            item: null,
+                                                            onSubmit: false,
+                                                        })
+                                                    }
+                                                    className={styles.deletionBtn}
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
