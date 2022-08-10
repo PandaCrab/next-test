@@ -17,6 +17,10 @@ import styles from '../styles/Admin.module.scss';
 const AdminPage = () => {
     const [show, setShow] = useState('addProduct');
     const [productPriview, setPreview] = useState(false);
+    const [deleteItem, setDeleteItem] = useState({
+        item: null,
+        onSubmit: false,
+    });
     const [inUpdate, setUpdate] = useState({
         updating: false,
         updateItem: {
@@ -53,6 +57,11 @@ const AdminPage = () => {
         if (res.ok) {
             dispatch(catchWarning(message));
             takeProducts();
+
+            setDeleteItem({
+                item: null,
+                onSubmit: false,
+            });
         }
     };
 
@@ -69,7 +78,10 @@ const AdminPage = () => {
                 width: '',
                 height: '',
             });
-            setPreview(false);
+
+            if (size.width < 767) {
+                setPreview(false);
+            }
 
             dispatch(catchSuccess(message));
         }
@@ -285,14 +297,16 @@ const AdminPage = () => {
                                     }}
                                 >
                                     <div className={styles.productCard} key={addProduct.id}>
-                                        <div
-                                            onClick={() => {
-                                                setPreview(false);
-                                            }}
-                                            className={styles.closeBtn}
-                                        >
-                                            <RiCloseLine />
-                                        </div>
+                                        {size.width < 767 && (
+                                            <div
+                                                onClick={() => {
+                                                    setPreview(false);
+                                                }}
+                                                className={styles.closeBtn}
+                                            >
+                                                <RiCloseLine />
+                                            </div>
+                                        )}
                                         <div className={styles.cardContentWrapper}>
                                             {addProduct.imgUrl && (
                                                 <Image
@@ -346,8 +360,12 @@ const AdminPage = () => {
                                                     <button
                                                         className={`${styles.rowBtn} ${styles.delete}`}
                                                         onClick={() =>
-                                                            deleteFromStorage({
-                                                                _id: product._id,
+                                                            setDeleteItem({
+                                                                item: {
+                                                                    id: product._id,
+                                                                    name: product.name,
+                                                                },
+                                                                onSubmit: true,
                                                             })
                                                         }
                                                     >
@@ -441,6 +459,32 @@ const AdminPage = () => {
                                         </div>
                                     </div>
                                 ) : null}
+                                {deleteItem.onSubmit && (
+                                    <div className={styles.agreeItemDeletion}>
+                                        <div>Are You agree to delete {deleteItem.item.name} </div>
+                                        <div className={styles.updateBtnWrapper}>
+                                            <button
+                                                onClick={deleteFromStorage({
+                                                    _id: deleteItem.item.id,
+                                                })}
+                                                className={styles.saveBtn}
+                                            >
+                                                Yes
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    setDeleteItem({
+                                                        item: null,
+                                                        onSubmit: false,
+                                                    })
+                                                }
+                                                className={styles.saveBtn}
+                                            >
+                                                No
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ) : null}
                     </div>

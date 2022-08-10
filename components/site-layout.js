@@ -120,6 +120,7 @@ const SiteLayout = ({ children }) => {
     return (
         <div className="layout">
             <PopupAlert />
+            <div />
             <div className={styles.header}>
                 <div className={styles.menuWrapper}>
                     <div onClick={() => setMenuDropdown(!menuDropdown)} className={styles.menuBtn}>

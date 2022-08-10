@@ -28,6 +28,10 @@
         width: 100%;
     }
 
+    @include media.tablet {
+        width: 700px;
+    }
+
     .logFormWrapper {
         width: 100%;
         height: 100%;
@@ -76,21 +80,26 @@
     }
 
     .adminPanelHeader {
+        margin-bottom: 20px;
         padding: 12px;
         padding-bottom: 0;
-        margin-bottom: 20px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: space-around;
-        height: 50px;
         font-size: 18px;
         font-weight: bold;
         border-bottom: 1px solid #bbbbbb;
 
         @include media.mobileS {
             padding: 6px;
-            font-size: 12px;
             justify-content: space-between;
+            font-size: 12px;
+        }
+
+        @include media.tablet {
+            justify-content: space-around;
+            font-size: 14px;
         }
 
         .menuButton {
@@ -112,6 +121,10 @@
         @include media.mobileS {
             padding: 0;
             width: 100%;
+        }
+
+        @include media.tablet {
+            width: 700px;
         }
 
         .formWrapper {
@@ -180,6 +193,11 @@
                 position: absolute;
             }
 
+            @include media.tablet {
+                position: relative;
+                width: 350px;
+            }
+
             .closeBtn {
                 width: 20px;
                 height: 20px;
@@ -192,10 +210,9 @@
 
             .productCard {
                 padding: 10px;
+                margin: 0 20px;
                 width: 350px;
                 height: 250px;
-                max-height: 250px;
-                margin: 0 0 20px 20px;
                 background: white;
                 border: 1px solid #bbbbbb;
                 border-radius: 5px;
@@ -206,6 +223,16 @@
                     width: 300px;
                     position: absolute;
                     top: -200px;
+                }
+
+                @include media.tablet {
+                    width: 350px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    position: relative;
+                    top: 0;
                 }
 
                 .cardContentWrapper {
@@ -234,8 +261,11 @@
                     display: flex;
                     justify-content: flex-end;
                     border-top: 1px solid #bbbbbb;
-                    position: absolute;
                     bottom: 25px;
+
+                    @include media.mobileS {
+                        padding: 5px;
+                    }
 
                     .cartButton {
                         width: 35px;
@@ -243,6 +273,15 @@
                         background: none;
                         border: 1px solid #bbb;
                         border-radius: 50%;
+
+                        @include media.tablet {
+                            width: 25px;
+                            height: 25px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 14px;
+                        }
                     }
                 }
             }
@@ -268,6 +307,13 @@
             max-height: 400px;
         }
 
+        @include media.tablet {
+            min-width: 695px;
+            max-width: 695px;
+            min-height: 500px;
+            max-height: 500px;
+        }
+
         .updateContainer {
             width: 100%;
             height: 100%;
@@ -288,12 +334,16 @@
                 flex-direction: column;
                 align-items: center;
 
+                @include media.tablet {
+                    width: 60%;
+                }
+
                 .imageFormWrapper {
-                    margin: 50px;
+                    padding: 12px;
                     width: 100%;
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: center;
 
                     .updateForm {
                         display: flex;
@@ -317,6 +367,12 @@
                                 padding: 3px 6px;
                                 width: 250px;
                                 font-size: 12px;
+                            }
+
+                            @include media.tablet {
+                                padding: 6px 12px;
+                                width: 350px;
+                                font-size: 14px;
                             }
                         }
                     }
@@ -372,7 +428,14 @@
                     margin-bottom: 5px;
                     max-width: 296px;
                     min-width: 296px;
-                    font-size: 8px;
+                    font-size: 10px;
+                }
+
+                @include media.tablet {
+                    margin-bottom: 10px;
+                    min-width: 680px;
+                    max-width: 680px;
+                    font-size: 14px;
                 }
 
                 &.header {
@@ -382,6 +445,10 @@
 
                     @include media.mobileS {
                         height: 20px;
+                    }
+
+                    @include media.tablet {
+                        height: 50px;
                     }
                 }
 
@@ -400,11 +467,20 @@
 
                     &.header {
                         width: 54px;
+
+                        @include media.tablet {
+                            width: 120px;
+                        }
+
                         &:first-child {
                             margin-left: 80px;
 
                             @include media.mobileS {
                                 margin-left: 25px;
+                            }
+
+                            @include media.tablet {
+                                margin-left: 60px;
                             }
                         }
                     }
@@ -422,7 +498,6 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 40px;
                     background: none;
                     border: 1px solid;
                     border-radius: 50%;
@@ -432,6 +507,11 @@
                         width: auto;
                         height: auto;
                         font-size: 10px;
+                    }
+
+                    @include media.tablet {
+                        padding: 5px;
+                        font-size: 15px;
                     }
 
                     &:hover {

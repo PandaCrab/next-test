@@ -5,7 +5,12 @@
 
     @include media.mobileS {
         padding: 5px;
-        font-size: 10px;
+        font-size: 12px;
+    }
+
+    @include media.tablet {
+        padding: 10px;
+        font-size: 16px;
     }
 
     .ordersWrapper {
@@ -40,12 +45,20 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-
             }
 
             .orderItems {
                 margin: 0;
+                width: 250px;
                 list-style: none;
+
+                @include media.mobileS {
+                    width: 200px;
+                }
+
+                @include media.tablet {
+                    width: 250px;
+                }
 
                 li {
                     padding-left: 5px;

@@ -77,14 +77,17 @@ const Shop = () => {
 
     useEffect(() => {
         setLoading({
+            ...isLoading,
             status: true,
         });
 
         data$ &&
             data$.subscribe({
                 next: (result) => {
-                    setStuffs(result);
-                    dispatch(storeStuff(result.data));
+                    if (result) {
+                        setStuffs(result);
+                        dispatch(storeStuff(result.data));
+                    }
                 },
                 complete: () => {
                     setLoading({ status: false, loader: null });

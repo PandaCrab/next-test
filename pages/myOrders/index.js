@@ -50,10 +50,15 @@ const UserOrdersPage = () => {
                                     onClick={() => router.push(`/myOrders/${order.orderId}`)}
                                 >
                                     <div className={styles.statusSection}>
-                                        <div>Status: {order.status || 'Unknown'}</div>
-                                        <div>Order №{order.orderId}</div>
                                         <div>
-                                            {`Shipping address: 
+                                            <b>Status:</b> {order.status || 'Unknown'}
+                                        </div>
+                                        <div>
+                                            <b>Order:</b> №{order.orderId}
+                                        </div>
+                                        <div>
+                                            <b>Shipping address:</b> <br />
+                                            {` 
                                         ${order.shippingInfo.street}, 
                                         ${order.shippingInfo.city}, 
                                         ${order.shippingInfo.country}`}
