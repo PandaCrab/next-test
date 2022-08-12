@@ -58,20 +58,31 @@
             margin: 10px 0;
             margin-right: 10px;
             padding: 0;
-            height: 150px;
             width: 200px;
+            height: 150px;
             font-size: 12px;
+        }
+
+        @include media.laptop {
+            margin-right: 25px;
+            padding: 5px;
+            width: 250px;
+            height: 200px
         }
 
         .imageWrapper {
             width: 150px;
             height: 100px;
+
+            @include media.laptop {
+                width: 160px;
+                height: 130px;
+            }
         }
 
         .cardContentWrapper {
             padding-bottom: 10px;
             display: flex;
-            border-bottom: 1px solid #bbb;
             cursor: pointer;
 
             @include media.mobileS {
@@ -104,6 +115,7 @@
             height: 40px;
             display: flex;
             justify-content: flex-end;
+            border-top: 1px solid #bbbbbb;
 
             .cartButton {
                 margin-right: 5px;
@@ -117,6 +129,11 @@
                 border: 1px solid #bbb;
                 border-radius: 50%;
                 z-index: 10;
+
+                @include media.laptop {
+                    width: 30px;
+                    height: 30px;
+                }
 
                 &:hover {
                     box-shadow: 0 0 6px gray;

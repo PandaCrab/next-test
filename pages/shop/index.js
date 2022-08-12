@@ -24,8 +24,8 @@ const Shop = () => {
         loader: null,
     });
 
-    const select = useSelector((state) => state.order.clientOrder);
     const user = useSelector((state) => state.user.info);
+    const clientOrder = useSelector((state) => state.order.clientOrder);
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -36,6 +36,25 @@ const Shop = () => {
         const info = await getUserInfo(user.id);
 
         dispatch(getInfo(info));
+    };
+
+    const pushToOrder = (stuff) => {
+        const idInOrder = clientOrder.length;
+        const { _id, name, price, imgUrl, color, quantity, width, height } = stuff;
+
+        dispatch(
+            inOrder({
+                id: idInOrder,
+                _id,
+                name,
+                price,
+                imgUrl,
+                color,
+                quantity,
+                width,
+                height,
+            })
+        );
     };
 
     const handleLike = async (stuffId) => {
@@ -124,9 +143,9 @@ const Shop = () => {
                             </div>
                             <div className={styles.cardButtons}>
                                 <button
-                                    onClick={() => dispatch(inOrder(stuff))}
+                                    onClick={() => pushToOrder(stuff)}
                                     className={
-                                        select.find((x) => x._id === stuff._id)
+                                        clientOrder.find((x) => x._id === stuff._id)
                                             ? `${styles.cartButton} ${styles.ordered}`
                                             : `${styles.cartButton}`
                                     }

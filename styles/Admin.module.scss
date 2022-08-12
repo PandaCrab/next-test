@@ -54,6 +54,11 @@
             font-size: 14px;
         }
 
+        @include media.laptop {
+            padding: 0 30px;
+            font-size: 24px;
+        }
+
         .homeBtn {
             padding: 4px 8px;
             width: 70px;
@@ -65,6 +70,10 @@
                 padding: 3px 6px;
                 width: auto;
                 font-size: 12px;
+            }
+
+            @include media.laptop {
+                font-size: 16px;
             }
 
             &:hover {
@@ -102,11 +111,24 @@
             font-size: 14px;
         }
 
+        @include media.laptop {
+            padding: 12px;
+            padding-bottom: 0px;
+            justify-content: space-around;
+            font-size: 18px;
+        }
+
         .menuButton {
             padding: 5px;
             border: 1px solid #bbbbbb;
             border-radius: 5px;
             cursor: pointer;
+
+            @include media.laptop {
+                margin-bottom: -5px;
+                border-bottom: none;
+                border-radius: 5px 5px 0 0;
+            }
         }
     }
 
@@ -142,12 +164,29 @@
 
                 @include media.mobileS {
                     width: 300px;
-
-                    &:last-child {
-                        margin-bottom: 20px;
-                    }
                 }
 
+                @include media.laptop {
+                    width: 500px;
+                }
+
+                &.description {
+                    padding: 6px;
+                    height: 150px;
+                    resize: none;
+                }
+            }
+
+            .row {
+                padding: 4px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .addProductInput {
+                    width: 240px;
+                }
             }
 
             .previewBtn {
@@ -168,8 +207,14 @@
                 border-radius: 5px;
 
                 @include media.mobileS {
+                    margin-top: 20px;
                     padding: 5px 10px;
                     width: auto;
+                }
+
+                @include media.laptop {
+                    padding: 10px 5px;
+                    width: 200px;
                 }
 
                 &:hover {
@@ -194,6 +239,11 @@
             }
 
             @include media.tablet {
+                position: relative;
+                width: 350px;
+            }
+
+            @include media.laptop {
                 position: relative;
                 width: 350px;
             }
@@ -235,6 +285,16 @@
                     top: 0;
                 }
 
+                @include media.laptop {
+                    width: 350px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    position: relative;
+                    top: 0;
+                }
+
                 .cardContentWrapper {
                     padding-bottom: 10px;
                     display: flex;
@@ -267,6 +327,12 @@
                         padding: 5px;
                     }
 
+                    @include media.laptop {
+                        width: 100%;
+                        height: auto;
+                        padding: 5px;
+                    }
+
                     .cartButton {
                         width: 35px;
                         height: 35px;
@@ -281,6 +347,15 @@
                             align-items: center;
                             justify-content: center;
                             font-size: 14px;
+                        }
+
+                        @include media.tablet {
+                            width: 35px;
+                            height: 35px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 18px;
                         }
                     }
                 }
@@ -310,6 +385,13 @@
         @include media.tablet {
             min-width: 695px;
             max-width: 695px;
+            min-height: 500px;
+            max-height: 500px;
+        }
+        
+        @include media.laptop {
+            min-width: 725px;
+            max-width: 725px;
             min-height: 500px;
             max-height: 500px;
         }
@@ -374,6 +456,10 @@
                     width: 60%;
                 }
 
+                @include media.laptop {
+                    width: 70%;
+                }
+
                 .imageFormWrapper {
                     padding: 12px;
                     width: 100%;
@@ -409,6 +495,12 @@
                                 padding: 6px 12px;
                                 width: 350px;
                                 font-size: 14px;
+                            }
+
+                            @include media.laptop {
+                                padding: 6px 12px;
+                                width: 400px;
+                                font-size: 16px;
                             }
                         }
                     }
@@ -474,6 +566,13 @@
                     font-size: 14px;
                 }
 
+                @include media.laptop {
+                    margin-bottom: 15px;
+                    min-width: 710px;
+                    max-width: 710px;
+                    font-size: 16px;
+                }
+
                 &.header {
                     height: 50px;
                     display: flex;
@@ -484,6 +583,10 @@
                     }
 
                     @include media.tablet {
+                        height: 50px;
+                    }
+
+                    @include media.laptop {
                         height: 50px;
                     }
                 }
@@ -501,11 +604,19 @@
                     align-items: center;
                     border-right: 1px solid #bbbbbb;
 
+                    @include media.laptop {
+                        width: 140px;
+                    }
+
                     &.header {
                         width: 54px;
 
                         @include media.tablet {
                             width: 120px;
+                        }
+
+                        @include media.laptop {
+                            width: 130px
                         }
 
                         &:first-child {
@@ -517,6 +628,10 @@
 
                             @include media.tablet {
                                 margin-left: 60px;
+                            }
+
+                            @include media.laptop {
+                                margin-left: 56px;
                             }
                         }
                     }
@@ -548,6 +663,11 @@
                     @include media.tablet {
                         padding: 5px;
                         font-size: 15px;
+                    }
+
+                    @include media.laptop {
+                        padding: 5px;
+                        font-size: 20px;
                     }
 
                     &:hover {

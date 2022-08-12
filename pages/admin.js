@@ -247,29 +247,47 @@ const AdminPage = () => {
                                             })
                                         }
                                     />
-                                    <input
-                                        id="width"
-                                        className={styles.addProductInput}
-                                        name="width"
-                                        placeholder="Enter width of product image"
-                                        value={addProduct.width}
+                                    <div className={styles.row}>
+                                        <input
+                                            id="width"
+                                            className={styles.addProductInput}
+                                            name="width"
+                                            placeholder="Enter width of product image"
+                                            value={addProduct.width}
+                                            onChange={({ target }) =>
+                                                setProduct({
+                                                    ...addProduct,
+                                                    width: target.value,
+                                                })
+                                            }
+                                        />
+                                        <input
+                                            id="height"
+                                            className={styles.addProductInput}
+                                            name="height"
+                                            placeholder="Enter height of product image"
+                                            value={addProduct.height}
+                                            onChange={({ target }) =>
+                                                setProduct({
+                                                    ...addProduct,
+                                                    height: target.value,
+                                                })
+                                            }
+                                        />
+                                    </div>
+                                    <textarea
+                                        type="textarea"
+                                        id="description"
+                                        className={`${styles.addProductInput} ${styles.description}`}
+                                        name="description"
+                                        rows="20"
+                                        cols="200"
+                                        placeholder="Add description (optional)"
+                                        value={addProduct.description}
                                         onChange={({ target }) =>
                                             setProduct({
                                                 ...addProduct,
-                                                width: target.value,
-                                            })
-                                        }
-                                    />
-                                    <input
-                                        id="height"
-                                        className={styles.addProductInput}
-                                        name="height"
-                                        placeholder="Enter height of product image"
-                                        value={addProduct.height}
-                                        onChange={({ target }) =>
-                                            setProduct({
-                                                ...addProduct,
-                                                height: target.value,
+                                                description: target.value,
                                             })
                                         }
                                     />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import { HiArrowNarrowLeft } from 'react-icons/hi';
 import Image from 'next/image';
 
 import { getUserOrder } from '../api/api';
@@ -46,6 +47,9 @@ const UserOrder = () => {
             {loged ? (
                 order ? (
                     <>
+                        <div onClick={() => router.back()} className={styles.backBtn}>
+                            <HiArrowNarrowLeft />
+                        </div>
                         <div className={styles.orderedTimeWrapper}>
                             <b>{new Date(order.date).toDateString()}</b>
                             <b>{new Date(order.date).toLocaleTimeString()}</b>

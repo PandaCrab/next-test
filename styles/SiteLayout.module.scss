@@ -20,9 +20,18 @@
         font-size: 12px;
     }
 
+    @include media.laptop {
+        height: 70px;
+        font-size: 16px;
+    }
+
     .menuWrapper {
         display: flex;
         position: relative;
+
+        @include media.laptop {
+            display: none;
+        }
 
         .menuBtn {
             width: 30px;
@@ -71,6 +80,10 @@
                 display: none;
             }
 
+            @include media.laptop {
+                display: flex;
+            }
+
             &:hover {
                 color: blue;
             }
@@ -78,28 +91,32 @@
 
         .logoNameWrapper {
             display: flex;
-            font-size: 20px;
+            align-items: center;
             font-weight: bold;
             margin-right: 25px;
-
-            @include media.mobileS {
+            
+            .siteName {
                 font-size: 14px;
 
-                .siteName {
-                    font-size: 14px;
+                @include media.laptop {
+                    font-size: 24px;
                 }
             }
 
             .logo {
                 content: url('../public/panda-logo-poly.png');
+                margin-right: 10px;
                 width: 30px;
                 height: 30px;
-                position: absolute;
-                top: px;
-                left: 50%;
 
                 @include media.mobileS {
                     display: none;
+                }
+
+                @include media.laptop {
+                    display: flex;
+                    width: 50px;
+                    height: 50px;
                 }
             }
         }
@@ -111,6 +128,10 @@
         align-items: center;
         justify-content: space-around;
 
+        @include media.laptop {
+            font-size: 20px;
+        }
+
         .profile {
             margin-right: 20px;
             width: auto;
@@ -118,6 +139,10 @@
 
             @include media.mobileS {
                 margin-right: 5px;
+            }
+
+            @include media.laptop {
+                margin-left:  15px;
             }
 
             .accountBtn {
@@ -132,6 +157,10 @@
                 @include media.mobileS {
                     margin-left: 5px;
                 }
+
+                @include media.laptop {
+                    font-size: 32px;
+                }
             }
 
             .dropdown {
@@ -144,6 +173,7 @@
                 background: white;
                 border: 1px solid;
                 border-radius: 5px;
+                box-shadow: 0 0 5px gray;
                 position: absolute;
                 top: 45px;
                 right: -30px;
@@ -155,6 +185,14 @@
                     right: 0;
                 }
 
+                @include media.laptop {
+                    padding: 12px;
+                    width: 250px;
+                    font-size: 20px;
+                    top: 40px;
+                    right: -10px;
+                }
+
                 .greeting {
                     margin-bottom: 10px;
                     font-size: 18px;
@@ -162,6 +200,11 @@
                     @include media.mobileS {
                         margin-bottom: 5px;
                         font-size: 14px;
+                    }
+
+                    @include media.laptop {
+                        margin-bottom: 10px;
+                        font-size: 18px;
                     }
                 }
 
@@ -172,6 +215,10 @@
 
                     @include media.mobileS {
                         font-size: 12px;
+                    }
+
+                    @include media.laptop {
+                        font-size: 16px;
                     }
 
                     &:hover {
@@ -191,6 +238,10 @@
                         padding: 2px 4px;
                         width: auto;
                         font-size: 12px;
+                    }
+
+                    @include media.laptop {
+                        font-size: 16px;
                     }
 
                     &:hover {
@@ -222,6 +273,12 @@
                             padding: 2px 4px;
                             font-size: 12px;
                         }
+
+                        @include media.laptop {
+                            margin-bottom: 15px;
+                            padding: 4px 8px;
+                            font-size: 18px;
+                        }
                     }
 
                     .dropdownBtnWrapper {
@@ -236,8 +293,15 @@
 }
 
 .main {
-    margin-top: 50px;
-    margin-bottom: 20px;
+    margin-top: 90px;
+
+    @include media.mobileS {
+        margin: 40px 0;
+    }
+
+    @include media.laptop {
+        margin: 90px 0;
+    }
 }
 
 .footer {
@@ -255,5 +319,11 @@
     @include media.mobileS {
         height: 50px;
         font-size: 12px;
+    }
+
+    @include media.laptop {
+        height: 100px;
+        font-size: 18px;
+        font-weight: bold;
     }
   }

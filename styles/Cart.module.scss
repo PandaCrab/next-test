@@ -14,6 +14,11 @@
         height: 20px;
         display: flex;
         align-items: center;
+
+        @include media.laptop {
+            width: 30px;
+            height: 30px;
+        }
     }
     
     .badge {
@@ -35,6 +40,14 @@
             height: 12px;
             top: 4px;
             right: 7px;
+        }
+
+        @include media.laptop {
+            width: 17px;
+            height: 17px;
+            font-size: 12px;
+            top: 0;
+            right: 4px;
         }
     }
 }
