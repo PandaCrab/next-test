@@ -34,6 +34,10 @@
         @include media.mobileS {
             font-size: 14px;
         }
+
+        @include media.laptop {
+            font-size: 16px;
+        }
     }
 
     .orderWrapper {
@@ -60,6 +64,12 @@
                 font-size: 18px;
                 line-height: 32px;
             }
+
+            @include media.laptop {
+                margin: 0 30px;
+                font-size: 24px;
+                line-height: 38px;
+            }
         }
 
         .productsList {
@@ -78,7 +88,12 @@
 
             @include media.tablet {
                 width: 250px;
-                max-width: 400px;
+                max-height: 400px;
+            }
+
+            @include media.laptop {
+                width: 300px;
+                max-height: 500px;
             }
 
             .productCard {
@@ -108,8 +123,17 @@
                     height: 300px;
                 }
 
+                @include media.laptop {
+                    padding: 10px;
+                    width: 250px;
+                    height: 300px;
+                }
+
                 .imageWrapper {
                     width: 150px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     @include media.mobileS {
                         width: 50px;
@@ -117,6 +141,10 @@
 
                     @include media.tablet {
                         width: 80px;
+                    }
+
+                    @include media.laptop {
+                        width: 150px;
                     }
                 }
 
@@ -130,6 +158,10 @@
                     @include media.mobileS {
                         padding: 0;
                         width: auto;
+                    }
+
+                    @include media.laptop {
+                        font-size: 16px;
                     }
 
                     .productTitle {

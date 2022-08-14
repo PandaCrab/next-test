@@ -13,6 +13,11 @@
         font-size: 16px;
     }
 
+    @include media.laptop {
+        padding: 10px;
+        font-size: 18px;
+    }
+
     .ordersWrapper {
         margin-bottom: 15px;
         display: flex;
@@ -30,6 +35,11 @@
             @include media.mobileS {
                 padding: 6px;
                 width: 100%;
+            }
+
+            @include media.laptop {
+                padding: 12px;
+                width: 750px;
             }
 
             &:hover {
@@ -52,12 +62,17 @@
                 width: 250px;
                 list-style: none;
 
+
                 @include media.mobileS {
                     width: 200px;
                 }
 
                 @include media.tablet {
                     width: 250px;
+                }
+
+                @include media.laptop {
+                    width: auto;
                 }
 
                 li {

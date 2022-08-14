@@ -33,6 +33,14 @@
             top: 80px;
             right: 15px;
         }
+
+        @include media.laptop {
+            font-size: 18px;
+            align-self: flex-end;
+            position: relative;
+            top: 0;
+            right: 0;
+        }
     }
 
     .infoWrapper {
@@ -49,6 +57,13 @@
             width: 100%;
             font-size: 12px;
             line-height: normal;
+        }
+
+        @include media.laptop {
+            padding: 20px;
+            width: 700px;
+            font-size: 18px;
+            line-height: 24px;
         }
 
         .mainInfo {

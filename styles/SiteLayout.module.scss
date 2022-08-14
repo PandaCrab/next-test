@@ -25,6 +25,15 @@
         font-size: 16px;
     }
 
+    @include media.laptopL {
+        height: 100px;
+        font-size: 18px;
+    }
+
+    @include media.desktop {
+        width: 1700px;
+    }
+
     .menuWrapper {
         display: flex;
         position: relative;
@@ -84,8 +93,20 @@
                 display: flex;
             }
 
+            @include media.laptopL {
+                font-size: 20px;
+            }
+
             &:hover {
                 color: blue;
+            }
+
+            &::before {
+                color: black;
+            }
+
+            &::after {
+                color: blueviolet;
             }
         }
 
@@ -100,6 +121,10 @@
 
                 @include media.laptop {
                     font-size: 24px;
+                }
+
+                @include media.laptopL {
+                    font-size: 32px;
                 }
             }
 
@@ -117,6 +142,11 @@
                     display: flex;
                     width: 50px;
                     height: 50px;
+                }
+
+                @include media.laptopL {
+                    width: 80px;
+                    height: 80px;
                 }
             }
         }
@@ -161,6 +191,10 @@
                 @include media.laptop {
                     font-size: 32px;
                 }
+
+                @include media.laptopL {
+                    font-size: 46px;
+                }
             }
 
             .dropdown {
@@ -193,6 +227,12 @@
                     right: -10px;
                 }
 
+                @include media.laptopL {
+                    width: 350px;
+                    top: 60px;
+                    right: -10px;
+                }
+
                 .greeting {
                     margin-bottom: 10px;
                     font-size: 18px;
@@ -205,6 +245,10 @@
                     @include media.laptop {
                         margin-bottom: 10px;
                         font-size: 18px;
+                    }
+
+                    @include media.laptopL {
+                        font-size: 24px;
                     }
                 }
 
@@ -219,6 +263,10 @@
 
                     @include media.laptop {
                         font-size: 16px;
+                    }
+
+                    @include media.laptopL {
+                        font-size: 24px;
                     }
 
                     &:hover {
@@ -242,6 +290,11 @@
 
                     @include media.laptop {
                         font-size: 16px;
+                    }
+
+                    @include media.laptopL {
+                        margin-top: 15px;
+                        font-size: 20px;
                     }
 
                     &:hover {
@@ -279,6 +332,11 @@
                             padding: 4px 8px;
                             font-size: 18px;
                         }
+
+                        @include media.laptopL {
+                            padding: 6px 12px;
+                            font-size: 24px;
+                        }
                     }
 
                     .dropdownBtnWrapper {
@@ -296,11 +354,17 @@
     margin-top: 90px;
 
     @include media.mobileS {
-        margin: 40px 0;
+        margin: 50px 0;
     }
 
     @include media.laptop {
-        margin: 90px 0;
+        margin: 100px 0;
+    }
+
+    @include media.desktop {
+        margin-top: 200px;
+        margin-bottom: 100px;
+        width: 1400px;
     }
 }
 
@@ -325,5 +389,13 @@
         height: 100px;
         font-size: 18px;
         font-weight: bold;
+    }
+
+    @include media.laptopL {
+        height: 150px;
+    }
+
+    @include media.desktop {
+        width: 1700px;
     }
   }

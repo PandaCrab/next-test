@@ -6,6 +6,10 @@
     flex-direction: column;
     justify-content: center;
 
+    @include media.laptop {
+        width: 900px;
+    }
+
     .addressFormWrapper {
         padding: 30px;
         display: flex;
@@ -53,7 +57,13 @@
                     padding: 3px 6px;
                     width: 200px;
                     font-size: 12px;
+                }
 
+                @include media.laptop {
+                    margin-bottom: 10px;
+                    padding: 6px 12px;
+                    width: 350px;
+                    font-size: 18px;
                 }
 
                 &.invalid {
@@ -77,6 +87,12 @@
         @include media.mobileS {
             font-size: 12px;
             margin-left: 0;
+        }
+
+        @include media.laptop {
+            margin-top: 15px;   
+            padding: 5px 10px;
+            font-size: 16px;
         }
 
         &:hover {
@@ -139,6 +155,12 @@
                         width: 200px;
                         font-size: 12px;
                     }
+
+                    @include media.laptop {
+                        padding: 6px 12px;
+                        width: 250px;
+                        font-size: 18px;
+                    }
                 }
             }
         }
@@ -157,6 +179,10 @@
             font-size: 12px;
         }
 
+        @include media.laptop {
+            font-size: 18px;
+        }
+
         .settingsWrapper {
             margin-left: 10px; 
             position: relative;
@@ -170,6 +196,10 @@
 
                 @include media.mobileS {
                     font-size: 12px;
+                }
+                
+                @include media.laptop {
+                    font-size: 24px;
                 }
             }
 
@@ -192,6 +222,12 @@
                     padding: 6px;
                     width: 150px;
                     font-size: 12px;
+                }
+
+                @include media.laptop {
+                    padding: 12px;
+                    width: 200px;
+                    font-size: 16px;
                 }
 
                 .settingsItem {
@@ -223,11 +259,20 @@
             line-height: normal;
         }
 
+        @include media.laptop {
+            flex-direction: row;
+            font-size: 16px;
+        }
+
         .userInfoWrapper {
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+
+            @include media.laptop {
+                margin-right: 150px;
+            }
 
             .userProfileHeader {
                 margin-bottom: 20px;
@@ -246,11 +291,23 @@
                         height: 65px;
                         font-size: 55px;
                     }
+
+                    @include media.laptop {
+                        padding: 0;
+                        width: auto;
+                        height: auto;
+                        display: flex;
+                        font-size: 82px;
+                    }
                 }
             }
 
             .userAddressInfo {
-                font-size: 18px;
+                font-size: 12px;
+
+                @include media.laptop {
+                    font-size: 24px;
+                }
             }
 
             .userPhoneWrapper {
@@ -262,6 +319,10 @@
 
                 @include media.mobileS {
                     font-size: 20px;
+                }
+
+                @include media.laptop {
+                    font-size: 28px;
                 }
 
                 .phoneInput {
@@ -310,6 +371,10 @@
                     font-size: 13px;
                 }
 
+                @include media.laptop {
+                    font-size: 18px;
+                }
+
                 .descriptionOutput {
                     margin-left: 10px;
                     padding: 5px;
@@ -324,7 +389,21 @@
                     cursor: default;
 
                     @include media.mobileS {
-                        margin-left: 0;
+                        margin-left: 5;
+                        position: relative;
+                        left: -40px;
+                    }
+
+                    @include media.tablet {
+                        left: 0;
+                    }
+
+                    @include media.laptop {
+                        margin-left: 10px;
+                        width: 20px;
+                        height: 20px;
+                        font-size: 16px;
+                        position: static;
                     }
                 }
 
@@ -346,6 +425,13 @@
                         font-size: 12px;
                         top: -70px;
                     }
+
+                    @include media.laptop {
+                        padding: 12px;
+                        width: 450px;
+                        font-size: 16px;
+                        top: -90px;
+                    }
                 }
             }
         }
@@ -357,6 +443,10 @@
 
             @include media.mobileS {
                 width: 100%;
+            }
+
+            @include media.laptop {
+                width: 250px;
             }
 
             .inBucket, 
@@ -384,6 +474,10 @@
                         max-height: 250px;
                     }
 
+                    @include media.laptop {
+                        max-height: 500px;
+                    }
+
                     .items{
                         margin-bottom: 10px;
                         display: flex;
@@ -395,6 +489,10 @@
 
                             @include media.mobileS {
                                 width: 100px;
+                            }
+                            
+                            @include media.laptop {
+                                width: 80%;
                             }
                         }
                     }

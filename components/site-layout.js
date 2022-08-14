@@ -14,16 +14,16 @@ import styles from '../styles/SiteLayout.module.scss';
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState(false);
     const [menuDropdown, setMenuDropdown] = useState(false);
+    const [admin, setAdmin] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [admin, setAdmin] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const profileRef = useRef();
-
-    const user = useSelector((state) => state.user);
-    const dispatch = useDispatch();
     const router = useRouter();
+
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
 
     const setToken = (token) => {
         localStorage.setItem('token', JSON.stringify(token));
@@ -31,6 +31,7 @@ const SiteLayout = ({ children }) => {
 
     const takeUserInfo = async (id) => {
         const info = await getUserInfo(id);
+
         dispatch(getInfo(info));
     };
 
@@ -54,6 +55,7 @@ const SiteLayout = ({ children }) => {
     useEffect(() => {
         if (!user.token) {
             const token = getTokenFromStorage();
+
             if (token) {
                 dispatch(getToken(token));
                 takeUserInfo(token);
@@ -91,8 +93,6 @@ const SiteLayout = ({ children }) => {
             setErrorMessage(token.message);
             setPassword('');
         }
-
-        console.log(token);
     };
 
     const toggleDropdown = () => {
@@ -133,6 +133,11 @@ const SiteLayout = ({ children }) => {
                                     Home
                                 </a>
                             </Link>
+                            <Link href="/shop">
+                                <a onClick={() => setMenuDropdown(false)} className={styles.menuItems}>
+                                    Shop
+                                </a>
+                            </Link>
                             {admin && (
                                 <Link href="/admin">
                                     <a onClick={() => setMenuDropdown(false)} className={styles.menuItems}>
@@ -150,6 +155,9 @@ const SiteLayout = ({ children }) => {
                     </div>
                     <Link href="/">
                         <a className={styles.homeLink}>Home</a>
+                    </Link>
+                    <Link href="/shop">
+                        <a className={styles.homeLink}>Shop</a>
                     </Link>
                     {admin && (
                         <Link href="/admin">

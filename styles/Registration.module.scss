@@ -15,6 +15,11 @@
         width: 300px;
     }
 
+    @include media.laptop {
+        padding: 12px;
+        width: 500px;
+    }
+
     .regTitle {
         margin-bottom: 20px;
         font-size: 24px;
@@ -34,6 +39,11 @@
             font-size: 12px;
         }
 
+        @include media.laptop {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
         &.invalid {
             border-color: red;
             
@@ -47,12 +57,16 @@
         padding: 5px 10px;
         width: 100px;
         background: none;
-        color: #bbbbbb;
         border: 1px solid #bbbbbb;
         border-radius: 5px;
 
         @include media.mobileS {
             width: auto;
+        }
+
+        @include media.laptop {
+            margin-top: 20px;
+            font-size: 18px;
         }
 
         &:hover {

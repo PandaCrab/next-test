@@ -7,7 +7,7 @@
     justify-content: center;
     color: white;
     border-radius: 5px;
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 30;
@@ -21,6 +21,14 @@
 
     @include media.laptop {
         top: 100px;
+    }
+
+    @include media.desktop {
+        max-width: auto;
+        max-height: auto;
+        font-size: 20px;
+        top: 120px;
+        right: 150px;
     }
 
     &.success {
