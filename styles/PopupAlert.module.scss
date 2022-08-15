@@ -10,7 +10,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 30;
+    z-index: 1000;
 
     @include media.mobileS {
         max-width: 300px;
@@ -20,13 +20,17 @@
     }
 
     @include media.laptop {
+        max-width: 400px;
+        max-height: 100px;
         top: 100px;
     }
 
     @include media.desktop {
+        width: auto;
+        height: auto;
         max-width: auto;
         max-height: auto;
-        font-size: 20px;
+        font-size: 24px;
         top: 120px;
         right: 150px;
     }

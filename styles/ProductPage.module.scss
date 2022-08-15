@@ -11,6 +11,10 @@
         width: 100%;
     }
 
+    @include media.desktop {
+        font-size: 24px;
+    }
+
     .tabsWrapper {
         padding: 6px;
     }
@@ -64,6 +68,19 @@
             width: 700px;
             font-size: 18px;
             line-height: 24px;
+        }
+
+        @include media.desktop {
+            padding: 40px;
+            width: 1400px;
+            font-size: 24px;
+            line-height: 32px;
+        }
+
+        @include media.desktop {
+            .imageWrapper {
+                width: 500px;
+            }
         }
 
         .mainInfo {

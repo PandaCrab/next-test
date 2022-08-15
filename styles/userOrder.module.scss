@@ -38,6 +38,10 @@
         @include media.laptop {
             font-size: 16px;
         }
+
+        @include media.desktop {
+            font-size: 24px;
+        }
     }
 
     .orderWrapper {
@@ -96,6 +100,11 @@
                 max-height: 500px;
             }
 
+            @include media.desktop {
+                width: 600px;
+                max-height: 600px;
+            }
+
             .productCard {
                 margin: 0 0 20px 20px;
                 padding: 10px;
@@ -129,6 +138,10 @@
                     height: 300px;
                 }
 
+                @include media.desktop {
+                    width: 400px;
+                }
+
                 .imageWrapper {
                     width: 150px;
                     display: flex;
@@ -146,6 +159,10 @@
                     @include media.laptop {
                         width: 150px;
                     }
+
+                    @include media.desktop {
+                        width: 250px;
+                    }
                 }
 
                 .productInfo {
@@ -162,6 +179,10 @@
 
                     @include media.laptop {
                         font-size: 16px;
+                    }
+
+                    @include media.desktop {
+                        font-size: 24px;
                     }
 
                     .productTitle {

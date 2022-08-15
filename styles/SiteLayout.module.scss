@@ -358,7 +358,13 @@
     }
 
     @include media.laptop {
-        margin: 100px 0;
+        margin-top: 150px;
+        margin-bottom: 50px;
+    }
+
+    @include media.laptopL {
+        margin-top: 170px;
+        margin-bottom: 50px;
     }
 
     @include media.desktop {
@@ -376,7 +382,7 @@
     align-items: center;
     justify-content: center;
     background: white;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid #bbbbbb;
     position: relative;
     bottom: 0;
 

@@ -118,6 +118,11 @@
             font-size: 18px;
         }
 
+        @include media.desktop {
+            padding: 16px;
+            font-size: 24px;
+        }
+
         .menuButton {
             padding: 5px;
             border: 1px solid #bbbbbb;
@@ -128,6 +133,10 @@
                 margin-bottom: -5px;
                 border-bottom: none;
                 border-radius: 5px 5px 0 0;
+            }
+
+            @include media.desktop {
+                margin-bottom: -10px;
             }
         }
     }
@@ -149,6 +158,10 @@
             width: 700px;
         }
 
+        @include media.desktop {
+            width: 1400px;
+        }
+
         .formWrapper {
             padding: 10px;
             display: flex;
@@ -163,22 +176,36 @@
                 border-radius: 5px;
 
                 @include media.mobileS {
+                    padding: 6px 12px;
                     width: 300px;
                 }
 
                 @include media.laptop {
+                    padding: 12px 6px;
                     width: 500px;
+                }
+
+                @include media.desktop {
+                    width: 600px;
+                    font-size: 18px;
                 }
 
                 &.description {
                     padding: 6px;
                     height: 150px;
                     resize: none;
+
+                    @include media.mobileS {
+                        height: 100px;
+                    }
+
+                    @include media.laptop {
+                        height: 150px;
+                    }
                 }
             }
 
             .row {
-                padding: 4px;
                 width: 100%;
                 display: flex;
                 align-items: center;
@@ -186,6 +213,18 @@
 
                 .addProductInput {
                     width: 240px;
+
+                    @include media.mobileS {
+                        width: 140px;
+                    }
+
+                    @include media.laptop {
+                        width: 240px;
+                    }
+
+                    @include media.desktop {
+                        width: 290px;
+                    }
                 }
             }
 
@@ -248,6 +287,10 @@
                 width: 350px;
             }
 
+            @include media.desktop {
+                width: 600px;
+            }
+
             .closeBtn {
                 width: 20px;
                 height: 20px;
@@ -295,9 +338,16 @@
                     top: 0;
                 }
 
+                @include media.desktop {
+                    width: 500px;
+                    height: auto;
+                }
+
                 .cardContentWrapper {
                     padding-bottom: 10px;
+                    width: 100%;
                     display: flex;
+                    justify-content: space-between;
 
                     .cardInfo {
                         width: 200px;
@@ -396,6 +446,13 @@
             max-height: 500px;
         }
 
+        @include media.desktop {
+            min-width: 1400px;
+            max-width: 1400px;
+            min-height: 700px;
+            max-height: 700px;
+        }
+
         .deletionContainer {
             width: 100%;
             height: 100%;
@@ -419,7 +476,10 @@
                 font-size: 16px;
                 border: 1px solid #bbbbbb;
                 border-radius: 5px;
-                
+
+                @include media.desktop {
+                    font-size: 24px;
+                }                
 
                 .deletionBtn {
                     margin-top: 15px;
@@ -428,6 +488,11 @@
                     background: none;
                     border: 1px solid #bbbbbb;
                     border-radius: 5px;
+
+                    @include media.desktop {
+                        padding: 6px 12px;
+                        font-size: 24px;
+                    }
                 }
             }
         }
@@ -502,6 +567,12 @@
                                 width: 400px;
                                 font-size: 16px;
                             }
+
+                            @include media.desktop {
+                                margin-bottom: 20px;
+                                width: 500px;
+                                font-size: 24px;
+                            }
                         }
                     }
                 }
@@ -519,6 +590,11 @@
                     background: none;
                     border: 1px solid #bbbbbb;
                     border-radius: 5px;
+
+                    @include media.desktop {
+                        padding: 12px 6px;
+                        font-size: 24px;
+                    }
 
                     &:hover {
                         box-shadow: 0 0 3px;
@@ -541,6 +617,11 @@
             @include media.mobileS {
                 padding: 6px;
                 overflow-y: scroll;
+            }
+
+            @include media.desktop {
+                min-height: 700px;
+                max-height: 700px;
             }
 
             .productRow {
@@ -573,6 +654,12 @@
                     font-size: 16px;
                 }
 
+                @include media.desktop {
+                    min-width: 1380px;
+                    max-width: 1380px;
+                    font-size: 24px;
+                }
+
                 &.header {
                     height: 50px;
                     display: flex;
@@ -593,6 +680,10 @@
 
                 .imageWrapper {
                     width: 60px;
+
+                    @include media.desktop {
+                        width: 120px
+                    }
                 }
 
                 .rowItems {
@@ -608,6 +699,10 @@
                         width: 140px;
                     }
 
+                    @include media.desktop {
+                        width: 250px;
+                    }
+
                     &.header {
                         width: 54px;
 
@@ -617,6 +712,10 @@
 
                         @include media.laptop {
                             width: 130px
+                        }
+
+                        @include media.desktop {
+                            width: 250px;
                         }
 
                         &:first-child {
@@ -632,6 +731,10 @@
 
                             @include media.laptop {
                                 margin-left: 56px;
+                            }
+
+                            @include media.desktop {
+                                margin-left: 120px;
                             }
                         }
                     }
@@ -668,6 +771,11 @@
                     @include media.laptop {
                         padding: 5px;
                         font-size: 20px;
+                    }
+
+                    @include media.desktop {
+                        padding: 15px;
+                        font-size: 28px;
                     }
 
                     &:hover {
