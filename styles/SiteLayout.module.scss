@@ -25,13 +25,10 @@
         font-size: 16px;
     }
 
-    @include media.laptopL {
-        height: 100px;
-        font-size: 18px;
-    }
-
     @include media.desktop {
         width: 1700px;
+        height: 100px;
+        font-size: 18px;
     }
 
     .menuWrapper {
@@ -93,7 +90,7 @@
                 display: flex;
             }
 
-            @include media.laptopL {
+            @include media.desktop {
                 font-size: 20px;
             }
 
@@ -123,7 +120,7 @@
                     font-size: 24px;
                 }
 
-                @include media.laptopL {
+                @include media.desktop {
                     font-size: 32px;
                 }
             }
@@ -144,7 +141,7 @@
                     height: 50px;
                 }
 
-                @include media.laptopL {
+                @include media.desktop {
                     width: 80px;
                     height: 80px;
                 }
@@ -192,7 +189,7 @@
                     font-size: 32px;
                 }
 
-                @include media.laptopL {
+                @include media.desktop {
                     font-size: 46px;
                 }
             }
@@ -227,7 +224,7 @@
                     right: -10px;
                 }
 
-                @include media.laptopL {
+                @include media.desktop {
                     width: 350px;
                     top: 60px;
                     right: -10px;
@@ -247,7 +244,7 @@
                         font-size: 18px;
                     }
 
-                    @include media.laptopL {
+                    @include media.desktop {
                         font-size: 24px;
                     }
                 }
@@ -265,7 +262,7 @@
                         font-size: 16px;
                     }
 
-                    @include media.laptopL {
+                    @include media.desktop {
                         font-size: 24px;
                     }
 
@@ -292,7 +289,7 @@
                         font-size: 16px;
                     }
 
-                    @include media.laptopL {
+                    @include media.desktop {
                         margin-top: 15px;
                         font-size: 20px;
                     }
@@ -333,7 +330,7 @@
                             font-size: 18px;
                         }
 
-                        @include media.laptopL {
+                        @include media.desktop {
                             padding: 6px 12px;
                             font-size: 24px;
                         }
@@ -352,18 +349,14 @@
 
 .main {
     margin-top: 90px;
+    display: flex;
 
     @include media.mobileS {
         margin: 50px 0;
     }
 
     @include media.laptop {
-        margin-top: 150px;
-        margin-bottom: 50px;
-    }
-
-    @include media.laptopL {
-        margin-top: 170px;
+        margin-top: 70px;
         margin-bottom: 50px;
     }
 
@@ -395,10 +388,6 @@
         height: 100px;
         font-size: 18px;
         font-weight: bold;
-    }
-
-    @include media.laptopL {
-        height: 150px;
     }
 
     @include media.desktop {

@@ -9,7 +9,7 @@
     cursor: pointer;
     position: relative;
 
-    @include media.laptopL {
+    @include media.desktop {
         width: 50px;
         height: 50px;
     }
@@ -25,7 +25,7 @@
             height: 30px;
         }
 
-        @include media.laptopL {
+        @include media.desktop {
             width: 50px;
             height: 50px;
             font-size: 32px;
@@ -61,7 +61,7 @@
             right: 4px;
         }
 
-        @include media.laptopL {
+        @include media.desktop {
             width: 28px;
             height: 28px;
             font-size: 16px;

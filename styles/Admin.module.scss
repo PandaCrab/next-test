@@ -32,6 +32,10 @@
         width: 700px;
     }
 
+    @include media.laptop {
+        margin-top: 40px
+    }
+
     .logFormWrapper {
         width: 100%;
         height: 100%;
@@ -201,6 +205,14 @@
 
                     @include media.laptop {
                         height: 150px;
+                    }
+                }
+
+                &.invalid {
+                    border-color: red;
+
+                    &::placeholder {
+                        color: red;
                     }
                 }
             }
@@ -387,7 +399,7 @@
                         width: 35px;
                         height: 35px;
                         background: none;
-                        border: 1px solid #bbb;
+                        border: 1px solid #bbbbbb;
                         border-radius: 50%;
 
                         @include media.tablet {

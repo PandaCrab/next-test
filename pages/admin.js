@@ -11,12 +11,16 @@ import { deleteProduct, postProduct, updateProductInStorage } from './api/api';
 import { catchSuccess, catchWarning } from '../redux/ducks/alerts';
 import LoginPage from './login';
 import useWindowSize from '../hooks/windowSize';
+import { addProductSchema } from '../helpers/validation';
 
 import styles from '../styles/Admin.module.scss';
 
 const AdminPage = () => {
-    const [show, setShow] = useState('addProduct');
+    const [loged, setloged] = useState(false);
+    const [permission, setPermission] = useState(false);
     const [productPriview, setPreview] = useState(false);
+    const [show, setShow] = useState('addProduct');
+    const [allProducts, setAllProducts] = useState();
     const [deleteItem, setDeleteItem] = useState({
         item: null,
         onSubmit: false,
@@ -39,10 +43,12 @@ const AdminPage = () => {
         quantity: '',
         width: '',
         height: '',
+        description: '',
     });
-    const [permission, setPermission] = useState(false);
-    const [loged, setloged] = useState(false);
-    const [allProducts, setAllProducts] = useState();
+    const [invalidProductInfo, setProductInfo] = useState({
+        path: {},
+        isValid: false,
+    });
 
     const size = useWindowSize();
 
@@ -65,26 +71,45 @@ const AdminPage = () => {
         }
     };
 
-    const onPostProduct = (info) => {
-        if (info) {
-            const { message } = postProduct(info);
+    const onPostProduct = async (info) => {
+        await addProductSchema
+            .validate(addProduct, { abortEarly: false })
+            .then(async (value) => {
+                if (value) {
+                    const { message } = await postProduct(info);
 
-            setProduct({
-                name: '',
-                price: '',
-                imgUrl: '',
-                color: '',
-                quantity: '',
-                width: '',
-                height: '',
+                    setProduct({
+                        name: '',
+                        price: '',
+                        imgUrl: '',
+                        color: '',
+                        quantity: '',
+                        width: '',
+                        height: '',
+                        description: '',
+                    });
+
+                    if (size.width < 767) {
+                        setPreview(false);
+                    }
+
+                    dispatch(catchSuccess(message));
+                }
+            })
+            .catch((error) => {
+                const validationError = {};
+
+                error.inner.forEach((err) => {
+                    if (err.path) {
+                        validationError[err.path] = err.message;
+                    }
+                });
+
+                setProductInfo({
+                    path: validationError,
+                    isValid: false,
+                });
             });
-
-            if (size.width < 767) {
-                setPreview(false);
-            }
-
-            dispatch(catchSuccess(message));
-        }
     };
 
     const updateProduct = async (product) => {
@@ -184,9 +209,17 @@ const AdminPage = () => {
                                 <div className={styles.formWrapper}>
                                     <input
                                         id="name"
-                                        className={styles.addProductInput}
+                                        className={
+                                            invalidProductInfo.path.name
+                                                ? `${styles.addProductInput} ${styles.invalid}`
+                                                : `${styles.addProductInput}`
+                                        }
                                         name="name"
-                                        placeholder="Name of product"
+                                        placeholder={
+                                            invalidProductInfo.path.name
+                                                ? invalidProductInfo.path.name
+                                                : 'Name of product'
+                                        }
                                         value={addProduct.name}
                                         onChange={({ target }) =>
                                             setProduct({
@@ -197,9 +230,17 @@ const AdminPage = () => {
                                     />
                                     <input
                                         id="price"
-                                        className={styles.addProductInput}
+                                        className={
+                                            invalidProductInfo.path.price
+                                                ? `${styles.addProductInput} ${styles.invalid}`
+                                                : `${styles.addProductInput}`
+                                        }
                                         name="price"
-                                        placeholder="Enter product price"
+                                        placeholder={
+                                            invalidProductInfo.path.price
+                                                ? invalidProductInfo.path.price
+                                                : 'Enter product price'
+                                        }
                                         value={addProduct.price}
                                         onChange={({ target }) =>
                                             setProduct({
@@ -210,9 +251,17 @@ const AdminPage = () => {
                                     />
                                     <input
                                         id="imgUrl"
-                                        className={styles.addProductInput}
+                                        className={
+                                            invalidProductInfo.path.imgUrl
+                                                ? `${styles.addProductInput} ${styles.invalid}`
+                                                : `${styles.addProductInput}`
+                                        }
                                         name="imgUrl"
-                                        placeholder="Image path"
+                                        placeholder={
+                                            invalidProductInfo.path.imgUrl
+                                                ? invalidProductInfo.path.imgUrl
+                                                : 'Image path'
+                                        }
                                         value={addProduct.imgUrl}
                                         onChange={({ target }) =>
                                             setProduct({
@@ -223,7 +272,11 @@ const AdminPage = () => {
                                     />
                                     <input
                                         id="color"
-                                        className={styles.addProductInput}
+                                        className={
+                                            invalidProductInfo.path.color
+                                                ? `${styles.addProductInput} ${styles.invalid}`
+                                                : `${styles.addProductInput}`
+                                        }
                                         name="color"
                                         placeholder="Enter product color (optional)"
                                         value={addProduct.color}
@@ -236,9 +289,17 @@ const AdminPage = () => {
                                     />
                                     <input
                                         id="quantity"
-                                        className={styles.addProductInput}
+                                        className={
+                                            invalidProductInfo.path.quantity
+                                                ? `${styles.addProductInput} ${styles.invalid}`
+                                                : `${styles.addProductInput}`
+                                        }
                                         name="quantity"
-                                        placeholder="Enter quantity of available products"
+                                        placeholder={
+                                            invalidProductInfo.path.quantity
+                                                ? invalidProductInfo.path.quantity
+                                                : 'Enter quantity of available products'
+                                        }
                                         value={addProduct.quantity}
                                         onChange={({ target }) =>
                                             setProduct({
@@ -250,9 +311,17 @@ const AdminPage = () => {
                                     <div className={styles.row}>
                                         <input
                                             id="width"
-                                            className={styles.addProductInput}
+                                            className={
+                                                invalidProductInfo.path.width
+                                                    ? `${styles.addProductInput} ${styles.invalid}`
+                                                    : `${styles.addProductInput}`
+                                            }
                                             name="width"
-                                            placeholder="Enter width of product image"
+                                            placeholder={
+                                                invalidProductInfo.path.width
+                                                    ? invalidProductInfo.path.width
+                                                    : 'Enter width of product image'
+                                            }
                                             value={addProduct.width}
                                             onChange={({ target }) =>
                                                 setProduct({
@@ -263,9 +332,17 @@ const AdminPage = () => {
                                         />
                                         <input
                                             id="height"
-                                            className={styles.addProductInput}
+                                            className={
+                                                invalidProductInfo.path.height
+                                                    ? `${styles.addProductInput} ${styles.invalid}`
+                                                    : `${styles.addProductInput}`
+                                            }
                                             name="height"
-                                            placeholder="Enter height of product image"
+                                            placeholder={
+                                                invalidProductInfo.path.height
+                                                    ? invalidProductInfo.path.height
+                                                    : 'Enter height of product image'
+                                            }
                                             value={addProduct.height}
                                             onChange={({ target }) =>
                                                 setProduct({
@@ -278,7 +355,11 @@ const AdminPage = () => {
                                     <textarea
                                         type="textarea"
                                         id="description"
-                                        className={`${styles.addProductInput} ${styles.description}`}
+                                        className={
+                                            invalidProductInfo.path.description
+                                                ? `${styles.addProductInput} ${styles.description} ${styles.invalid}`
+                                                : `${styles.addProductInput} ${styles.description}`
+                                        }
                                         name="description"
                                         rows="20"
                                         cols="200"

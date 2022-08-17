@@ -487,7 +487,7 @@
                         width: 20px;
                         height: 20px;
                         font-size: 16px;
-                        position: static;
+                        left: -70px;
                     }
 
                     @include media.desktop {
@@ -554,6 +554,7 @@
             .inBucket, 
             .likes {
                 margin-bottom: 5px;
+                cursor: pointer;
 
                 .itemsHeader {
                     padding: 5px;
