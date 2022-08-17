@@ -177,7 +177,7 @@ const SiteLayout = ({ children }) => {
                                 Log In
                             </div>
                         )}
-                        {user.token ? (
+                        {user?.id ? (
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
                                     <div className={styles.greeting}>

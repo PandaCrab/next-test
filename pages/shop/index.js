@@ -102,10 +102,23 @@ const Shop = () => {
 
         data$ &&
             data$.subscribe({
-                next: (result) => {
-                    if (result) {
-                        setStuffs(result);
-                        dispatch(storeStuff(result.data));
+                next: async (result) => {
+                    try {
+                        if (result) {
+                            if (result.length) {
+                                setStuffs(result);
+                                dispatch(storeStuff(result));
+                            }
+
+                            if (result.error) {
+                                setError({
+                                    status: result.error,
+                                    message: result.message,
+                                });
+                            }
+                        }
+                    } catch (err) {
+                        console.log(err);
                     }
                 },
                 complete: () => {
@@ -122,7 +135,7 @@ const Shop = () => {
                 {isLoading.status ? (
                     <div className={styles.loader}>{isLoading.loader}</div>
                 ) : error.status ? (
-                    <div className={styles.errorWrapper}>Seems somthing broken</div>
+                    <div className={styles.errorWrapper}>{error.message}</div>
                 ) : stuffs ? (
                     stuffs.map((stuff) => (
                         <div className={styles.productCard} key={stuff._id}>

@@ -57,17 +57,21 @@ const AdminPage = () => {
     const router = useRouter();
 
     const deleteFromStorage = async (id) => {
-        const res = await deleteProduct(id);
-        const { message } = await res.json();
+        try {
+            const res = await deleteProduct(id);
+            const { message } = await res.json();
 
-        if (res.ok) {
-            dispatch(catchWarning(message));
-            takeProducts();
+            if (res.ok) {
+                dispatch(catchWarning(message));
+                takeProducts();
 
-            setDeleteItem({
-                item: null,
-                onSubmit: false,
-            });
+                setDeleteItem({
+                    item: null,
+                    onSubmit: false,
+                });
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -128,13 +132,15 @@ const AdminPage = () => {
     };
 
     const takeProducts = async () => {
-        const allProducts = await fetch('http://localhost:4000/storage');
-        const catchRes = await allProducts.json();
+        try {
+            const allProducts = await fetch('http://localhost:4000/storage');
+            const catchRes = await allProducts.json();
 
-        console.log(catchRes);
-
-        if (allProducts.ok) {
-            setAllProducts(catchRes);
+            if (allProducts.ok) {
+                setAllProducts(catchRes);
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
 

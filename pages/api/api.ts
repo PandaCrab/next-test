@@ -31,10 +31,9 @@ export const data$ = fromFetch('http://localhost:4000/storage')
             if (response.ok) {
                 return response.json();
             }
-            return of({ error: true, message: `Error: ${response.status}` })
         }),
         catchError(error => {
-            return error.message;
+            return of({ error: true, message: `Error: ${error.message}` });
         })
     );
 
