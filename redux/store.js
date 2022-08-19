@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import stuffReducer from './ducks/stuff';
 import userReducer from './ducks/user';
 import alertReducer from './ducks/alerts';
-import searchReducer from './ducks/alerts';
+import searchReducer from './ducks/search';
 
 export const makeStore = () =>
     configureStore({

@@ -140,7 +140,7 @@
             }
 
             @include media.desktop {
-                margin-bottom: -10px;
+                margin-bottom: -8px;
             }
         }
     }
@@ -669,7 +669,7 @@
                 @include media.desktop {
                     min-width: 1380px;
                     max-width: 1380px;
-                    font-size: 24px;
+                    font-size: 20px;
                 }
 
                 &.header {
@@ -694,7 +694,7 @@
                     width: 60px;
 
                     @include media.desktop {
-                        width: 120px
+                        width: 100px
                     }
                 }
 
@@ -746,7 +746,7 @@
                             }
 
                             @include media.desktop {
-                                margin-left: 120px;
+                                margin-left: 100px;
                             }
                         }
                     }
@@ -786,8 +786,8 @@
                     }
 
                     @include media.desktop {
-                        padding: 15px;
-                        font-size: 28px;
+                        padding: 5px;
+                        font-size: 20px;
                     }
 
                     &:hover {

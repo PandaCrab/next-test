@@ -177,7 +177,7 @@ const SiteLayout = ({ children }) => {
                                 Log In
                             </div>
                         )}
-                        {user?.id ? (
+                        {user.token ? (
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
                                     <div className={styles.greeting}>
@@ -256,10 +256,11 @@ const SiteLayout = ({ children }) => {
                     </div>
                 </div>
             </div>
+            <div className={styles.mainFooterWrapper}>
+                <main className={styles.main}>{children}</main>
 
-            <main className={styles.main}>{children}</main>
-
-            <footer className={styles.footer}>Test Next application</footer>
+                <footer className={styles.footer}>Test Next application</footer>
+            </div>
         </div>
     );
 };

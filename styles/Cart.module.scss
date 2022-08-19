@@ -10,8 +10,8 @@
     position: relative;
 
     @include media.desktop {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
     }
 
     .cart {
@@ -26,9 +26,9 @@
         }
 
         @include media.desktop {
-            width: 50px;
-            height: 50px;
-            font-size: 32px;
+            width: 40px;
+            height: 40px;
+            font-size: 25px;
         }
     }
     
@@ -62,9 +62,11 @@
         }
 
         @include media.desktop {
-            width: 28px;
-            height: 28px;
-            font-size: 16px;
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            top: 2px;
+            right: 6px;
         }
     }
 }

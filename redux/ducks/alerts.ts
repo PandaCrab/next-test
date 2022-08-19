@@ -9,7 +9,7 @@ const initialState = {
     error: ''
 };
 
-const alertReducer = (state=initialState, action) => {
+const alertReducer = (state = initialState, action) => {
     switch (action.type) {
         case SUCCESS_ALERT:
             return { ...state, success: action.payload };

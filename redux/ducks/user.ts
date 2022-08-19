@@ -7,7 +7,7 @@ const initialState = {
     info: null
 };
 
-export default function userReducer (state=initialState, action) {
+export default function userReducer (state = initialState, action) {
     switch (action.type) {
         case  USER_TOKEN:
             return { ...state, token: action.payload };

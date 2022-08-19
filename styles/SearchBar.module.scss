@@ -1,14 +1,32 @@
+@use 'MediaMixins' as media;
+
 .searchContainer {
+    padding: 5px;
+    width: 100%;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
+    justify-content: center;
 
     .searchInput {
+        margin-right: 5px;
         padding: 3px 6px;
-        width: 150px;
+        width: 100%;
         font-size: 12px;
         border: 1px solid #bbbbbb;
         border-radius: 5px;
+
+        @include media.laptop {
+            margin: 10px;
+            padding: 6px 12px;
+            width: 500px;
+            font-size: 16px;
+        }
+
+        @include media.desktop {
+            width: 600px;
+            font-size: 18px;
+        }
     }
 
     .searchBtn {
@@ -20,5 +38,13 @@
         font-size: 12px;
         border: 1px solid #bbbbbb;
         border-radius: 50%;
+
+        @include media.laptop {
+            font-size: 18px;
+        }
+
+        @include media.desktop {
+            font-size: 20px;
+        }
     }    
 }

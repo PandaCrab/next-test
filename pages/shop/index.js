@@ -27,6 +27,8 @@ const Shop = () => {
 
     const user = useSelector((state) => state.user.info);
     const clientOrder = useSelector((state) => state.order.clientOrder);
+    const catchSearchInput = useSelector(state => state.search.search);
+    const stuff = useSelector(state => state.order.stuff);
 
     const dispatch = useDispatch();
     const router = useRouter();
@@ -74,6 +76,19 @@ const Shop = () => {
 
     const routeToProductInfo = (id) => {
         router.push(`shop/${id}`);
+    };
+
+    const searchProducts = (text) => {
+        if (text) {
+            const filtered = stuff.filter(products => Object.values(products)
+                .join('')
+                .toLowerCase()
+                .includes(text.toLowerCase()));
+
+            setStuffs(filtered);
+        } else {
+            setStuffs(stuff);
+        }
     };
 
     useEffect(() => {
@@ -129,6 +144,10 @@ const Shop = () => {
         data$.unsubscribe;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        searchProducts(catchSearchInput);
+    }, [catchSearchInput]);
 
     return (
         <>

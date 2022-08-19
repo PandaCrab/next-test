@@ -7,7 +7,6 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    overflow-x: scroll;
 
     @include media.mobileS {
         margin: 0;
@@ -20,7 +19,7 @@
         flex-direction: column;
         align-items: center;
         font-size: 28px;
-
+        
         @include media.mobileS {
             font-size: 16px;
         }
@@ -38,102 +37,108 @@
         }
     }
 
-    .productCard {
-        margin-right: 10px;
-        padding: 10px;
-        width: 350px;
-        height: auto;
+    .productWrapper {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        border-radius: 1px solid #bbb;
-        box-shadow: 2px 3px 10px gray;
+        overflow-x: scroll;
 
-        @include media.mobileS {
-            margin-bottom: 20px;
-            padding: 5px;
-            width: 250px;
+        .productCard {
+            margin-right: 10px;
+            padding: 10px;
+            width: 350px;
             height: auto;
             display: flex;
             flex-direction: column;
-        }
-
-        @include media.laptop {
-            width: 350px;
-            height: 300px;
-        }
-
-        @include media.desktop {
-            width: 400px;
-            height: 300px;
-        }
-
-        .cardContentWrapper {
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-
-            .cardInfo {
-                padding: 12px;
-                width: 200px;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-
-                .stuffTitle {
-                    margin-bottom: 15px;
-                    text-align: end;
-                    font-weight: 500; 
-                }
-            }
-        }
-
-        .cardButtons {
-            padding: 10px;
-            width: 100%;
-            height: 30px;
-            display: flex;  
             align-items: center;
-            justify-content: center;
-            border-top: 1px solid #bbbbbb;
+            justify-content: space-between;
+            border-radius: 1px solid #bbb;
+            box-shadow: 2px 3px 10px gray;
 
             @include media.mobileS {
+                margin-bottom: 20px;
                 padding: 5px;
-            }
-            
-            @include media.laptop {
-                padding: 10px;
-                height: 50px;
+                width: 250px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
             }
 
-            .deleteButton {
-                padding: 5px;
+            @include media.laptop {
+                width: 350px;
+                height: 300px;
+            }
+
+            @include media.desktop {
+                width: 400px;
+                height: 300px;
+            }
+
+            .cardContentWrapper {
+                padding-bottom: 10px;
                 display: flex;
+                justify-content: space-between;
+
+                .cardInfo {
+                    padding: 12px;
+                    width: 200px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+
+                    .stuffTitle {
+                        margin-bottom: 15px;
+                        text-align: end;
+                        font-weight: 500; 
+                    }
+                }
+            }
+
+            .cardButtons {
+                padding: 10px;
+                width: 100%;
+                height: 30px;
+                display: flex;  
                 align-items: center;
                 justify-content: center;
-                background: red;
-                color: white;
-                font-weight: bold;
-                font-size: 12px;
-                border: 1px solid #bbb;
-                border-radius: 50%;
+                border-top: 1px solid #bbbbbb;
 
+                @include media.mobileS {
+                    padding: 5px;
+                }
+                
                 @include media.laptop {
                     padding: 10px;
-                    font-size: 18px;
+                    height: 50px;
                 }
 
-                @include media.desktop {
-                    font-size: 24px;
-                }
+                .deleteButton {
+                    padding: 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: red;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 12px;
+                    border: 1px solid #bbb;
+                    border-radius: 50%;
 
-                &:hover {
-                    box-shadow: 0 0 6px gray;
-                }
+                    @include media.laptop {
+                        padding: 10px;
+                        font-size: 18px;
+                    }
 
-                &:active {
-                    box-shadow: 0 0 3px gray;
+                    @include media.desktop {
+                        font-size: 24px;
+                    }
+
+                    &:hover {
+                        box-shadow: 0 0 6px gray;
+                    }
+
+                    &:active {
+                        box-shadow: 0 0 3px gray;
+                    }
                 }
             }
         }
