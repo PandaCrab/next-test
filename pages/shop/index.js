@@ -1,11 +1,12 @@
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { BsCart } from 'react-icons/bs';
 import { AiFillHeart } from 'react-icons/ai';
 import { interval, map, take, repeat } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
+import SearchBar from '../../components/searchbar';
 import { inOrder, storeStuff } from '../../redux/ducks/stuff';
 import { getInfo } from '../../redux/ducks/user';
 import { data$, getUserInfo, getUserLikes } from '../api/api';
@@ -132,54 +133,60 @@ const Shop = () => {
     return (
         <>
             <div className={styles.contentContainer}>
+                <SearchBar />
                 {isLoading.status ? (
                     <div className={styles.loader}>{isLoading.loader}</div>
                 ) : error.status ? (
                     <div className={styles.errorWrapper}>{error.message}</div>
                 ) : stuffs ? (
-                    stuffs.map((stuff) => (
-                        <div className={styles.productCard} key={stuff._id}>
-                            <div onClick={() => routeToProductInfo(stuff._id)} className={styles.cardContentWrapper}>
-                                <div className={styles.imageWrapper}>
-                                    <Image
-                                        src={stuff.imgUrl}
-                                        alt={stuff.name}
-                                        width={stuff.width ? `${stuff.width}px` : '100px'}
-                                        height={stuff.height ? `${stuff.height}px` : '150px'}
-                                    />
-                                </div>
-                                <div className={styles.cardInfo}>
-                                    <div className={styles.stuffTitle}>{stuff.name}</div>
-                                    <div className={styles.stuffColor}>{stuff.color}</div>
-                                    <div className={styles.stuffPrice}>${stuff.price}</div>
-                                </div>
-                            </div>
-                            <div className={styles.cardButtons}>
-                                <button
-                                    onClick={() => pushToOrder(stuff)}
-                                    className={
-                                        clientOrder.find((x) => x._id === stuff._id)
-                                            ? `${styles.cartButton} ${styles.ordered}`
-                                            : `${styles.cartButton}`
-                                    }
+                    <div className={styles.productWrapper}>
+                        {stuffs.map((stuff) => (
+                            <div className={styles.productCard} key={stuff._id}>
+                                <div
+                                    onClick={() => routeToProductInfo(stuff._id)}
+                                    className={styles.cardContentWrapper}
                                 >
-                                    <BsCart />
-                                </button>
-                                {user?.id && (
+                                    <div className={styles.imageWrapper}>
+                                        <Image
+                                            src={stuff.imgUrl}
+                                            alt={stuff.name}
+                                            width={stuff.width ? `${stuff.width}px` : '100px'}
+                                            height={stuff.height ? `${stuff.height}px` : '150px'}
+                                        />
+                                    </div>
+                                    <div className={styles.cardInfo}>
+                                        <div className={styles.stuffTitle}>{stuff.name}</div>
+                                        <div className={styles.stuffColor}>{stuff.color}</div>
+                                        <div className={styles.stuffPrice}>${stuff.price}</div>
+                                    </div>
+                                </div>
+                                <div className={styles.cardButtons}>
                                     <button
+                                        onClick={() => pushToOrder(stuff)}
                                         className={
-                                            user.likes?.find((x) => x._id === stuff._id)
-                                                ? `${styles.cartButton} ${styles.liked}`
+                                            clientOrder.find((x) => x._id === stuff._id)
+                                                ? `${styles.cartButton} ${styles.ordered}`
                                                 : `${styles.cartButton}`
                                         }
-                                        onClick={() => handleLike(stuff._id)}
                                     >
-                                        <AiFillHeart />
+                                        <BsCart />
                                     </button>
-                                )}
+                                    {user?.id && (
+                                        <button
+                                            className={
+                                                user.likes?.find((x) => x._id === stuff._id)
+                                                    ? `${styles.cartButton} ${styles.liked}`
+                                                    : `${styles.cartButton}`
+                                            }
+                                            onClick={() => handleLike(stuff._id)}
+                                        >
+                                            <AiFillHeart />
+                                        </button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        ))}
+                    </div>
                 ) : (
                     <div className={styles.errorWrapper}>Error</div>
                 )}
