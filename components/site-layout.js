@@ -10,11 +10,13 @@ import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 
 import styles from '../styles/SiteLayout.module.scss';
+import CategoriesDropdown from './categotiesDropdown';
 
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState(false);
     const [menuDropdown, setMenuDropdown] = useState(false);
     const [admin, setAdmin] = useState(false);
+    const [showCategories, setShowCategories] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -164,6 +166,18 @@ const SiteLayout = ({ children }) => {
                             <a className={styles.homeLink}>Admin</a>
                         </Link>
                     )}
+                    <div 
+                        className={styles.categoriesLinkWrapper}
+                        onMouseEnter={() => setShowCategories(true)}
+                        onMouseLeave={() => setShowCategories(false)}
+                    >
+                        <Link href="/categories">
+                            <a className={styles.homeLink}>Categories</a>
+                        </Link>
+                        {showCategories && (
+                            <CategoriesDropdown />
+                        )}
+                    </div>
                 </div>
                 <div className={styles.loginCartWrapper}>
                     <Cart />

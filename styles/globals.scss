@@ -9,7 +9,7 @@ body {
 .layout {
     margin: auto;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,11 +17,11 @@ body {
 
 a {
     color: inherit;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 a:hover {
-    color: blue;
+    color: #b7b7b7;
 }
 
 * {

@@ -1,12 +1,12 @@
-@use 'MediaMixins' as media;
+@use 'mixins/MediaMixins' as media;
 
 .cartContainer {
     padding: 40px;
     width: 1600px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
 
     @include media.mobileS {
         margin: 0;
@@ -30,10 +30,6 @@
 
         @include media.laptop {
             font-size: 18px;
-        }
-
-        @include media.desktop {
-            font-size: 28px;
         }
     }
 
@@ -64,13 +60,8 @@
             }
 
             @include media.laptop {
-                width: 350px;
-                height: 300px;
-            }
-
-            @include media.desktop {
-                width: 400px;
-                height: 300px;
+                width: 300px;
+                height: 250px;
             }
 
             .cardContentWrapper {
@@ -128,10 +119,6 @@
                         font-size: 18px;
                     }
 
-                    @include media.desktop {
-                        font-size: 24px;
-                    }
-
                     &:hover {
                         box-shadow: 0 0 6px gray;
                     }
@@ -164,7 +151,7 @@
 
     @include media.desktop {
         padding: 12px 6px;
-        font-size: 24px;
+        font-size: 20px;
     }
 
     &:hover {

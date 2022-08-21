@@ -1,4 +1,4 @@
-@use 'MediaMixins' as media;
+@use 'mixins/MediaMixins' as media;
 
 .header {
     padding: 0 30px;
@@ -72,6 +72,7 @@
 
     .logoWrapper {
         width: 500px;
+        height: 100%;
         display: flex;
         align-items: center;
 
@@ -81,6 +82,9 @@
 
         .homeLink {
             margin-right: 25px;
+            height: 100%;
+            display: flex;
+            align-items: center;
 
             @include media.mobileS {
                 display: none;
@@ -93,18 +97,12 @@
             @include media.desktop {
                 font-size: 18px;
             }
+        }
 
-            &:hover {
-                color: blue;
-            }
-
-            &::before {
-                color: black;
-            }
-
-            &::after {
-                color: blueviolet;
-            }
+        .categoriesLinkWrapper {
+            height: 100%;
+            display: flex;
+            align-items: center;
         }
 
         .logoNameWrapper {
@@ -344,7 +342,8 @@
 }
 
 .mainFooterWrapper {
-    height: 100%;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;

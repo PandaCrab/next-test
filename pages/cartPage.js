@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
-import { AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineDelete } from 'react-icons/ai';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -15,8 +15,8 @@ const CartPage = () => {
     const cart = useSelector(state => state.order.clientOrder);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-            <div className={styles.cartContainer}>
+        <div className={styles.cartContainer}>
+            <div className={styles.productWrapper}>
                 {
                     cart.length ? cart.map(stuff => (
                         <div className={styles.productCard} key={ stuff.id }>
@@ -37,28 +37,32 @@ const CartPage = () => {
                             <div className={styles.cardButtons}>
                                 <button 
                                     onClick={() => dispatch(deleteFromOrder(stuff))}
-                                    className={styles.deleteButton}>
+                                    className={styles.deleteButton}
+                                >
                                     <AiOutlineDelete />
                                 </button>
                             </div>
                         </div>
-                    )) : (
-                        <div>
-                            <div className={styles.emptyCart}>
-                                Your cart don`t have any stuff
-                            <Link href='/shop'>
-                                <a>Buy somhting</a>
-                            </Link>
-                            </div>
-                        </div>
-                    )
+                    )) : null
                 }
             </div>
             {cart.length ? ( 
-                <button className={styles.orderButton} onClick={() => router.push(`/order/${Math.floor(Math.random() * 10000000)}`)}>
+                <button 
+                    className={styles.orderButton} 
+                    onClick={() => router.push(`/order/${Math.floor(Math.random() * 10000000)}`)}
+                >
                     Create order
                 </button>
-            ) : null}
+            ) : (
+                <>
+                    <div className={styles.emptyCart}>
+                        Your cart don`t have any stuff
+                        <Link href='/shop'>
+                            <a>Buy somhting</a>
+                        </Link>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

@@ -1,21 +1,5 @@
-@use "MediaMixins" as media;
-
-@mixin scrollbars($size, $thumbColor, $trackColor) {
-    &::-webkit-scrollbar {
-        width: $size;
-        height: $size;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: $thumbColor;
-        border-radius: 12px;
-        outline: 1px solid $thumbColor;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: $trackColor;
-    }
-}
+@use 'mixins/MediaMixins' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
 
 .adminPageContainer {
     width: 900px;
