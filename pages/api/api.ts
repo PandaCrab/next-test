@@ -47,6 +47,24 @@ export const takeSomeProducts = async (id) => {
     }
 };
 
+export const takeCategories = async (category, subCategory) => {
+    try {
+        if (category && subCategory) {
+            const response = await fetch(url + `/storage/categories/${category}/${subCategory}`);
+
+            return response.json();
+        }
+
+        if (category && !subCategory) {
+            const response = await fetch(url + `/storage/categories/${category}/${null}`);
+
+            return response.json();
+        }
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const postProduct = (data: storageData) => fetchFunc( url + '/storage', 'POST', data);
 
 export const deleteProduct = async (id) => {

@@ -166,17 +166,15 @@ const SiteLayout = ({ children }) => {
                             <a className={styles.homeLink}>Admin</a>
                         </Link>
                     )}
-                    <div 
+                    <div
                         className={styles.categoriesLinkWrapper}
                         onMouseEnter={() => setShowCategories(true)}
                         onMouseLeave={() => setShowCategories(false)}
                     >
-                        <Link href="/categories">
+                        <Link href="/shop/categories">
                             <a className={styles.homeLink}>Categories</a>
                         </Link>
-                        {showCategories && (
-                            <CategoriesDropdown />
-                        )}
+                        {showCategories && <CategoriesDropdown />}
                     </div>
                 </div>
                 <div className={styles.loginCartWrapper}>
