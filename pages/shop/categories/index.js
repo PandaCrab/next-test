@@ -9,7 +9,7 @@ const CategoriesPage = () => {
         <div>
             <div>
                 <h1 onClick={() => router.push('/shop/categories/devices')}>Devices</h1>
-                <Link href="/shop/categories/devices/phone">
+                <Link href="/shop/categories/devices/phones">
                     <a>Phones</a>
                 </Link>
                 <Link href="/shop/categories/devices/laptops">

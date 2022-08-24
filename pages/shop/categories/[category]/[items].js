@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
+import ProductCart from '../../../../components/productCart';
 import { takeCategories } from '../../../api/api';
 
 const ClothesSubCategories = () => {
     const [stuff, setStuff] = useState([]);
+
+    const router = useRouter();
 
     const takeProducts = async (category, subCategory) => {
         const res = await takeCategories(category, subCategory);
@@ -23,29 +24,13 @@ const ClothesSubCategories = () => {
         }
     }, [router]);
 
-    const router = useRouter();
-
     return (
         <div>
-            <div>
-                {stuff ? (
-                    stuff.map((product) => (
-                        <div key={product._id}>
-                            <div>
-                                <Image src={product.imgUrl} alt={product.name} width="100px" height="100px" />
-                            </div>
-                            <div>
-                                <div>{product.name}</div>
-                                <div>{product.color}</div>
-                                <div>{product.price}</div>
-                                <div>{product.quantity < 30 && 'Produgt go out'}</div>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div>This category is empty</div>
-                )}
-            </div>
+            {stuff ? (
+                stuff.map((product) => <ProductCart key={product._id} product={product} />)
+            ) : (
+                <div>This category is empty</div>
+            )}
         </div>
     );
 };
