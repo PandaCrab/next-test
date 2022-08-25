@@ -2,13 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import styles from '../../../styles/CategoriesPage.module.scss';
+
 const CategoriesPage = () => {
     const router = useRouter();
 
     return (
-        <div>
-            <div>
-                <h1 onClick={() => router.push('/shop/categories/devices')}>Devices</h1>
+        <div className={styles.categoriesContainer}>
+            <div className={styles.categoryWrapper}>
+                <div className={styles.categoryHeader} onClick={() => router.push('/shop/categories/devices')}>
+                    Devices
+                </div>
                 <Link href="/shop/categories/devices/phones">
                     <a>Phones</a>
                 </Link>
@@ -19,14 +23,15 @@ const CategoriesPage = () => {
                     <a>Watches</a>
                 </Link>
             </div>
-            <div>
-                <h1
+            <div className={styles.categoryWrapper}>
+                <div
+                    className={styles.categoryHeader}
                     onClick={() => {
                         router.push('/shop/categories/Clothes');
                     }}
                 >
                     Clothes
-                </h1>
+                </div>
                 <Link href="/shop/categories/devices/shirts">
                     <a>Shirts</a>
                 </Link>

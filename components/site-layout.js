@@ -6,11 +6,11 @@ import { RiUser3Line, RiMenuFill } from 'react-icons/ri';
 
 import Cart from './cart';
 import PopupAlert from './popup';
+import CategoriesDropdown from './categotiesDropdown';
 import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 
 import styles from '../styles/SiteLayout.module.scss';
-import CategoriesDropdown from './categotiesDropdown';
 
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState(false);
@@ -147,6 +147,11 @@ const SiteLayout = ({ children }) => {
                                     </a>
                                 </Link>
                             )}
+                            <Link href="/shop/categories">
+                                <a onClick={() => setMenuDropdown(false)} className={styles.menuItems}>
+                                    Categories
+                                </a>
+                            </Link>
                         </div>
                     )}
                 </div>
