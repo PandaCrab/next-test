@@ -9,17 +9,17 @@ const ClothesCategory = () => {
 
     const router = useRouter();
 
-    const takeProducts = async (category, subCategory) => {
-        const res = await takeCategories(category, subCategory);
+    const takeProducts = async (category, subcategory) => {
+        const res = await takeCategories(category, subcategory);
 
         setStuff(res);
     };
-
+    console.log(stuff);
     useEffect(() => {
         const { category, items } = router.query;
 
         if (router.isReady) {
-            takeProducts(category, items);
+            takeProducts(category, null);
         }
     }, [router]);
 

@@ -47,16 +47,16 @@ export const takeSomeProducts = async (id) => {
     }
 };
 
-export const takeCategories = async (category, subCategory) => {
+export const takeCategories = async (category, subcategory) => {
     try {
-        if (category && subCategory) {
-            const response = await fetch(url + `/storage/categories/${category}/${subCategory}`);
+        if (category && subcategory) {
+            const response = await fetch(url + `/storage/categories/${category}/${subcategory}`);
 
             return response.json();
         }
 
-        if (category && !subCategory) {
-            const response = await fetch(url + `/storage/categories/${category}/${null}`);
+        if (!subcategory) {
+            const response = await fetch(url + `/storage/categories/${category}`);
 
             return response.json();
         }

@@ -35,7 +35,7 @@ const CategoriesDropdown = () => {
                 </div>
             </div>
             {show && (
-                <div className={styles.subCategories} onMouseLeave={() => setShow(false)}>
+                <div className={styles.subcategories} onMouseLeave={() => setShow(false)}>
                     {show?.devices ? (
                         <>
                             <Link href="/shop/categories/devices/phones">
