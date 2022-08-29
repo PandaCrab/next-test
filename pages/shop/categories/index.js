@@ -27,7 +27,7 @@ const CategoriesPage = () => {
                 <div
                     className={styles.categoryHeader}
                     onClick={() => {
-                        router.push('/shop/categories/Clothes');
+                        router.push('/shop/categories/clothes');
                     }}
                 >
                     Clothes
@@ -36,7 +36,7 @@ const CategoriesPage = () => {
                     <a>Shirts</a>
                 </Link>
                 <Link href="/shop/categories/devices/sneakers">
-                    <a>Sneackers</a>
+                    <a>Sneakers</a>
                 </Link>
                 <Link href="/shop/categories/devices/bags">
                     <a>Bags</a>

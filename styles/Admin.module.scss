@@ -156,12 +156,14 @@
             flex-direction: column;
             align-items: center;
 
-            .addProductInput {
+            .addProductInput,
+            .dropdownCategories {
                 margin-bottom: 10px;
                 padding: 12px 6px;
                 width: 350px;
                 border: 1px solid #bbbbbb;
                 border-radius: 5px;
+                position: relative;
 
                 @include media.mobileS {
                     padding: 6px 12px;
@@ -199,6 +201,29 @@
                         color: red;
                     }
                 }
+
+                .dropdown {
+                    width: 140px;
+                    max-height: 200px;
+                    background: white;
+                    border: 1px solid #bbbbbb;
+                    border-radius: 0 0 5px 5px;
+                    position: absolute;
+                    top: 90%;
+                    left: -1px;
+                    z-index: 100;
+                    overflow-y: scroll;
+
+                    .dropdownItems {
+                        padding: 5px;
+
+                        &:hover {
+                            background-color: #c7c7c7;
+                            color: white;
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
 
             .row {
@@ -207,7 +232,8 @@
                 align-items: center;
                 justify-content: space-between;
 
-                .addProductInput {
+                .addProductInput, 
+                .dropdownCategories {
                     width: 240px;
 
                     @include media.mobileS {

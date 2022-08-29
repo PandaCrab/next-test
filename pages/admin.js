@@ -12,6 +12,7 @@ import { catchSuccess, catchWarning } from '../redux/ducks/alerts';
 import LoginPage from './login';
 import useWindowSize from '../hooks/windowSize';
 import { addProductSchema } from '../helpers/validation';
+import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
 
 import styles from '../styles/Admin.module.scss';
 
@@ -19,6 +20,10 @@ const AdminPage = () => {
     const [loged, setloged] = useState(false);
     const [permission, setPermission] = useState(false);
     const [productPriview, setPreview] = useState(false);
+    const [dropdownCategories, setCategories] = useState({
+        category: false,
+        subcategory: false,
+    });
     const [show, setShow] = useState('addProduct');
     const [allProducts, setAllProducts] = useState();
     const [deleteItem, setDeleteItem] = useState({
@@ -41,6 +46,8 @@ const AdminPage = () => {
         imgUrl: '',
         color: '',
         quantity: '',
+        category: '',
+        sybcategory: '',
         width: '',
         height: '',
         description: '',
@@ -314,6 +321,99 @@ const AdminPage = () => {
                                             })
                                         }
                                     />
+                                    <div className={styles.row}>
+                                        <div className={styles.dropdownCategories}>
+                                            <div
+                                                onClick={() =>
+                                                    setCategories((prev) => ({
+                                                        ...prev,
+                                                        category: true,
+                                                    }))
+                                                }
+                                            >
+                                                {addProduct.category ? addProduct.category : 'category'}
+                                            </div>
+                                            {dropdownCategories.category && (
+                                                <div className={styles.dropdown}>
+                                                    {categories.map((category, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className={styles.dropdownItems}
+                                                            onClick={() => {
+                                                                setProduct({
+                                                                    ...addProduct,
+                                                                    category,
+                                                                    subcategory: '',
+                                                                });
+                                                                setCategories({
+                                                                    category: false,
+                                                                    subcategory: false,
+                                                                });
+                                                            }}
+                                                        >
+                                                            {category}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        {addProduct.category && (
+                                            <div className={styles.dropdownCategories}>
+                                                <div
+                                                    onClick={() =>
+                                                        setCategories((prev) => ({
+                                                            ...prev,
+                                                            subcategory: true,
+                                                        }))
+                                                    }
+                                                >
+                                                    {addProduct.subcategory ? addProduct.subcategory : 'subcategory'}
+                                                </div>
+                                                <div className={styles.dropdown}>
+                                                    {dropdownCategories.subcategory
+                                                        ? addProduct.category === 'devices'
+                                                            ? devicesSubcategories.map((subcategory, index) => (
+                                                                  <div
+                                                                      className={styles.dropdownItems}
+                                                                      key={index}
+                                                                      onClick={() => {
+                                                                          setProduct({
+                                                                              ...addProduct,
+                                                                              subcategory,
+                                                                          });
+                                                                          setCategories((prev) => ({
+                                                                              ...prev,
+                                                                              subcategory: false,
+                                                                          }));
+                                                                      }}
+                                                                  >
+                                                                      {subcategory}
+                                                                  </div>
+                                                              ))
+                                                            : addProduct.category === 'clothes' &&
+                                                              clothesSubcategories.map((subcategory, index) => (
+                                                                  <div
+                                                                      className={styles.dropdownItems}
+                                                                      key={index}
+                                                                      onClick={() => {
+                                                                          setProduct({
+                                                                              ...addProduct,
+                                                                              subcategory,
+                                                                          });
+                                                                          setCategories((prev) => ({
+                                                                              ...prev,
+                                                                              sybcategory: false,
+                                                                          }));
+                                                                      }}
+                                                                  >
+                                                                      {subcategory}
+                                                                  </div>
+                                                              ))
+                                                        : null}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                     <div className={styles.row}>
                                         <input
                                             id="width"
