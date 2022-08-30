@@ -49,6 +49,8 @@ export const addProductSchema = yup.object().shape({
     imgUrl: yup.string().url('Invalid url address').required('Past image url path'),
     color: yup.string(),
     quantity: yup.string().required('Enter quantity of product'),
+    category: yup.string().required('Please choose category'),
+    subcategory: yup.string(),
     width: yup.string().required('Set image width'),
     height: yup.string().required('Set image height'),
     description: yup.string(),
