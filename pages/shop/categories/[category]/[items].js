@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import ProductCart from '../../../../components/productCart';
 import { takeCategories } from '../../../api/api';
 
+import styles from '../../../../styles/CategoryPage.module.scss';
+
 const ClothesSubCategories = () => {
     const [stuff, setStuff] = useState([]);
 
@@ -24,7 +26,7 @@ const ClothesSubCategories = () => {
     }, [router]);
 
     return (
-        <div>
+        <div className={styles.container}>
             {stuff ? (
                 stuff.map((product) => <ProductCart key={product._id} product={product} />)
             ) : (

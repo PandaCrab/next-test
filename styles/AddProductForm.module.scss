@@ -1,4 +1,5 @@
 @use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
 
 .addProductForm {
     padding: 24px;
@@ -84,6 +85,16 @@
                 left: -1px;
                 z-index: 100;
                 overflow-y: scroll;
+
+                @include scrollbars(1px, #bbbbbb, none);
+
+                @include media.laptop {
+                    width: 240px;
+                }
+
+                @include media.desktop {
+                    width: 290px;
+                }
 
                 .dropdownItems {
                     padding: 5px;

@@ -230,48 +230,50 @@ const AddProductForm = () => {
                             >
                                 {addProduct.subcategory ? addProduct.subcategory : 'subcategory'}
                             </div>
-                            <div className={styles.dropdown}>
-                                {dropdownCategories.subcategory
-                                    ? addProduct.category === 'devices'
-                                        ? devicesSubcategories.map((subcategory, index) => (
-                                              <div
-                                                  className={styles.dropdownItems}
-                                                  key={index}
-                                                  onClick={() => {
-                                                      setProduct({
-                                                          ...addProduct,
-                                                          subcategory,
-                                                      });
-                                                      setCategories((prev) => ({
-                                                          ...prev,
-                                                          subcategory: false,
-                                                      }));
-                                                  }}
-                                              >
-                                                  {subcategory}
-                                              </div>
-                                          ))
-                                        : addProduct.category === 'clothes' &&
-                                          clothesSubcategories.map((subcategory, index) => (
-                                              <div
-                                                  className={styles.dropdownItems}
-                                                  key={index}
-                                                  onClick={() => {
-                                                      setProduct({
-                                                          ...addProduct,
-                                                          subcategory,
-                                                      });
-                                                      setCategories((prev) => ({
-                                                          ...prev,
-                                                          sybcategory: false,
-                                                      }));
-                                                  }}
-                                              >
-                                                  {subcategory}
-                                              </div>
-                                          ))
-                                    : null}
-                            </div>
+                            {dropdownCategories.subcategory ? (
+                                <div className={styles.dropdown}>
+                                    {addProduct.category === 'devices' ?
+                                        devicesSubcategories.map((subcategory, index) => (
+                                            <div
+                                                className={styles.dropdownItems}
+                                                key={index}
+                                                onClick={() => {
+                                                    setProduct({
+                                                        ...addProduct,
+                                                        subcategory,
+                                                    });
+                                                    setCategories((prev) => ({
+                                                        ...prev,
+                                                        subcategory: false,
+                                                    }));
+                                                }}
+                                            >
+                                                {subcategory}
+                                            </div>
+                                            )
+                                        )
+                                    : addProduct.category === 'clothes' && 
+                                        clothesSubcategories.map((subcategory, index) => (
+                                            <div
+                                                className={styles.dropdownItems}
+                                                key={index}
+                                                onClick={() => {
+                                                    setProduct({
+                                                        ...addProduct,
+                                                        subcategory,
+                                                    });
+                                                    setCategories((prev) => ({
+                                                        ...prev,
+                                                        sybcategory: false,
+                                                    }));
+                                                }}
+                                            >
+                                                {subcategory}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            ) : null}
                         </div>
                     )}
                 </div>

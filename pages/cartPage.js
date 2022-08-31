@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { deleteFromOrder } from '../redux/ducks/stuff';
 
 import styles from '../styles/CartPage.module.scss';
+import ProductCart from '../components/productCart';
 
 const CartPage = () => {
     const dispatch = useDispatch();
@@ -18,31 +19,8 @@ const CartPage = () => {
         <div className={styles.cartContainer}>
             <div className={styles.productWrapper}>
                 {
-                    cart.length ? cart.map(stuff => (
-                        <div className={styles.productCard} key={ stuff.id }>
-                            <div className={styles.cardContentWrapper}>
-                                <Image 
-                                    src={stuff.imgUrl} 
-                                    alt={stuff.name}
-                                    width={stuff.width ? `${stuff.width}px` : '105px'}
-                                    height={stuff.height ? `${stuff.height}px` : '155px'} />
-                                <div className={styles.cardInfo}>
-                                    <div className={styles.stuffTitle}>
-                                        { stuff.name }
-                                    </div>
-                                    <div className={styles.stuffColor}>{ stuff.color }</div>
-                                    <div className={styles.stuffPrice}>${ stuff.price }</div>
-                                </div>
-                            </div>
-                            <div className={styles.cardButtons}>
-                                <button 
-                                    onClick={() => dispatch(deleteFromOrder(stuff))}
-                                    className={styles.deleteButton}
-                                >
-                                    <AiOutlineDelete />
-                                </button>
-                            </div>
-                        </div>
+                    cart.length ? cart.map((stuff, index) => (
+                        <ProductCart key={index} product={stuff} />
                     )) : null
                 }
             </div>

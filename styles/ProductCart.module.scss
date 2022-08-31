@@ -12,7 +12,7 @@
     box-shadow: 2px 3px 10px gray;
 
     @include media.mobileS {
-        margin: 10px 0;
+        margin: 10px;
         margin-right: 10px;
         padding: 0;
         width: 200px;
@@ -21,8 +21,7 @@
     }
 
     @include media.laptop {
-        margin-right: 25px;
-        margin-bottom: 25px;
+        margin: 1px 25px 25px 1px;
         padding: 5px;
         width: 250px;
         height: 200px
@@ -91,6 +90,32 @@
 
         @include media.desktop {
             height: 40px;
+        }
+
+        .deleteButton {
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: red;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            border: 1px solid #bbb;
+            border-radius: 50%;
+
+            @include media.laptop {
+                padding: 5px;
+                font-size: 18px;
+            }
+
+            &:hover {
+                box-shadow: 0 0 6px gray;
+            }
+
+            &:active {
+                box-shadow: 0 0 3px gray;
+            }
         }
 
         .cartButton {

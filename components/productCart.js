@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { BsCart } from 'react-icons/bs';
-import { AiFillHeart } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineDelete } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { inOrder } from '../redux/ducks/stuff';
+import { inOrder, deleteFromOrder } from '../redux/ducks/stuff';
 import { getInfo } from '../redux/ducks/user';
 import { getUserLikes, getUserInfo } from '../pages/api/api';
 
@@ -85,30 +85,41 @@ const ProductCart = (props) => {
                         <div className={styles.productPrice}>${product.price}</div>
                     </div>
                 </div>
-                <div className={styles.cardButtons}>
-                    <button
-                        onClick={() => pushToOrder(product)}
-                        className={
-                            clientOrder.find((x) => x._id === product._id)
-                                ? `${styles.cartButton} ${styles.ordered}`
-                                : `${styles.cartButton}`
-                        }
-                    >
-                        <BsCart />
-                    </button>
-                    {user?.id && (
+                {router.pathname === '/cartPage' ? (
+                    <div className={styles.cardButtons}>
+                        <button 
+                            onClick={() => dispatch(deleteFromOrder(product))}
+                            className={styles.deleteButton}
+                        >
+                            <AiOutlineDelete />
+                        </button>
+                    </div>
+                ) : (
+                    <div className={styles.cardButtons}>
                         <button
+                            onClick={() => pushToOrder(product)}
                             className={
-                                user.likes?.find((x) => x._id === product._id)
-                                    ? `${styles.cartButton} ${styles.liked}`
+                                clientOrder.find((x) => x._id === product._id)
+                                    ? `${styles.cartButton} ${styles.ordered}`
                                     : `${styles.cartButton}`
                             }
-                            onClick={() => handleLike(product._id)}
                         >
-                            <AiFillHeart />
+                            <BsCart />
                         </button>
-                    )}
-                </div>
+                        {user?.id && (
+                            <button
+                                className={
+                                    user.likes?.find((x) => x._id === product._id)
+                                        ? `${styles.cartButton} ${styles.liked}`
+                                        : `${styles.cartButton}`
+                                }
+                                onClick={() => handleLike(product._id)}
+                            >
+                                <AiFillHeart />
+                            </button>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
