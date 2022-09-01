@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { takeCategories } from '../../../api/api';
-import ProductCart from '../../../../components/productCart';
+import ProductCart from '../../../../components/productCard';
 
 import styles from '../../../../styles/CategoryPage.module.scss';
 

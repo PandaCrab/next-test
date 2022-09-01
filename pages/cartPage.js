@@ -1,14 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Image from 'next/image';
-import { AiOutlineDelete } from 'react-icons/ai';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { deleteFromOrder } from '../redux/ducks/stuff';
-
 import styles from '../styles/CartPage.module.scss';
-import ProductCart from '../components/productCart';
+import ProductCart from '../components/productCard';
 
 const CartPage = () => {
     const dispatch = useDispatch();

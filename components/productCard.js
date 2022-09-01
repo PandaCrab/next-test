@@ -5,11 +5,12 @@ import { BsCart } from 'react-icons/bs';
 import { AiFillHeart, AiOutlineDelete } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 
+import StarRating from './star-rating';
 import { inOrder, deleteFromOrder } from '../redux/ducks/stuff';
 import { getInfo } from '../redux/ducks/user';
 import { getUserLikes, getUserInfo } from '../pages/api/api';
 
-import styles from '../styles/ProductCart.module.scss';
+import styles from '../styles/ProductCard.module.scss';
 
 const ProductCart = (props) => {
     const [product, setProduct] = useState(props.product);
@@ -70,11 +71,12 @@ const ProductCart = (props) => {
     return (
         <div className={styles.productWrapper}>
             <div className={styles.productCard}>
-                <div onClick={() => routeToProductInfo(product._id)} className={styles.cardContentWrapper}>
+                <div className={styles.cardContentWrapper}>
                     <div className={styles.imageWrapper}>
                         <Image
                             src={product.imgUrl}
                             alt={product.name}
+                            onClick={() => routeToProductInfo(product._id)}
                             width={product.width ? `${product.width}px` : '100px'}
                             height={product.height ? `${product.height}px` : '150px'}
                         />
@@ -83,6 +85,7 @@ const ProductCart = (props) => {
                         <div className={styles.productTitle}>{product.name}</div>
                         <div className={styles.productColor}>{product.color}</div>
                         <div className={styles.productPrice}>${product.price}</div>
+                        <StarRating product={product} />
                     </div>
                 </div>
                 {router.pathname === '/cartPage' ? (

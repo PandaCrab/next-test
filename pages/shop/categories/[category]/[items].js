@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import ProductCart from '../../../../components/productCart';
+import ProductCart from '../../../../components/productCard';
 import { takeCategories } from '../../../api/api';
 
 import styles from '../../../../styles/CategoryPage.module.scss';
