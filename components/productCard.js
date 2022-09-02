@@ -63,7 +63,7 @@ const ProductCart = (props) => {
             console.log(err);
         }
     };
-    console.log(props.product);
+
     useEffect(() => {
         setProduct(props.product);
     }, [props]);

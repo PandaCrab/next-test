@@ -85,6 +85,22 @@ export const deleteProduct = async (id) => {
     }
 };
 
+export const rateProduct = async (id, rating) => {
+    try {
+        fetch(url + `/product/${id}/rating`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(rating)
+        });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const loginUser = async (credentials) => {
     try {
         const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);

@@ -16,7 +16,7 @@ const ClothesCategory = () => {
 
         setStuff(res);
     };
-    console.log(stuff);
+
     useEffect(() => {
         const { category, items } = router.query;
 
