@@ -25,6 +25,7 @@ const fetchFunc = (url: string, method: string, data?: any) => {
     }
 };
 
+//Product section
 export const data$ = fromFetch('http://localhost:4000/storage')
     .pipe(
         switchMap(response => {
@@ -87,7 +88,7 @@ export const deleteProduct = async (id) => {
 
 export const rateProduct = async (id, rating) => {
     try {
-        fetch(url + `/product/${id}/rating`, {
+        const res = fetch(url + `/product/${id}/rating`, {
             method: 'PUT',
             mode: 'cors',
             headers: {
@@ -96,16 +97,8 @@ export const rateProduct = async (id, rating) => {
             },
             body: JSON.stringify(rating)
         });
-    } catch (err) {
-        console.log(err);
-    }
-};
 
-export const loginUser = async (credentials) => {
-    try {
-        const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);
-        
-        return catchRes.json();
+        return (await res).json();
     } catch (err) {
         console.log(err);
     }
@@ -139,6 +132,7 @@ export const takeOneProduct = async (id) => {
     }
 };
 
+//oredrs section
 export const createOrder = async (order) => {
     try {
         const catchRes = await fetchFunc(url + '/orders/create', 'POST', order);
@@ -169,6 +163,7 @@ export const getUserOrder = async (orderId, userId) => {
     }
 };
 
+//user section
 export const getUserInfo = async (id) => {
     try {
         const response = await fetchFunc(url + `/user/${id}`, 'GET');
@@ -195,7 +190,26 @@ export const updateUserInfo = async (id, info) => {
     } catch (err) {
         console.log(err)
     }
-}
+};
+
+export const userRated = async (userId, userRatedProductId) => {
+    const { id, rated } = userRatedProductId;
+    try {
+        const res = fetch(url + '/user/ratedProduct', {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({userId, ratedProduct: { id, rated }})
+        });
+
+        return (await res).json();
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 export const deleteUser = async (id, pass) => {
     try {
@@ -211,7 +225,7 @@ export const deleteUser = async (id, pass) => {
 
         return (await deleted).json();
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 };
 
@@ -228,6 +242,17 @@ export const getUserLikes = async (userId, stuffId) => {
         });
 
         return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+//auth and registration section
+export const loginUser = async (credentials) => {
+    try {
+        const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);
+        
+        return catchRes.json();
     } catch (err) {
         console.log(err);
     }

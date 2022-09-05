@@ -6,6 +6,27 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    position: relative;
+
+    .tooltip {
+        padding: 2px;
+        width: 140%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: lightgray;
+        font-size: 12px;
+        border: 1px solid;
+        border-radius: 5px;
+        position: absolute;
+        top: -25px;
+        right: -10px;
+
+        @include media.laptop {
+            font-size: 14px;
+            top: -30px;
+        }
+    }
 
     .starButton {
         margin-left: 4px;

@@ -1,17 +1,13 @@
-import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
-import { BsCart } from 'react-icons/bs';
-import { AiFillHeart } from 'react-icons/ai';
 import { interval, map, take, repeat } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 
 import SearchBar from '../../components/searchbar';
-import { inOrder, storeStuff } from '../../redux/ducks/stuff';
-import { getInfo } from '../../redux/ducks/user';
-import { data$, getUserInfo, getUserLikes } from '../api/api';
+import { storeStuff } from '../../redux/ducks/stuff';
+import { data$ } from '../api/api';
 
 import styles from '../../styles/Shop.module.scss';
+import ProductCart from '../../components/productCard';
 
 const Shop = () => {
     const [stuffs, setStuffs] = useState([]);
@@ -25,58 +21,12 @@ const Shop = () => {
         loader: null,
     });
 
-    const user = useSelector((state) => state.user.info);
-    const clientOrder = useSelector((state) => state.order.clientOrder);
     const catchSearchInput = useSelector(state => state.search.search);
     const stuff = useSelector(state => state.order.stuff);
 
     const dispatch = useDispatch();
-    const router = useRouter();
 
     const observable$ = interval(400);
-
-    const takeUserInfo = async () => {
-        const info = await getUserInfo(user.id);
-
-        dispatch(getInfo(info));
-    };
-
-    const pushToOrder = (stuff) => {
-        const idInOrder = clientOrder.length;
-        const { _id, name, price, imgUrl, color, quantity, width, height } = stuff;
-
-        dispatch(
-            inOrder({
-                id: idInOrder,
-                _id,
-                name,
-                price,
-                imgUrl,
-                color,
-                quantity,
-                width,
-                height,
-            })
-        );
-    };
-
-    const handleLike = async (stuffId) => {
-        try {
-            const postLikes = await getUserLikes(user.id, stuffId);
-
-            if (postLikes.message === 'like' || 'unlike') {
-                await takeUserInfo();
-            }
-
-            return;
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const routeToProductInfo = (id) => {
-        router.push(`shop/${id}`);
-    };
 
     const searchProducts = (text) => {
         if (text) {
@@ -108,7 +58,7 @@ const Shop = () => {
                 })
             );
         return () => subscription.unsubscribe();
-    }, [isLoading]);
+    }, [isLoading.loader]);
 
     useEffect(() => {
         setLoading({
@@ -122,7 +72,6 @@ const Shop = () => {
                     try {
                         if (result) {
                             if (result.length) {
-                                setStuffs(result);
                                 dispatch(storeStuff(result));
                             }
 
@@ -146,6 +95,10 @@ const Shop = () => {
     }, []);
 
     useEffect(() => {
+        setStuffs(stuff)
+    }, [stuff]);
+
+    useEffect(() => {
         searchProducts(catchSearchInput);
     }, [catchSearchInput]);
 
@@ -159,51 +112,8 @@ const Shop = () => {
                     <div className={styles.errorWrapper}>{error.message}</div>
                 ) : stuffs ? (
                     <div className={styles.productWrapper}>
-                        {stuffs.map((stuff) => (
-                            <div className={styles.productCard} key={stuff._id}>
-                                <div
-                                    onClick={() => routeToProductInfo(stuff._id)}
-                                    className={styles.cardContentWrapper}
-                                >
-                                    <div className={styles.imageWrapper}>
-                                        <Image
-                                            src={stuff.imgUrl}
-                                            alt={stuff.name}
-                                            width={stuff.width ? `${stuff.width}px` : '100px'}
-                                            height={stuff.height ? `${stuff.height}px` : '150px'}
-                                        />
-                                    </div>
-                                    <div className={styles.cardInfo}>
-                                        <div className={styles.stuffTitle}>{stuff.name}</div>
-                                        <div className={styles.stuffColor}>{stuff.color}</div>
-                                        <div className={styles.stuffPrice}>${stuff.price}</div>
-                                    </div>
-                                </div>
-                                <div className={styles.cardButtons}>
-                                    <button
-                                        onClick={() => pushToOrder(stuff)}
-                                        className={
-                                            clientOrder.find((x) => x._id === stuff._id)
-                                                ? `${styles.cartButton} ${styles.ordered}`
-                                                : `${styles.cartButton}`
-                                        }
-                                    >
-                                        <BsCart />
-                                    </button>
-                                    {user?.id && (
-                                        <button
-                                            className={
-                                                user.likes?.find((x) => x._id === stuff._id)
-                                                    ? `${styles.cartButton} ${styles.liked}`
-                                                    : `${styles.cartButton}`
-                                            }
-                                            onClick={() => handleLike(stuff._id)}
-                                        >
-                                            <AiFillHeart />
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
+                        {stuffs.map(product => (
+                            <ProductCart key={product._id} product={product} />
                         ))}
                     </div>
                 ) : (
