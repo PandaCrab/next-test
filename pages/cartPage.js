@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -7,7 +6,6 @@ import styles from '../styles/CartPage.module.scss';
 import ProductCart from '../components/productCard';
 
 const CartPage = () => {
-    const dispatch = useDispatch();
     const router = useRouter();
     const cart = useSelector(state => state.order.clientOrder);
 

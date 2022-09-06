@@ -1,0 +1,55 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+.container {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+
+    .commentAreaWrapper {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .commentInput {
+            margin-bottom: 10px;
+            padding: 6px;
+            width: 350px;
+            border: 1px solid;
+            border-radius: 5px;
+            resize: none !important;
+        }
+
+        .submitBtn {
+            padding: 3px 6px;
+            border: 1px Solid;
+            border-radius: 5px;
+        }
+    }
+
+    .commentContainer {
+        margin: 5px;
+        padding: 3px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid;
+        border-radius: 5px;
+
+        .header {
+            padding: 2px;
+            padding-bottom: 5px;
+            width: 350px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bold;
+            border-bottom: 1px solid;
+        }
+    }
+}
