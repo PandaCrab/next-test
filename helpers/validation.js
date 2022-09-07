@@ -55,3 +55,9 @@ export const addProductSchema = yup.object().shape({
     height: yup.string().required('Set image height'),
     description: yup.string(),
 });
+
+export const commentSchema = yup
+    .string()
+    .min(1)
+    .max(300)
+    .required('Please fill the comment area');

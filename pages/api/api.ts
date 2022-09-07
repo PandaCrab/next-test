@@ -104,6 +104,22 @@ export const rateProduct = async (id, rating) => {
     }
 };
 
+export const commentProduct = async (id, comment) => {
+    try {
+        fetch(url + `/product/${id}/addComments`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const updateProductInStorage = async (product) => {
     try {
         const res = await fetch(url + '/storage', {
