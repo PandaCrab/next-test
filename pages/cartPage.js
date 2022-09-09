@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 import styles from '../styles/CartPage.module.scss';
 import ProductCart from '../components/productCard';

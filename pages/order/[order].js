@@ -64,7 +64,7 @@ const OrderForm = () => {
     const dispatch = useDispatch();
 
     const clientOrder = useSelector((state) => state.order.clientOrder);
-    const userId = useSelector((state) => state.user.info.id);
+    const userId = useSelector((state) => state.user.info._id);
     const userAddress = useSelector((state) => state.user.info.shippingAddress);
 
     const handleChange = (target) => {

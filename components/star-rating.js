@@ -3,7 +3,7 @@ import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUserInfo, rateProduct, userRated } from '../pages/api/api';
+import { rateProduct, userRated } from '../pages/api/api';
 import { storeStuff } from '../redux/ducks/stuff';
 import { getInfo } from '../redux/ducks/user';
 
@@ -31,8 +31,7 @@ const StarRating = ({ product }) => {
     };
 
     const putRatedInUserData = async (rated) => {
-        await userRated(userInfo.id, { id: product._id, rated });
-        const res = await getUserInfo(userInfo.id);
+        const res = await userRated(userInfo._id, { id: product._id, rated });
 
         dispatch(getInfo(res));
     };
@@ -41,6 +40,7 @@ const StarRating = ({ product }) => {
         putRatedInUserData(rated);
         const catchRes = await rateProduct(product._id, { rated });
         
+        setHover(0);
         dispatch(storeStuff(catchRes));
     };
 
@@ -60,13 +60,12 @@ const StarRating = ({ product }) => {
                             className={index <= (hover || rating)
                                 ? `${styles.starButton} ${styles.rated}`
                                 : `${styles.starButton} ${styles.unrated}` }
-                            onClick={userInfo?.rated?.find(el => el.productId === product._id) 
+                            onClick={userInfo?._id ? (userInfo?.rated?.find(el => el.productId === product._id) 
                                 ? null
-                                : () => { getRating(index); console.log(product._id) }}
-                            disabled={router.pathname === '/cartPage'}
-                            onMouseEnter={userInfo?.rated?.find(el => el.productId === product._id)
+                                : () => getRating(index)) : null}
+                            onMouseEnter={userInfo?._id ? userInfo?.rated?.find(el => el.productId === product._id)
                                 ? () => { setTooltip(true) }
-                                : () => { setHover(index) }}
+                                : () => { setHover(index) }: null}
                             onMouseLeave={userInfo?.rated?.find(el => el.productId === product._id)
                                 ? () => setTooltip(false)
                                 : () => setHover(0)}

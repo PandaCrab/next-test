@@ -28,7 +28,7 @@ const UserOrder = () => {
 
     useEffect(() => {
         if (userOrderId) {
-            takeUserOrder(userOrderId, { userId: user.info?.id });
+            takeUserOrder(userOrderId, { userId: user.info?._id });
         }
     }, [userOrderId]);
 

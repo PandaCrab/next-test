@@ -95,7 +95,7 @@ const SingleProduct = () => {
 					<div>Somthing wrong</div>
 				)
 			) : tab === 'comments' ? (
-				<ProductComments product={product} />
+				<ProductComments product={product} setProduct={setProduct} productId={productId} />
 			) : null}
 		</div>
 	);

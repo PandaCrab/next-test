@@ -58,6 +58,5 @@ export const addProductSchema = yup.object().shape({
 
 export const commentSchema = yup
     .string()
-    .min(1)
-    .max(300)
+    .max(300, 'Max length is 300')
     .required('Please fill the comment area');

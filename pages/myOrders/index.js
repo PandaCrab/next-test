@@ -21,10 +21,10 @@ const UserOrdersPage = () => {
     };
 
     useEffect(() => {
-        if (user.info?.id) {
-            takeOrders({ userId: user.info.id });
+        if (user.info?._id) {
+            takeOrders({ userId: user.info._id });
         }
-    }, [user.info?.id]);
+    }, [user.info?._id]);
 
     useEffect(() => {
         if (user.token) {

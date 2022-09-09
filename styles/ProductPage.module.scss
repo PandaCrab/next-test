@@ -7,8 +7,13 @@
     align-items: center;
 
     @include media.mobileS {
+        margin-top: 15px;
         padding: 5px;
         width: 100%;
+    }
+
+    @include media.laptop {
+        margin-top: 0;
     }
 
     @include media.desktop {
@@ -16,16 +21,22 @@
     }
 
     .tabsWrapper {
+        margin-bottom: 10px;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-around;
+        font-size: 12px;
+
+        @include media.laptop {
+            font-size: 16px;
+        }
 
         .tab {
-            
             padding: 5px;
             border: 1px solid;
             border-radius: 5px;
+            cursor: pointer;
         }
     }
 
@@ -44,7 +55,7 @@
 
         @include media.mobileS {
             font-size: 12px;
-            top: 80px;
+            top: 50px;
             right: 15px;
         }
 

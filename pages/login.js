@@ -39,8 +39,6 @@ const LoginPage = () => {
             setError(token.message);
             setLogin({...login, password: ''});
         }
-
-        console.log(token);
     };
 
     return (

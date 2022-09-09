@@ -211,7 +211,7 @@ const SiteLayout = ({ children }) => {
                                     </div>
                                     <div
                                         onClick={() => {
-                                            router.push(`/account/${user.info.id}`);
+                                            router.push(`/account/${user.info._id}`);
                                             setOpen(false);
                                         }}
                                         className={styles.dropdownItems}

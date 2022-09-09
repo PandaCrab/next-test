@@ -26,7 +26,7 @@ const ProductCart = (props) => {
     };
 
     const takeUserInfo = async () => {
-        const info = await getUserInfo(user.id);
+        const info = await getUserInfo(user._id);
 
         dispatch(getInfo(info));
     };
@@ -52,7 +52,7 @@ const ProductCart = (props) => {
 
     const handleLike = async (productId) => {
         try {
-            const postLikes = await getUserLikes(user.id, productId);
+            const postLikes = await getUserLikes(user._id, productId);
 
             if (postLikes.message === 'like' || 'unlike') {
                 await takeUserInfo();
@@ -85,7 +85,9 @@ const ProductCart = (props) => {
                         <div className={styles.productTitle}>{product.name}</div>
                         <div className={styles.productColor}>{product.color}</div>
                         <div className={styles.productPrice}>${product.price}</div>
-                        <StarRating product={product} />
+                        {router.pathname === '/cartPage' ? null : (
+                            <StarRating product={product} />
+                        )}
                     </div>
                 </div>
                 {router.pathname === '/cartPage' ? (
@@ -109,7 +111,7 @@ const ProductCart = (props) => {
                         >
                             <BsCart />
                         </button>
-                        {user?.id && (
+                        {user?._id && (
                             <button
                                 className={
                                     user.likes?.find((x) => x._id === product._id)

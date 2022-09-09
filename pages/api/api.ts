@@ -106,7 +106,7 @@ export const rateProduct = async (id, rating) => {
 
 export const commentProduct = async (id, comment) => {
     try {
-        fetch(url + `/product/${id}/addComments`, {
+        await fetch(url + `/product/${id}/addComments`, {
             method: 'PUT',
             mode: 'cors',
             headers: {
