@@ -48,7 +48,13 @@ const RegistrationPage = () => {
             .validate(reg, { abortEarly: false })
             .then(async (value) => {
                 if (value) {
-                    const newUser = await registrateUser(reg);
+                    const newUser = await registrateUser({
+                        username: String(reg.username).toLowerCase(),
+                        email: reg.email,
+                        password: reg.password,
+                        phone: reg.phone,
+                        age: reg.age
+                    });
 
                     if (newUser && newUser.message === 'ok') {
                         dispatch(getToken(newUser.token));

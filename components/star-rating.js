@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { rateProduct, userRated } from '../pages/api/api';
@@ -14,7 +13,6 @@ const StarRating = ({ product }) => {
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
 
-    const router = useRouter();
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user.info);
 
@@ -32,13 +30,12 @@ const StarRating = ({ product }) => {
 
     const putRatedInUserData = async (rated) => {
         const res = await userRated(userInfo._id, { id: product._id, rated });
-
         dispatch(getInfo(res));
     };
 
     const getRating = async (rated) => {
-        putRatedInUserData(rated);
-        const catchRes = await rateProduct(product._id, { rated });
+        putRatedInUserData(rated + 1);
+        const catchRes = await rateProduct(product._id, { rated: rated + 1 });
         
         setHover(0);
         dispatch(storeStuff(catchRes));
@@ -53,31 +50,32 @@ const StarRating = ({ product }) => {
                 <div className={styles.tooltip}>{`You rated already`}</div>
             )}
             {[...Array(5)].map((star, index) => {
-                index += 1;
                 return (                        
-                        <button
-                            key={index}
-                            className={index <= (hover || rating)
-                                ? `${styles.starButton} ${styles.rated}`
-                                : `${styles.starButton} ${styles.unrated}` }
-                            onClick={userInfo?._id ? (userInfo?.rated?.find(el => el.productId === product._id) 
-                                ? null
-                                : () => getRating(index)) : null}
-                            onMouseEnter={userInfo?._id ? userInfo?.rated?.find(el => el.productId === product._id)
-                                ? () => { setTooltip(true) }
-                                : () => { setHover(index) }: null}
-                            onMouseLeave={userInfo?.rated?.find(el => el.productId === product._id)
-                                ? () => setTooltip(false)
-                                : () => setHover(0)}
-                        >
-                            <span>
-                                {index <= rating ? (
-                                    <BsStarFill />
-                                ) : (
-                                    <BsStar />
-                                )}
-                            </span>
-                        </button>
+                    <button
+                        key={index}
+                        className={index <= (hover || rating)
+                            ? `${styles.starButton} ${styles.rated}`
+                            : `${styles.starButton} ${styles.unrated}` }
+                        onClick={userInfo?._id ? (userInfo?.rated?.find(el => el.productId === product._id) 
+                            ? null
+                            : () => getRating(index)) : null}
+                        onMouseEnter={userInfo?._id ? userInfo?.rated?.find(el => el.productId === product._id)
+                            ? () => { setTooltip(true) }
+                            : () => { setHover(index) }: null}
+                        onMouseLeave={userInfo?.rated?.find(el => el.productId === product._id)
+                            ? () => setTooltip(false)
+                            : () => setHover(0)}
+                    >
+                        <span>
+                            {index < rating && index + 1 > rating ? (
+                                <BsStarHalf />
+                            ) : index <= rating ? (
+                                <BsStarFill />
+                            ) : index > rating && (
+                                <BsStar />
+                            )}
+                        </span>
+                    </button>
                 );
             })}
         </div>

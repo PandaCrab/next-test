@@ -22,7 +22,10 @@ const LoginPage = () => {
     };
 
     const handleLogin = async () => {
-        const token = await loginUser(login);
+        const token = await loginUser({
+            username: String(login.username).toLowerCase(),
+            password: login.password
+        });
 
         if (token.token) {
             dispatch(getToken(token.token));

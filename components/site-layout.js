@@ -78,7 +78,7 @@ const SiteLayout = ({ children }) => {
     }, [user.info?.admin]);
 
     const onLogin = async () => {
-        const token = await loginUser({ username, password });
+        const token = await loginUser({ username: String(username).toLowerCase(), password });
 
         if (token.token) {
             dispatch(getToken(token.token));
@@ -95,6 +95,12 @@ const SiteLayout = ({ children }) => {
             setErrorMessage(token.message);
             setPassword('');
         }
+    };
+
+    const displayFirstName = (name) => {
+        const nameArr = name.split(' ');
+
+        return nameArr[0];
     };
 
     const toggleDropdown = () => {
@@ -198,7 +204,7 @@ const SiteLayout = ({ children }) => {
                             <>
                                 <div style={{ display: isOpen ? 'flex' : 'none' }} className={styles.dropdown}>
                                     <div className={styles.greeting}>
-                                        Welcome <b>{user.info?.username}</b>
+                                        Welcom <b>{user.info?.username && displayFirstName(user.info?.username)}</b>
                                     </div>
                                     <div
                                         onClick={() => {
@@ -247,6 +253,7 @@ const SiteLayout = ({ children }) => {
                                             value={password}
                                             onChange={({ target }) => setPassword(target.value)}
                                         />
+                                        {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
                                         <div className={styles.dropdownBtnWrapper}>
                                             <button
                                                 onClick={() => {
@@ -265,7 +272,6 @@ const SiteLayout = ({ children }) => {
                                                 Log In
                                             </button>
                                         </div>
-                                        {errorMessage && <div>{errorMessage}</div>}
                                     </div>
                                 </div>
                             </>
