@@ -13,9 +13,9 @@ const ProductComments = ({ product, setProduct, productId }) => {
 	const [comments, setComments] = useState();
 	const [invalid, setInvalid] = useState({
 		message: null,
-		valid: false
+		valid: false,
 	});
-console.log(comments)
+
 	const user = useSelector((state) => state.user.info);
 	const takeProduct = async () => {
 		try {
@@ -33,41 +33,42 @@ console.log(comments)
 		const time = new Date(dateToFormat).toLocaleTimeString();
 		const date = new Date(dateToFormat).toLocaleDateString();
 
-		return (`${time} ${date}`)
+		return `${time} ${date}`;
 	};
 
 	const postComment = async () => {
 		await commentSchema
-		.validate(commentInput)
-		.then(async (value) => {
-			if (value) {
-				await commentProduct(productId, {
-					userId: user?._id || null,
-					userAvatar: user?.avatar ? user.avatart : null,
-					userName: user?.username || null,
-					createdDate: new Date(),
-					message: commentInput
-				});
+			.validate(commentInput)
+			.then(async (value) => {
+				if (value) {
+					await commentProduct(productId, {
+						userId: user?._id || null,
+						userAvatar: user?.avatar ? user.avatart : null,
+						userName: user?.username || null,
+						createdDate: new Date(),
+						message: commentInput,
+					});
 
-				setCommentInput('')
-				setInvalid({
-					message: null,
-					valid: true
-				});
-				takeProduct();
-			}
-		}).catch((error) => {
-			if (error.message) {
-				setInvalid({
-					message: error.message,
-					valid: false,
-				});
-			}
-		});
+					setCommentInput('');
+					setInvalid({
+						message: null,
+						valid: true,
+					});
+					takeProduct();
+				}
+			})
+			.catch((error) => {
+				if (error.message) {
+					setInvalid({
+						message: error.message,
+						valid: false,
+					});
+				}
+			});
 	};
 
 	useEffect(() => {
-		setComments(product.comments)
+		setComments(product?.comments);
 	}, [product]);
 
 	return (
@@ -75,15 +76,13 @@ console.log(comments)
 			<div className={styles.commentAreaWrapper}>
 				<textarea
 					id="commentInput"
-					className={invalid.message 
-						? `${styles.commentInput} ${styles.invalid}` 
-						: `${styles.commentInput}`}
+					className={invalid.message ? `${styles.commentInput} ${styles.invalid}` : `${styles.commentInput}`}
 					type="text"
-					placeholder={invalid.message ?  invalid.message : 'Your comment goes here...'}
+					placeholder={invalid.message ? invalid.message : 'Your comment goes here...'}
 					value={commentInput}
 					onChange={({ target }) => setCommentInput(target.value)}
 				/>
-				<button 
+				<button
 					className={styles.submitBtn}
 					onClick={() => postComment()}
 				>
@@ -91,7 +90,7 @@ console.log(comments)
 				</button>
 			</div>
 			<div className={styles.commentsWrapper}>
-				{comments?.length ?
+				{comments?.length ? (
 					comments.map((comment, index) => (
 						<div
 							key={index}
@@ -119,9 +118,10 @@ console.log(comments)
 								{String(comment.message).charAt(0).toUpperCase() + String(comment.message).slice(1)}
 							</div>
 						</div>
-					)) : (
-						<div>No comments for this product</div> 
-					)}
+					))
+				) : (
+					<div>No comments for this product</div>
+				)}
 			</div>
 		</div>
 	);
