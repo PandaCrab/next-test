@@ -1,0 +1,52 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+
+    .checkboxesContainer {
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .CheckboxWrapper {
+            display: flex;
+            align-items: center;
+
+            .checkbox {
+                margin-right: 5px;
+                width: 10px;
+                height: 10px;
+                border: 1px solid;
+
+                &.checked {
+                    background-color: green;
+                }
+            }
+        }
+    }
+
+    .billingInput {
+        margin-bottom: 5px;
+        padding: 3px 6px;
+        width: 100%;
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+
+        &:last-child {
+            margin-bottom: 10px;
+        }
+    }
+
+    .submitBtn {
+        padding: 3px 6px;
+        background: none;
+        border: 1px solid;
+        border-radius: 5px;
+    }
+}
