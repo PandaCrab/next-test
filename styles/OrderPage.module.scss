@@ -92,7 +92,7 @@
             padding: 6px 12px;
             width: 100%;
             border: 2px solid #bbb;
-            border-radius: 8px;
+            border-radius: 5px;
 
             @include media.mobileS {
                 margin-bottom: 15px;
@@ -103,7 +103,7 @@
             @include media.laptop {
                 margin-bottom: 20px;
                 padding: 6px 12px;
-                font-size: 18px;
+                font-size: 16px;
             }
 
             &.invalid {

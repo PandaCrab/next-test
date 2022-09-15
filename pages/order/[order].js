@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
-import BillingForm from '../../components/billingForm';
+import PaymentForm from '../../components/paymentForm';
 import { clearOrder, getOrderId } from '../../redux/ducks/stuff';
 import { catchSuccess } from '../../redux/ducks/alerts';
 import { createOrder } from '../api/api';
@@ -70,8 +70,8 @@ const OrderForm = () => {
 	const dispatch = useDispatch();
 
 	const clientOrder = useSelector((state) => state.order.clientOrder);
-	const userId = useSelector((state) => state.user.info._id);
-	const userAddress = useSelector((state) => state.user.info.shippingAddress);
+	const userId = useSelector((state) => state.user.info?._id);
+	const userAddress = useSelector((state) => state.user.info?.shippingAddress);
 
 	const handleChange = (target) => {
 		const { name, value } = target;
@@ -254,7 +254,7 @@ const OrderForm = () => {
 						/>
 					</div>
 				</div>
-				<BillingForm
+				<PaymentForm
 					billing={billing}
 					setBilling={setBilling}
 				/>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import styles from '../styles/BillingForm.module.scss';
+import styles from '../styles/PaymentForm.module.scss';
 
-const BillingForm = () => {
-	const [billingType, setBillingType] = useState('online');
-	const [billing, setBilling] = useState({
+const PaymentForm = () => {
+	const [paymentType, setPaymentType] = useState('online');
+	const [payment, setPayment] = useState({
 		cardholder: '',
 		cardNum: '',
 		expiry: '',
@@ -17,7 +17,7 @@ const BillingForm = () => {
 	const changeHandler = ({ target }) => {
 		const { value, name } = target;
 
-		setBilling({
+		setPayment({
 			[name]: value,
 		});
 	};
@@ -28,67 +28,67 @@ const BillingForm = () => {
 				<div className={styles.checkboxWrapper}>
 					<div
 						className={
-							billingType === 'online' ? `${styles.checkbox} ${styles.checked}` : `${styles.checkbox}`
+							paymentType === 'online' ? `${styles.checkbox} ${styles.checked}` : `${styles.checkbox}`
 						}
-						onClick={() => setBillingType('online')}
+						onClick={() => setPaymentType('online')}
 					/>
 					<label>Online with card</label>
 				</div>
 				<div className={styles.checkboxWrapper}>
 					<div
 						className={
-							billingType === 'toCourier' ? `${styles.checkbox} ${styles.checked}` : `${styles.checkbox}`
+							paymentType === 'toCourier' ? `${styles.checkbox} ${styles.checked}` : `${styles.checkbox}`
 						}
-						onClick={() => setBillingType('toCourier')}
+						onClick={() => setPaymentType('toCourier')}
 					/>
 					<label>With cash to courier</label>
 				</div>
 				<div className={styles.checkboxWrapper}>
 					<div
 						className={
-							billingType === 'onPostOffice'
+							paymentType === 'onPostOffice'
 								? `${styles.checkbox} ${styles.checked}`
 								: `${styles.checkbox}`
 						}
-						onClick={() => setBillingType('onPostOffice')}
+						onClick={() => setPaymentType('onPostOffice')}
 					/>
 					<label>With cash on post office</label>
 				</div>
 			</div>
-			{billingType === 'online' && (
-				<div className={styles.billingForm}>
-					<div className={styles.header}>Fill billing information</div>
+			{paymentType === 'online' && (
+				<div className={styles.PaymentForm}>
+					<div className={styles.header}>Fill payment information</div>
 					<input
 						id="cardholder"
-						className={styles.billingInput}
+						className={styles.paymentInput}
 						name="cardholder"
 						placeholder="Enter cardholder name"
-						value={billing.cardholder}
+						value={payment.cardholder}
 						onChange={(value) => changeHandler(value)}
 					/>
 					<input
 						id="cardNum"
-						className={styles.billingInput}
+						className={styles.paymentInput}
 						name="cardNum"
 						placeholder="Enter card number"
-						value={billing.cardNum}
+						value={payment.cardNum}
 						onChange={(value) => changeHandler(value)}
 					/>
 					<div className={styles.row}>
 						<input
 							id="expiry"
-							className={styles.billingInput}
+							className={styles.paymentInput}
 							name="expiry"
 							placeholder="MM/YY"
-							value={billing.expiry}
+							value={payment.expiry}
 							onChange={(value) => changeHandler(value)}
 						/>
 						<input
 							id="cvv"
-							className={styles.billingInput}
+							className={styles.paymentInput}
 							name="cvv"
 							placeholder="Enter cvv code"
-							value={billing.cvv}
+							value={payment.cvv}
 							onChange={(value) => changeHandler(value)}
 						/>
 					</div>
@@ -98,4 +98,4 @@ const BillingForm = () => {
 	);
 };
 
-export default BillingForm;
+export default PaymentForm;
