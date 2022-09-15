@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 
+import BillingForm from '../../components/billingForm';
 import { clearOrder, getOrderId } from '../../redux/ducks/stuff';
 import { catchSuccess } from '../../redux/ducks/alerts';
 import { createOrder } from '../api/api';
@@ -11,267 +12,284 @@ import { addressSchema, userInfoSchema } from '../../helpers/validation';
 import styles from '../../styles/OrderPage.module.scss';
 
 const OrderForm = () => {
-    const [address, setAddress] = useState({
-        street: '',
-        city: '',
-        country: '',
-        zip: '',
-    });
-    const [invalidAddress, setInvalidAddress] = useState({
-        path: {},
-        isValid: false,
-    });
+	const [address, setAddress] = useState({
+		street: '',
+		city: '',
+		country: '',
+		zip: '',
+	});
+	const [invalidAddress, setInvalidAddress] = useState({
+		path: {},
+		isValid: false,
+	});
 
-    const [shipping, setShipping] = useState({
-        name: '',
-        phone: '',
-        optional: '',
-        address: address,
-    });
-    const [invalidUserInfo, setInvalidUserInfo] = useState({
-        path: {},
-        isValid: false,
-    });
+	const [shipping, setShipping] = useState({
+		name: '',
+		phone: '',
+		optional: '',
+		address: address,
+	});
+	const [invalidUserInfo, setInvalidUserInfo] = useState({
+		path: {},
+		isValid: false,
+	});
 
-    const validateAddress = async () => {
-        await addressSchema
-            .validate(address, { abortEarly: false })
-            .then(async (value) => {
-                if (value) {
-                    setInvalidAddress({
-                        path: {},
-                        isValid: true,
-                    });
-                }
-            })
-            .catch((error) => {
-                const validationError = {};
+	const [billing, setBilling] = useState({
+		billingType: '',
+		billingInfo: {},
+	});
 
-                error.inner.forEach((err) => {
-                    if (err.path) {
-                        validationError[err.path] = err.message;
-                    }
-                });
+	const validateAddress = async () => {
+		await addressSchema
+			.validate(address, { abortEarly: false })
+			.then(async (value) => {
+				if (value) {
+					setInvalidAddress({
+						path: {},
+						isValid: true,
+					});
+				}
+			})
+			.catch((error) => {
+				const validationError = {};
 
-                setInvalidAddress({
-                    path: validationError,
-                    isValid: false,
-                });
-            });
-    };
+				error.inner.forEach((err) => {
+					if (err.path) {
+						validationError[err.path] = err.message;
+					}
+				});
 
-    const router = useRouter();
-    const dispatch = useDispatch();
+				setInvalidAddress({
+					path: validationError,
+					isValid: false,
+				});
+			});
+	};
 
-    const clientOrder = useSelector((state) => state.order.clientOrder);
-    const userId = useSelector((state) => state.user.info._id);
-    const userAddress = useSelector((state) => state.user.info.shippingAddress);
+	const router = useRouter();
+	const dispatch = useDispatch();
 
-    const handleChange = (target) => {
-        const { name, value } = target;
-        setShipping({
-            ...shipping,
-            [name]: value,
-        });
-    };
+	const clientOrder = useSelector((state) => state.order.clientOrder);
+	const userId = useSelector((state) => state.user.info._id);
+	const userAddress = useSelector((state) => state.user.info.shippingAddress);
 
-    const addShippingAddress = () => {
-        setAddress(userAddress);
-    };
+	const handleChange = (target) => {
+		const { name, value } = target;
+		setShipping({
+			...shipping,
+			[name]: value,
+		});
+	};
 
-    const onOrderSuccess = async () => {
-        validateAddress();
+	const addShippingAddress = () => {
+		setAddress(userAddress);
+	};
 
-        await userInfoSchema
-            .validate(shipping, { abortEarly: false })
-            .then(async (value) => {
-                if (value) {
-                    const response = await createOrder({
-                        date: new Date(),
-                        userId: userId ? userId : 'not logined',
-                        orderId: router.query.order,
-                        username: shipping.name,
-                        phone: shipping.phone,
-                        optional: shipping.optional,
-                        shippingInfo: address,
-                        orderInfo: {
-                            products: clientOrder,
-                        },
-                    });
+	const onOrderSuccess = async () => {
+		validateAddress();
 
-                    if (response) {
-                        dispatch(catchSuccess('Order success'));
-                        console.log('response ok');
-                        setInvalidUserInfo({
-                            path: {},
-                            isValid: true,
-                        });
+		await userInfoSchema
+			.validate(shipping, { abortEarly: false })
+			.then(async (value) => {
+				if (value) {
+					const response = await createOrder({
+						date: new Date(),
+						userId: userId ? userId : 'not logined',
+						orderId: router.query.order,
+						username: shipping.name,
+						phone: shipping.phone,
+						optional: shipping.optional,
+						shippingInfo: address,
+						orderInfo: {
+							products: clientOrder,
+						},
+					});
 
-                        dispatch(getOrderId(router.query));
-                        dispatch(clearOrder());
+					if (response) {
+						dispatch(catchSuccess('Order success'));
+						console.log('response ok');
+						setInvalidUserInfo({
+							path: {},
+							isValid: true,
+						});
 
-                        router.push('/order/success');
-                    }
-                }
-            })
-            .catch((error) => {
-                const validationError = {};
+						dispatch(getOrderId(router.query));
+						dispatch(clearOrder());
 
-                error.inner.forEach((err) => {
-                    if (err.path) {
-                        validationError[err.path] = err.message;
-                    }
-                });
+						router.push('/order/success');
+					}
+				}
+			})
+			.catch((error) => {
+				const validationError = {};
 
-                setInvalidUserInfo({
-                    path: validationError,
-                    isValid: false,
-                });
-            });
-    };
+				error.inner.forEach((err) => {
+					if (err.path) {
+						validationError[err.path] = err.message;
+					}
+				});
 
-    useEffect(() => {
-        setShipping((prev) => ({
-            ...prev,
-            address: address,
-        }));
-    }, [address]);
+				setInvalidUserInfo({
+					path: validationError,
+					isValid: false,
+				});
+			});
+	};
 
-    return (
-        <div className={styles.orderContainer}>
-            <div className={styles.orderForm}>
-                <label className={styles.formLabel}>Full Name</label>
-                <input
-                    className={
-                        invalidUserInfo.path.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="name"
-                    value={shipping.name}
-                    onChange={({ target }) => handleChange(target)}
-                />
+	useEffect(() => {
+		setShipping((prev) => ({
+			...prev,
+			address: address,
+		}));
+	}, [address]);
 
-                <label className={styles.formLabel}>Contact phone</label>
-                <input
-                    className={
-                        invalidUserInfo.path.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="phone"
-                    value={shipping.phone}
-                    onChange={({ target }) => handleChange(target)}
-                />
+	return (
+		<div className={styles.orderContainer}>
+			<div className={styles.orderForm}>
+				<label className={styles.formLabel}>Full Name</label>
+				<input
+					className={
+						invalidUserInfo.path.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+					}
+					name="name"
+					value={shipping.name}
+					onChange={({ target }) => handleChange(target)}
+				/>
 
-                <label className={styles.formLabel}>
-                    <div>Street</div>
-                    {userAddress && Object.keys(userAddress).length && (
-                        <div className={styles.autocompleteBtn} onClick={() => addShippingAddress()}>
-                            Autocomplete
-                        </div>
-                    )}
-                </label>
-                <input
-                    className={
-                        invalidAddress.path.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="street"
-                    value={address.street}
-                    onChange={({ target }) =>
-                        setAddress({
-                            ...address,
-                            street: target.value,
-                        })
-                    }
-                />
+				<label className={styles.formLabel}>Contact phone</label>
+				<input
+					className={
+						invalidUserInfo.path.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+					}
+					name="phone"
+					value={shipping.phone}
+					onChange={({ target }) => handleChange(target)}
+				/>
 
-                <label className={styles.formLabel}>optional</label>
-                <input
-                    className={
-                        invalidUserInfo.path.optional ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="optional"
-                    value={shipping.optional}
-                    onChange={({ target }) => handleChange(target)}
-                />
+				<label className={styles.formLabel}>
+					<div>Street</div>
+					{userAddress && Object.keys(userAddress).length && (
+						<div
+							className={styles.autocompleteBtn}
+							onClick={() => addShippingAddress()}
+						>
+							Autocomplete
+						</div>
+					)}
+				</label>
+				<input
+					className={
+						invalidAddress.path.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+					}
+					name="street"
+					value={address.street}
+					onChange={({ target }) =>
+						setAddress({
+							...address,
+							street: target.value,
+						})
+					}
+				/>
 
-                <label className={styles.formLabel}>City</label>
-                <input
-                    className={
-                        invalidAddress.path.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="city"
-                    value={address.city}
-                    onChange={({ target }) =>
-                        setAddress({
-                            ...address,
-                            city: target.value,
-                        })
-                    }
-                />
+				<label className={styles.formLabel}>optional</label>
+				<input
+					className={
+						invalidUserInfo.path.optional ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+					}
+					name="optional"
+					value={shipping.optional}
+					onChange={({ target }) => handleChange(target)}
+				/>
 
-                <div className={styles.row}>
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.formLabel}>Country</label>
-                        <input
-                            className={
-                                invalidAddress.path.country
-                                    ? `${styles.formInput} ${styles.invalid}`
-                                    : `${styles.formInput}`
-                            }
-                            name="country"
-                            value={address.country}
-                            onChange={({ target }) =>
-                                setAddress({
-                                    ...address,
-                                    country: target.value,
-                                })
-                            }
-                        />
-                    </div>
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.formLabel}>ZIP</label>
-                        <input
-                            className={
-                                invalidAddress.path.zip
-                                    ? `${styles.formInput} ${styles.invalid}`
-                                    : `${styles.formInput}`
-                            }
-                            name="zip"
-                            value={address.zip}
-                            onChange={({ target }) =>
-                                setAddress({
-                                    ...address,
-                                    zip: target.value,
-                                })
-                            }
-                        />
-                    </div>
-                </div>
+				<label className={styles.formLabel}>City</label>
+				<input
+					className={
+						invalidAddress.path.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+					}
+					name="city"
+					value={address.city}
+					onChange={({ target }) =>
+						setAddress({
+							...address,
+							city: target.value,
+						})
+					}
+				/>
 
-                <button className={styles.submitBtn} onClick={() => onOrderSuccess()}>
-                    Submit
-                </button>
-            </div>
-            <div className={styles.stuffWrapper}>
-                {clientOrder.length &&
-                    clientOrder.map((stuff) => (
-                        <div className={styles.productCard} key={stuff._id}>
-                            <div className={styles.cardContentWrapper}>
-                                <Image
-                                    src={stuff.imgUrl}
-                                    alt={stuff.name}
-                                    width={stuff.width ? `${stuff.width}px` : '150px'}
-                                    height={stuff.height ? `${stuff.height}px` : '200px'}
-                                />
-                                <div className={styles.cardInfo}>
-                                    <div className={styles.stuffTitle}>{stuff.name}</div>
-                                    <div className={styles.stuffColor}>{stuff.color}</div>
-                                    <div className={styles.stuffPrice}>${stuff.price}</div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-            </div>
-        </div>
-    );
+				<div className={styles.row}>
+					<div className={styles.inputWrapper}>
+						<label className={styles.formLabel}>Country</label>
+						<input
+							className={
+								invalidAddress.path.country
+									? `${styles.formInput} ${styles.invalid}`
+									: `${styles.formInput}`
+							}
+							name="country"
+							value={address.country}
+							onChange={({ target }) =>
+								setAddress({
+									...address,
+									country: target.value,
+								})
+							}
+						/>
+					</div>
+					<div className={styles.inputWrapper}>
+						<label className={styles.formLabel}>ZIP</label>
+						<input
+							className={
+								invalidAddress.path.zip
+									? `${styles.formInput} ${styles.invalid}`
+									: `${styles.formInput}`
+							}
+							name="zip"
+							value={address.zip}
+							onChange={({ target }) =>
+								setAddress({
+									...address,
+									zip: target.value,
+								})
+							}
+						/>
+					</div>
+				</div>
+				<BillingForm
+					billing={billing}
+					setBilling={setBilling}
+				/>
+				<button
+					className={styles.submitBtn}
+					onClick={() => onOrderSuccess()}
+				>
+					Submit
+				</button>
+			</div>
+			<div className={styles.stuffWrapper}>
+				{clientOrder.length &&
+					clientOrder.map((stuff) => (
+						<div
+							className={styles.productCard}
+							key={stuff._id}
+						>
+							<div className={styles.cardContentWrapper}>
+								<Image
+									src={stuff.imgUrl}
+									alt={stuff.name}
+									width={stuff.width ? `${stuff.width}px` : '150px'}
+									height={stuff.height ? `${stuff.height}px` : '200px'}
+								/>
+								<div className={styles.cardInfo}>
+									<div className={styles.stuffTitle}>{stuff.name}</div>
+									<div className={styles.stuffColor}>{stuff.color}</div>
+									<div className={styles.stuffPrice}>${stuff.price}</div>
+								</div>
+							</div>
+						</div>
+					))}
+			</div>
+		</div>
+	);
 };
 
 export default OrderForm;
