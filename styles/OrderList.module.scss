@@ -1,0 +1,72 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+.stuffWrapper {
+    width: 400px;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+
+    @include media.mobileS {
+        display: none;
+    }
+
+    @include media.tablet {
+        width: 350px;
+        max-height: 300px;
+        display: flex;
+    }
+
+    @include media.laptop {
+        width: 450px;
+        max-height: 500px;
+        display: flex;
+    }
+
+    .productCard {
+        margin: 0 0 20px 20px;
+        padding-top: 15px;
+        width: 300px;
+        height: 200px;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 2px 3px 10px gray;
+
+        @include media.tablet {
+            width: 200px;
+            height: 150px;
+            font-size: 14px;
+        }
+
+        @include media.laptop {
+            width: 250px;
+            height: 200px;
+            font-size: 16px;
+        }
+
+        .cardContentWrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+
+            .cardInfo {
+                width: 200px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+
+                @include media.laptop {
+                    font-size: 18px;
+                }
+
+                .stuffTitle {
+                    text-align: end;
+                    margin-bottom: 15px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}

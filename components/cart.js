@@ -6,17 +6,20 @@ import styles from '../styles/Cart.module.scss';
 import { useRouter } from 'next/router';
 
 const Cart = () => {
-    const ordered = useSelector(state => state.order.clientOrder);
-    const route = useRouter();
+	const ordered = useSelector((state) => state.order.clientOrder);
+	const route = useRouter();
 
-    return (
-        <div className={styles.cartContainer} onClick={() => route.push('/cartPage')}>
-            <div className={styles.cart}><BsCart /></div>
-            { ordered && ordered.length ? (
-                <div className={styles.badge}>{ordered.length}</div>
-            ) : null }
-        </div>
-    );
+	return (
+		<div
+			className={styles.cartContainer}
+			onClick={() => route.push('/cartPage')}
+		>
+			<div className={styles.cart}>
+				<BsCart />
+			</div>
+			{ordered && ordered.length ? <div className={styles.badge}>{ordered.length}</div> : null}
+		</div>
+	);
 };
 
 export default Cart;

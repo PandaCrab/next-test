@@ -6,128 +6,126 @@ import { AiFillHeart, AiOutlineDelete } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 
 import StarRating from './star-rating';
-import { inOrder, deleteFromOrder } from '../redux/ducks/stuff';
+import { inOrder, deleteFromOrder } from '../redux/ducks/order';
 import { getInfo } from '../redux/ducks/user';
 import { getUserLikes, getUserInfo } from '../pages/api/api';
 
 import styles from '../styles/ProductCard.module.scss';
 
 const ProductCart = (props) => {
-    const [product, setProduct] = useState(props.product);
+	const [product, setProduct] = useState(props.product);
 
-    const user = useSelector((state) => state.user.info);
-    const clientOrder = useSelector((state) => state.order.clientOrder);
+	const user = useSelector((state) => state.user.info);
+	const clientOrder = useSelector((state) => state.order.clientOrder);
 
-    const dispatch = useDispatch();
-    const router = useRouter();
+	const dispatch = useDispatch();
+	const router = useRouter();
 
-    const routeToProductInfo = (id) => {
-        router.push(`/shop/${id}`);
-    };
+	const routeToProductInfo = (id) => {
+		router.push(`/shop/${id}`);
+	};
 
-    const takeUserInfo = async () => {
-        const info = await getUserInfo(user._id);
+	const takeUserInfo = async () => {
+		const info = await getUserInfo(user._id);
 
-        dispatch(getInfo(info));
-    };
+		dispatch(getInfo(info));
+	};
 
-    const pushToOrder = (product) => {
-        const idInOrder = clientOrder.length;
-        const { _id, name, price, imgUrl, color, quantity, width, height } = product;
+	const pushToOrder = (product) => {
+		const idInOrder = clientOrder.length;
+		const { _id, name, price, imgUrl, color, quantity, width, height } = product;
 
-        dispatch(
-            inOrder({
-                id: idInOrder,
-                _id,
-                name,
-                price,
-                imgUrl,
-                color,
-                quantity,
-                width,
-                height,
-            })
-        );
-    };
+		dispatch(
+			inOrder({
+				id: idInOrder,
+				_id,
+				name,
+				price,
+				imgUrl,
+				color,
+				quantity,
+				width,
+				height,
+			})
+		);
+	};
 
-    const handleLike = async (productId) => {
-        try {
-            const postLikes = await getUserLikes(user._id, productId);
+	const handleLike = async (productId) => {
+		try {
+			const postLikes = await getUserLikes(user._id, productId);
 
-            if (postLikes.message === 'like' || 'unlike') {
-                await takeUserInfo();
-            }
+			if (postLikes.message === 'like' || 'unlike') {
+				await takeUserInfo();
+			}
 
-            return;
-        } catch (err) {
-            console.log(err);
-        }
-    };
+			return;
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
-    useEffect(() => {
-        setProduct(props.product);
-    }, [props]);
+	useEffect(() => {
+		setProduct(props.product);
+	}, [props]);
 
-    return (
-        <div className={styles.productWrapper}>
-            <div className={styles.productCard}>
-                <div className={styles.cardContentWrapper}>
-                    <div className={styles.imageWrapper}>
-                        <Image
-                            src={product.imgUrl}
-                            alt={product.name}
-                            onClick={() => routeToProductInfo(product._id)}
-                            width={product.width ? `${product.width}px` : '100px'}
-                            height={product.height ? `${product.height}px` : '150px'}
-                        />
-                    </div>
-                    <div className={styles.cardInfo}>
-                        <div className={styles.productTitle}>{product.name}</div>
-                        <div className={styles.productColor}>{product.color}</div>
-                        <div className={styles.productPrice}>${product.price}</div>
-                        {router.pathname === '/cartPage' ? null : (
-                            <StarRating product={product} />
-                        )}
-                    </div>
-                </div>
-                {router.pathname === '/cartPage' ? (
-                    <div className={styles.cardButtons}>
-                        <button 
-                            onClick={() => dispatch(deleteFromOrder(product))}
-                            className={styles.deleteButton}
-                        >
-                            <AiOutlineDelete />
-                        </button>
-                    </div>
-                ) : (
-                    <div className={styles.cardButtons}>
-                        <button
-                            onClick={() => pushToOrder(product)}
-                            className={
-                                clientOrder.find((x) => x._id === product._id)
-                                    ? `${styles.cartButton} ${styles.ordered}`
-                                    : `${styles.cartButton}`
-                            }
-                        >
-                            <BsCart />
-                        </button>
-                        {user?._id && (
-                            <button
-                                className={
-                                    user.likes?.find((x) => x._id === product._id)
-                                        ? `${styles.cartButton} ${styles.liked}`
-                                        : `${styles.cartButton}`
-                                }
-                                onClick={() => handleLike(product._id)}
-                            >
-                                <AiFillHeart />
-                            </button>
-                        )}
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+	return (
+		<div className={styles.productWrapper}>
+			<div className={styles.productCard}>
+				<div className={styles.cardContentWrapper}>
+					<div className={styles.imageWrapper}>
+						<Image
+							src={product.imgUrl}
+							alt={product.name}
+							onClick={() => routeToProductInfo(product._id)}
+							width={product.width ? `${product.width}px` : '100px'}
+							height={product.height ? `${product.height}px` : '150px'}
+						/>
+					</div>
+					<div className={styles.cardInfo}>
+						<div className={styles.productTitle}>{product.name}</div>
+						<div className={styles.productColor}>{product.color}</div>
+						<div className={styles.productPrice}>${product.price}</div>
+						{router.pathname === '/cartPage' ? null : <StarRating product={product} />}
+					</div>
+				</div>
+				{router.pathname === '/cartPage' ? (
+					<div className={styles.cardButtons}>
+						<button
+							onClick={() => dispatch(deleteFromOrder(product))}
+							className={styles.deleteButton}
+						>
+							<AiOutlineDelete />
+						</button>
+					</div>
+				) : (
+					<div className={styles.cardButtons}>
+						<button
+							onClick={() => pushToOrder(product)}
+							className={
+								clientOrder.find((x) => x._id === product._id)
+									? `${styles.cartButton} ${styles.ordered}`
+									: `${styles.cartButton}`
+							}
+						>
+							<BsCart />
+						</button>
+						{user?._id && (
+							<button
+								className={
+									user.likes?.find((x) => x._id === product._id)
+										? `${styles.cartButton} ${styles.liked}`
+										: `${styles.cartButton}`
+								}
+								onClick={() => handleLike(product._id)}
+							>
+								<AiFillHeart />
+							</button>
+						)}
+					</div>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default ProductCart;

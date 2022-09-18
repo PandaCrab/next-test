@@ -1,12 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Image from 'next/image';
 
-import PaymentForm from '../../components/paymentForm';
-import { clearOrder, getOrderId } from '../../redux/ducks/stuff';
-import { catchSuccess } from '../../redux/ducks/alerts';
-import { createOrder } from '../api/api';
+import OrderList from '../../components/orderList';
+import { fillShipping, getOrderId } from '../../redux/ducks/order';
 import { addressSchema, userInfoSchema } from '../../helpers/validation';
 
 import styles from '../../styles/OrderPage.module.scss';
@@ -32,11 +29,6 @@ const OrderForm = () => {
 	const [invalidUserInfo, setInvalidUserInfo] = useState({
 		path: {},
 		isValid: false,
-	});
-
-	const [billing, setBilling] = useState({
-		billingType: '',
-		billingInfo: {},
 	});
 
 	const validateAddress = async () => {
@@ -69,8 +61,6 @@ const OrderForm = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 
-	const clientOrder = useSelector((state) => state.order.clientOrder);
-	const userId = useSelector((state) => state.user.info?._id);
 	const userAddress = useSelector((state) => state.user.info?.shippingAddress);
 
 	const handleChange = (target) => {
@@ -92,32 +82,16 @@ const OrderForm = () => {
 			.validate(shipping, { abortEarly: false })
 			.then(async (value) => {
 				if (value) {
-					const response = await createOrder({
-						date: new Date(),
-						userId: userId ? userId : 'not logined',
-						orderId: router.query.order,
-						username: shipping.name,
-						phone: shipping.phone,
-						optional: shipping.optional,
-						shippingInfo: address,
-						orderInfo: {
-							products: clientOrder,
-						},
+					console.log('response ok');
+					setInvalidUserInfo({
+						path: {},
+						isValid: true,
 					});
 
-					if (response) {
-						dispatch(catchSuccess('Order success'));
-						console.log('response ok');
-						setInvalidUserInfo({
-							path: {},
-							isValid: true,
-						});
+					dispatch(getOrderId(router.query));
+					dispatch(fillShipping(shipping));
 
-						dispatch(getOrderId(router.query));
-						dispatch(clearOrder());
-
-						router.push('/order/success');
-					}
+					router.push(`/order/payment`);
 				}
 			})
 			.catch((error) => {
@@ -254,40 +228,14 @@ const OrderForm = () => {
 						/>
 					</div>
 				</div>
-				<PaymentForm
-					billing={billing}
-					setBilling={setBilling}
-				/>
 				<button
 					className={styles.submitBtn}
 					onClick={() => onOrderSuccess()}
 				>
-					Submit
+					Go to Payment
 				</button>
 			</div>
-			<div className={styles.stuffWrapper}>
-				{clientOrder.length &&
-					clientOrder.map((stuff) => (
-						<div
-							className={styles.productCard}
-							key={stuff._id}
-						>
-							<div className={styles.cardContentWrapper}>
-								<Image
-									src={stuff.imgUrl}
-									alt={stuff.name}
-									width={stuff.width ? `${stuff.width}px` : '150px'}
-									height={stuff.height ? `${stuff.height}px` : '200px'}
-								/>
-								<div className={styles.cardInfo}>
-									<div className={styles.stuffTitle}>{stuff.name}</div>
-									<div className={styles.stuffColor}>{stuff.color}</div>
-									<div className={styles.stuffPrice}>${stuff.price}</div>
-								</div>
-							</div>
-						</div>
-					))}
-			</div>
+			<OrderList />
 		</div>
 	);
 };

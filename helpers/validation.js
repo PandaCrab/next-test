@@ -29,14 +29,17 @@ export const phoneSchema = yup.object().shape({
 		.required('Enter a contact phone'),
 });
 
-export const paymentValidation = Yup.object().shape({
-	cardholder: Yup.string()
+export const paymentValidation = yup.object().shape({
+	cardholder: yup
+		.string()
 		.matches(/^((?:[A-Za-z]+ ?){1,3})$/, 'Enter correct cardholder name')
 		.required('Enter a card holder name'),
-	cardNum: Yup.string()
+	cardNum: yup
+		.string()
 		.matches(/^([0-9]){4} ([0-9]){4} ([0-9]){4} ([0-9]){4}$/, 'Enter valid card number')
 		.required('Enter a card number'),
-	expire: Yup.string()
+	expire: yup
+		.string()
 		.test('test-credit-card-expiration-date', 'Date has past', (expirationDate) => {
 			if (!expirationDate) {
 				return false;
@@ -57,7 +60,8 @@ export const paymentValidation = Yup.object().shape({
 			return true;
 		})
 		.required('Enter expire date'),
-	cvv: Yup.string()
+	cvv: yup
+		.string()
 		.matches(/^\d{3}$/, 'Invalid cvc')
 		.required('Enter a cvc'),
 });
