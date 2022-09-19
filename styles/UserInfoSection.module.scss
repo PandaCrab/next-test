@@ -1,0 +1,323 @@
+@use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
+
+.infoWrapper {
+    padding: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    line-height: 24px;
+    position: relative;
+
+    @include media.mobileS {
+        flex-direction: column;
+        font-size: 12px;
+        line-height: normal;
+    }
+
+    @include media.laptop {
+        flex-direction: row;
+        font-size: 16px;
+    }
+
+    @include media.desktop {
+        font-size: 32px;
+    }
+
+    .userInfoWrapper {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        @include media.laptop {
+            margin-right: 150px;
+        }
+
+        .userProfileHeader {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+
+            @include media.desktop {
+                font-size: 32px;
+            }
+
+            .userPhotoWrapper {
+                margin-right: 15px;
+                font-size: 82px;
+                border: 5px solid;
+                border-radius: 50%;
+
+                @include media.mobileS {
+                    width: 65px;
+                    height: 65px;
+                    font-size: 55px;
+                }
+
+                @include media.laptop {
+                    padding: 0;
+                    width: auto;
+                    height: auto;
+                    display: flex;
+                    font-size: 82px;
+                }
+
+                @include media.desktop {
+                    font-size: 145px;
+                }
+            }
+        }
+
+        .userAddressInfo {
+            font-size: 12px;
+
+            @include media.laptop {
+                font-size: 24px;
+            }
+
+            @include media.desktop {
+                font-size: 32px;
+            }
+        }
+
+        .userPhoneWrapper {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+
+            @include media.mobileS {
+                font-size: 20px;
+            }
+
+            @include media.laptop {
+                font-size: 28px;
+            }
+
+            @include media.desktop {
+                font-size: 32px;
+            }
+
+            .phoneInput {
+                padding: 5px 10px;
+                font-size: 18px;
+                border-radius: 5px;
+
+                @include media.mobileS {
+                    padding: 3px 5px;
+                    font-size: 12px;
+                }
+
+                @include media.laptop {
+                    padding: 6px 12px;
+                    font-size: 16px;
+                }
+
+                @include media.desktop {
+                    width: 400px;
+                    font-size: 32px;
+                }
+
+                &.invalid {
+                    border-color: red;
+
+                    &::placeholder {
+                        color: red;
+                    }
+                }
+            }
+
+            .changeBtn {
+                margin-left: 15px;
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                background: none;
+                border: 1px solid;
+                border-radius: 50%; 
+
+                @include media.mobileS {
+                    margin-left: 10px;
+                }
+
+                @include media.desktop {
+                    padding: 10px;
+                    font-size: 28px;
+                }
+            }
+        }
+
+        .descriptionWrapper {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            position: relative;
+            
+            @include media.mobileS {
+                font-size: 13px;
+            }
+
+            @include media.laptop {
+                font-size: 18px;
+            }
+
+            @include media.desktop {
+                font-size: 32px;
+            }
+
+            .descriptionOutput {
+                margin-left: 10px;
+                padding: 5px;
+                width: 15px;
+                height: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                border: 1px solid;
+                border-radius: 50%;
+                cursor: default;
+
+                @include media.mobileS {
+                    margin-left: 5px;
+                    position: relative;
+                    left: -225px;
+                    bottom: -10px;
+                }
+
+                @include media.mobileM {
+                    margin-left: 3px;
+                    left: 0;
+                    bottom: 0;
+                }
+
+                @include media.laptop {
+                    margin-left: 10px;
+                    width: 20px;
+                    height: 20px;
+                    font-size: 16px;
+                    left: -5px;
+                }
+
+                @include media.desktop {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 24px;
+                    position: relative;
+                    left: -70px;
+                }
+            }
+
+            .description {
+                padding: 12px;
+                width: 400px;
+                background-color: rgb(243, 243, 243);
+                text-align: center;
+                border: 1px solid #bbbbbb;
+                border-radius: 5px;
+                box-shadow: 0 0 5px gray;
+                position: absolute;
+                top: -120px;
+                right: 0;
+
+                @include media.mobileS {
+                    padding: 6px;
+                    width: 250px;
+                    font-size: 12px;
+                    top: -70px;
+                }
+
+                @include media.laptop {
+                    padding: 12px;
+                    width: 450px;
+                    font-size: 16px;
+                    top: -90px;
+                }
+
+                @include media.desktop {
+                    width: 600px;
+                    font-size: 24px;
+                    top: -120px;
+                }
+            }
+        }
+    }
+
+    .subInfoWrapper {
+        width: 250px;
+        display: flex;
+        flex-direction: column;
+
+        @include media.mobileS {
+            width: 100%;
+        }
+
+        @include media.laptop {
+            width: 250px;
+        }
+
+        @include media.desktop {
+            width: 500px;
+        }
+
+        .inBucket, 
+        .likes {
+            margin-bottom: 5px;
+            cursor: pointer;
+
+            .itemsHeader {
+                padding: 5px;
+                background: #f8f8f8;
+                border: 1px solid #bbbbbb;
+                border-radius: 5px 5px 0 0;
+                text-align: center;
+            }
+
+            .itemsWrapper {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border: 1px solid #bbbbbb;
+                max-height: 600px;
+                overflow-y: scroll;
+
+                @include media.mobileS {
+                    max-height: 250px;
+                }
+
+                @include media.laptop {
+                    max-height: 500px;
+                }
+
+                .items{
+                    margin-bottom: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .imageWrapper {
+                        width: 80%;
+                        display: flex;
+                        justify-content: center;
+
+                        @include media.mobileS {
+                            width: 100px;
+                        }
+                        
+                        @include media.laptop {
+                            width: 80%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
