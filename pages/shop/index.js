@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { interval, map, take, repeat } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 
-import SearchBar from '../../components/searchbar';
+import { SearchBar, ProductCard } from '../../components';
 import { storeStuff } from '../../redux/ducks/stuff';
 import { data$ } from '../api/api';
 
 import styles from '../../styles/Shop.module.scss';
-import ProductCart from '../../components/productCard';
 
 const Shop = () => {
 	const [stuffs, setStuffs] = useState([]);
@@ -112,7 +111,7 @@ const Shop = () => {
 				) : stuffs ? (
 					<div className={styles.productWrapper}>
 						{stuffs.map((product) => (
-							<ProductCart
+							<ProductCard
 								key={product._id}
 								product={product}
 							/>

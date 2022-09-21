@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import { ProductCard } from '../components';
+
 import styles from '../styles/CartPage.module.scss';
-import ProductCart from '../components/productCard';
 
 const CartPage = () => {
 	const router = useRouter();
@@ -13,14 +14,13 @@ const CartPage = () => {
 	return (
 		<div className={styles.cartContainer}>
 			<div className={styles.productWrapper}>
-				{cart.length
-					? cart.map((stuff, index) => (
-							<ProductCart
-								key={index}
-								product={stuff}
-							/>
-					  ))
-					: null}
+				{cart.length &&
+					cart.map((stuff, index) => (
+						<ProductCard
+							key={index}
+							product={stuff}
+						/>
+					))}
 			</div>
 			{cart.length ? (
 				<button

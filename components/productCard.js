@@ -12,7 +12,7 @@ import { getUserLikes, getUserInfo } from '../pages/api/api';
 
 import styles from '../styles/ProductCard.module.scss';
 
-const ProductCart = (props) => {
+const ProductCard = (props) => {
 	const [product, setProduct] = useState(props.product);
 
 	const user = useSelector((state) => state.user.info);
@@ -128,4 +128,4 @@ const ProductCart = (props) => {
 	);
 };
 
-export default ProductCart;
+export default ProductCard;

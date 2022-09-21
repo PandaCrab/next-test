@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import OrderList from '../../components/orderList';
+import { OrderList } from '../../components';
 import { fillShipping, getOrderId } from '../../redux/ducks/order';
 import { addressSchema, userInfoSchema } from '../../helpers/validation';
 

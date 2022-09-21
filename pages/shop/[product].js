@@ -6,7 +6,7 @@ import { takeOneProduct } from '../api/api';
 
 import styles from '../../styles/ProductPage.module.scss';
 import Image from 'next/image';
-import ProductComments from '../../components/productComments';
+import { ProductComments } from '../../components';
 
 const SingleProduct = () => {
 	const [productId, setProductId] = useState('');
@@ -94,9 +94,15 @@ const SingleProduct = () => {
 				) : (
 					<div>Somthing wrong</div>
 				)
-			) : tab === 'comments' ? (
-				<ProductComments product={product} setProduct={setProduct} productId={productId} />
-			) : null}
+			) : (
+				tab === 'comments' && (
+					<ProductComments
+						product={product}
+						setProduct={setProduct}
+						productId={productId}
+					/>
+				)
+			)}
 		</div>
 	);
 };

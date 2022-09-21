@@ -3,14 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RiSettings4Line } from 'react-icons/ri';
 
+import LoginPage from '../login';
 import { updateUserInfo } from '../api/api';
 import { getInfo } from '../../redux/ducks/user';
 import { catchSuccess, catchError } from '../../redux/ducks/alerts';
 import { addressSchema, phoneSchema } from '../../helpers/validation';
-import LoginPage from '../login';
-import AddressForm from '../../components/addressForm';
-import UserInfoSection from '../../components/userInfoSection';
-import DelitionAccount from '../../components/DelitionAccount';
+import { UserInfoSection, DelitionAccount, AddressForm } from '../../components';
 
 import styles from '../../styles/AccountPage.module.scss';
 
@@ -51,7 +49,7 @@ const AccountPage = () => {
 		if (info) {
 			if (info.phone) {
 				await phoneSchema
-					.validate(phone)
+					.validate(info)
 					.then(async (value) => {
 						if (value) {
 							const res = await updateUserInfo(id, info);
@@ -88,9 +86,9 @@ const AccountPage = () => {
 					});
 			}
 
-			if (info.shippingAddress === addressForm) {
+			if (info.shippingAddress) {
 				await addressSchema
-					.validate(addressForm, { abortEarly: false })
+					.validate(info, { abortEarly: false })
 					.then(async (value) => {
 						if (value) {
 							const res = await updateUserInfo(id, info);

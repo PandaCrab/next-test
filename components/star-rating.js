@@ -35,8 +35,8 @@ const StarRating = ({ product }) => {
 	};
 
 	const getRating = async (rated) => {
-		putRatedInUserData(rated + 1);
-		const catchRes = await rateProduct(product._id, { rated: rated + 1 });
+		putRatedInUserData(rated);
+		const catchRes = await rateProduct(product._id, { rated: rated });
 
 		setHover(0);
 		dispatch(storeStuff(catchRes));
@@ -59,22 +59,13 @@ const StarRating = ({ product }) => {
 								: `${styles.starButton} ${styles.unrated}`
 						}
 						onClick={
-							userInfo?._id
-								? userInfo?.rated?.find((el) => el.productId === product._id)
-									? null
-									: () => getRating(index)
-								: null
+							userInfo?._id && userInfo?.rated?.find((el) => el.productId === product._id)
+								? null
+								: () => getRating(index)
 						}
 						onMouseEnter={
-							userInfo?._id
-								? userInfo?.rated?.find((el) => el.productId === product._id)
-									? () => {
-											setTooltip(true);
-									  }
-									: () => {
-											setHover(index);
-									  }
-								: null
+							userInfo?._id && userInfo?.rated?.find((el) => el.productId === product._id)
+								? () => { setTooltip(true); } : () => { setHover(index); }
 						}
 						onMouseLeave={
 							userInfo?.rated?.find((el) => el.productId === product._id)

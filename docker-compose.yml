@@ -4,8 +4,8 @@ services:
   web:
     build: .
     command: yarn start
-    ports: [3000:3000]
+    ports: [ 3000:3000 ]
   server:
     build: ../node-test-app
     command: npm start
-    ports: [4000:4000]
+    ports: [ 4000:4000 ]

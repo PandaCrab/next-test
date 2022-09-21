@@ -5,7 +5,7 @@ import {
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch'
 
-import type { storageData,} from "../../types";
+import type { storageData,} from '../../types';
 
 const url = 'http://localhost:4000';
 
@@ -26,7 +26,7 @@ const fetchFunc = (url: string, method: string, data?: any) => {
 };
 
 //Product section
-export const data$ = fromFetch('http://localhost:4000/storage')
+export const data$ = fromFetch(url + '/storage')
     .pipe(
         switchMap(response => {
             if (response.ok) {
@@ -171,7 +171,7 @@ export const getUserOrders = async (userId) => {
 
 export const getUserOrder = async (orderId, userId) => {
     try {
-        const catchRes = await fetchFunc(url + `/orders/userOrders/${orderId}`, "POST", userId);
+        const catchRes = await fetchFunc(url + `/orders/userOrders/${orderId}`, 'POST', userId);
 
         return catchRes.json();
     } catch (err) {
@@ -266,7 +266,7 @@ export const getUserLikes = async (userId, stuffId) => {
 //auth and registration section
 export const loginUser = async (credentials) => {
     try {
-        const catchRes = await fetchFunc('http://localhost:4000/auth', 'POST', credentials);
+        const catchRes = await fetchFunc(url + '/auth', 'POST', credentials);
         
         return catchRes.json();
     } catch (err) {
