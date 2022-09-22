@@ -1,5 +1,10 @@
 @use 'mixins/MediaMixins' as media;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+$black: black;
 
 .adminPageContainer {
     width: 900px;
@@ -51,7 +56,7 @@
             padding: 4px 8px;
             width: 70px;
             background: none;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.mobileS {
@@ -65,8 +70,8 @@
             }
 
             &:hover {
-                color: black;
-                border-color: black;
+                color: $black;
+                border-color: $black;
                 box-shadow: 0 0 3px;
             }
 
@@ -86,7 +91,7 @@
         justify-content: space-around;
         font-size: 18px;
         font-weight: bold;
-        border-bottom: 1px solid #bbbbbb;
+        border-bottom: 1px solid $lightgrayBorder;
 
         @include media.mobileS {
             padding: 6px;
@@ -113,7 +118,7 @@
 
         .menuButton {
             padding: 5px;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
             cursor: pointer;
 

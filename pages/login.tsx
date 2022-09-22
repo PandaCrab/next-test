@@ -5,10 +5,19 @@ import { useRouter } from 'next/router';
 import { loginUser } from './api/api';
 import { getInfo, getToken } from '../redux/ducks/user';
 
+import type {
+    UserInfoResponse
+} from '../types/types';
+
 import styles from '../styles/Login.module.scss';
 
+interface Login {
+    username: string;
+    password: string;
+};
+
 const LoginPage = () => {
-    const [login, setLogin] = useState({
+    const [login, setLogin] = useState<Login>({
         username: '',
         password: '',
     });
@@ -22,16 +31,16 @@ const LoginPage = () => {
     };
 
     const handleLogin = async () => {
-        const token = await loginUser({
+        const userInfo: UserInfoResponse = await loginUser({
             username: String(login.username).toLowerCase(),
             password: login.password,
         });
 
-        if (token.token) {
-            dispatch(getToken(token.token));
-            dispatch(getInfo(token.user));
+        if (userInfo.token) {
+            dispatch(getToken(userInfo.token));
+            dispatch(getInfo(userInfo.user));
 
-            setToken(token.token);
+            setToken(userInfo.token);
 
             setLogin({ username: '', password: '' });
 
@@ -39,7 +48,7 @@ const LoginPage = () => {
                 router.push('/');
             }
         } else {
-            setError(token.message);
+            setError(userInfo.message);
             setLogin({ ...login, password: '' });
         }
     };

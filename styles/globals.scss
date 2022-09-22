@@ -1,6 +1,11 @@
 @use 'mixins/MediaMixins.scss' as media;
 @use 'mixins/ScrollbarMixin.module.scss' as *;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$black: black;
+$linkHover: #b7b7b7;
+
 html,
 body {
     margin: 0;
@@ -8,10 +13,10 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
-    @include scrollbars(1px, #bbbbbb, none);
+    @include scrollbars(1px, $lightgrayBorder, none);
 
     @include media.laptop {
-        @include scrollbars(3px, #bbbbbb, none);
+        @include scrollbars(3px, $lightgrayBorder, none);
     };
 }
 
@@ -28,7 +33,7 @@ body {
     margin: 10px;
     padding: 5px;
     background: none;
-    border: 1px solid #bbbbbb;
+    border: 1px solid $lightgrayBorder;
     border-radius: 5px;
 
     @include media.mobileS {
@@ -49,12 +54,12 @@ body {
     }
 
     &:hover {
-        border-color: black;
-        box-shadow: 0 2px 10px gray;
+        border-color: $black;
+        box-shadow: 0 2px 10px $gray;
     }
 
     &:active {
-        box-shadow: 0 0 5px gray;
+        box-shadow: 0 0 5px $gray;
     }
 }
 
@@ -64,7 +69,7 @@ a {
 }
 
 a:hover {
-    color: #b7b7b7;
+    color: $linkHover;
 }
 
 * {

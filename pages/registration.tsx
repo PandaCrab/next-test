@@ -9,8 +9,27 @@ import { catchError, catchSuccess } from '../redux/ducks/alerts';
 
 import styles from '../styles/Registration.module.scss';
 
+interface RegState {
+    username: string;
+    email: string;
+    password: string;
+    phone: string;
+    age: number;
+}
+
+interface Invalid {
+    path: {
+        username?: string;
+        email?: string;
+        password?: string;
+        phone?: string;
+        age?: string
+    } | null;
+    isInvalid: boolean;
+}
+
 const RegistrationPage = () => {
-    const [reg, setReg] = useState({
+    const [reg, setReg] = useState<RegState>({
         username: '',
         email: '',
         password: '',
@@ -18,7 +37,7 @@ const RegistrationPage = () => {
         age: 0,
     });
 
-    const [invalid, setInvalid] = useState({
+    const [invalid, setInvalid] = useState<Invalid>({
         path: {},
         isInvalid: true,
     });
@@ -27,15 +46,15 @@ const RegistrationPage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const takeToken = localStorage.getItem('token');
-        const token = JSON.parse(takeToken);
+        const takeToken: string = localStorage.getItem('token');
+        const token: string = JSON.parse(takeToken);
 
         if (token) {
             router.push('/');
         }
     }, []);
 
-    const handleChange = (target) => {
+    const handleChange = (target: {name: string, value: string | number}) => {
         const { name, value } = target;
         setReg({
             ...reg,
@@ -61,7 +80,7 @@ const RegistrationPage = () => {
                         dispatch(getInfo(newUser.user));
 
                         setInvalid({
-                            path: {},
+                            path: null,
                             isInvalid: false,
                         });
 
@@ -70,7 +89,7 @@ const RegistrationPage = () => {
                             email: '',
                             password: '',
                             phone: '',
-                            age: '',
+                            age: 0,
                         });
 
                         dispatch(catchSuccess('Account created'));

@@ -1,14 +1,18 @@
 @use 'mixins/MediaMixins.scss' as media;
 
+$gray: gray;
+$white: white;
+$red: red;
+
 .addressFormWrapper {
     padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: white;
+    background: $white;
     border: 1px solid;
     border-radius: 5px;
-    box-shadow: 0 2px 10px gray;
+    box-shadow: 0 2px 10px $gray;
     position: absolute;
     top: 15%;
     left: 5%;
@@ -64,10 +68,10 @@
             }
 
             &.invalid {
-                border-color: red;
+                border-color: $red;
 
                 &::placeholder {
-                    color: red;
+                    color: $red;
                 }
             }
         }

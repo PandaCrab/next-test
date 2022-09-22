@@ -1,6 +1,11 @@
 @use 'mixins/MediaMixins' as media;
 @use 'mixins/ScrollbarMixin.module.scss' as *;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+
 .cartContainer {
     padding: 40px;
     width: 1600px;
@@ -41,7 +46,7 @@
         align-items: center;
         overflow-x: scroll;
 
-        @include scrollbars(1px, #bbbbbb, none);
+        @include scrollbars(1px, $lightgrayBorder, none);
     }
 }
 
@@ -50,7 +55,7 @@
     width: 150px;
     display: flex;
     background: none;
-    border: 1px solid #bbbbbb;
+    border: 1px solid $lightgrayBorder;
     border-radius: 5px;
 
     @include media.mobileS {
@@ -68,10 +73,10 @@
     }
 
     &:hover {
-        box-shadow: 0 0 6px gray;
+        box-shadow: 0 0 6px $gray;
     }
 
     &:active {
-        box-shadow: 0 0 3px gray;
+        box-shadow: 0 0 3px $gray;
     }
 }

@@ -1,11 +1,14 @@
 @use 'mixins/MediaMixins' as media;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+
 .container {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid #bbbbbb;
+    border: 1px solid $lightgrayBorder;
     border-radius: 5px;
 
     @include media.mobileS {
@@ -21,7 +24,7 @@
         align-self: flex-end;
         justify-content: center;
         font-size: 14px;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 50%;
     }
 
@@ -49,7 +52,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-top: 1px solid #bbbbbb;
+        border-top: 1px solid $lightgrayBorder;
 
         .shippingInfo {
             margin-right: 50px;
@@ -82,7 +85,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-left: 1px solid #bbbbbb;
+            border-left: 1px solid $lightgrayBorder;
             overflow-y: scroll;
 
             @include media.mobileS {
@@ -113,8 +116,8 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                border-radius: 1px solid #bbb;
-                box-shadow: 2px 3px 10px gray;
+                border-radius: 1px solid $lightgrayBorder;
+                box-shadow: 2px 3px 10px $gray;
 
                 @include media.mobileS {
                     margin: 0;
@@ -123,7 +126,7 @@
                     width: 100px;
                     height: 150px;
                     font-size: 10px;
-                    box-shadow: 0 0 3px gray;
+                    box-shadow: 0 0 3px $gray;
                 }
 
                 @include media.tablet {

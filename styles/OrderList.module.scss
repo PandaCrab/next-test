@@ -1,5 +1,7 @@
 @use 'mixins/MediaMixins.scss' as media;
 
+$gray: gray;
+
 .stuffWrapper {
     width: 400px;
     max-height: 600px;
@@ -31,7 +33,7 @@
         height: 200px;
         display: flex;
         justify-content: space-between;
-        box-shadow: 2px 3px 10px gray;
+        box-shadow: 2px 3px 10px $gray;
 
         @include media.tablet {
             width: 200px;

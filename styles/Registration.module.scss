@@ -1,5 +1,9 @@
 @use 'mixins/MediaMixins' as media;
 
+$lightgrayBorder: #bbbbbb;
+$black: black;
+$red: red;
+
 .regForm {
     padding: 12px;
     width: 500px;
@@ -7,7 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #bbbbbb;
+    border: 1px solid $lightgrayBorder;
     border-radius: 5px;
 
     @include media.mobileS {
@@ -31,7 +35,7 @@
         padding: 5px 10px;
         width: 100%;
         font-size: 18px;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 5px;
 
         @include media.mobileS {
@@ -45,10 +49,10 @@
         }
 
         &.invalid {
-            border-color: red;
+            border-color: $red;
             
             &::placeholder {
-                color: red;
+                color: $red;
             }
         }
     }
@@ -57,7 +61,7 @@
         padding: 5px 10px;
         width: 100px;
         background: none;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 5px;
 
         @include media.mobileS {
@@ -70,8 +74,8 @@
         }
 
         &:hover {
-            color: black;
-            border-color: black;
+            color: $black;
+            border-color: $black;
             box-shadow: 0 0 6px;
         }
 

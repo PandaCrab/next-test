@@ -1,5 +1,7 @@
 @use 'mixins/MediaMixins' as media;
 
+$backOnHover: #e8e8e8;
+
 .categoriesContainer {
     padding: 5px;
     display: flex;
@@ -43,7 +45,7 @@
             cursor: pointer;
 
             &:hover {
-                color: #b7b7b7;
+                color: $backOnHover;
             }
 
             @include media.tablet {

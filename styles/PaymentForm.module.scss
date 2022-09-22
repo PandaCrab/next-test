@@ -1,5 +1,9 @@
 @use 'mixins/MediaMixins.scss' as media;
 
+$lightgrayBorder: #bbbbbb;
+$checkboxBack: rgb(0, 255, 0);
+$red: red;
+
 .container {
     width: 100%;
     display: flex;
@@ -47,7 +51,7 @@
                 }
 
                 &.checked {
-                    background-color: rgb(0, 255, 0);
+                    background-color: $checkboxBack;
                 }
             }
         }
@@ -62,7 +66,7 @@
             margin-bottom: 2px;
             padding: 3px 6px;
             width: 100%;
-            border: 2px solid #bbbbbb;
+            border: 2px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.laptop {
@@ -76,10 +80,10 @@
             }
 
             &.invalid {
-                border-color: red;
+                border-color: $red;
 
                 &::placeholder {
-                    color: red;
+                    color: $red;
                 }
             }
         }
@@ -88,7 +92,7 @@
             padding-left: 5px;
             width: 100%;
             font-size: 6px;
-            color: red;
+            color: $red;
             position: absolute;
             bottom: 0;
         }

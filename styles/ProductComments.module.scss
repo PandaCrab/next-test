@@ -1,5 +1,9 @@
 @use 'mixins/MediaMixins.scss' as media;
 
+$gray: gray;
+$white: white;
+$red: red;
+
 .container {
     padding: 5px;
     width: 95%;
@@ -24,10 +28,10 @@
             resize: none !important;
 
             &.invalid {
-                border-color: red;
+                border-color: $red;
 
                 &::placeholder {
-                    color: red;
+                    color: $red;
                 }
             }
 
@@ -41,7 +45,7 @@
         .submitBtn {
             margin-right: 10px;
             padding: 3px 6px;
-            background: white;
+            background: $white;
             border: 1px Solid;
             border-radius: 5px;
 
@@ -51,7 +55,7 @@
             }
             
             &:hover {
-                box-shadow: 0 2px 6px gray;
+                box-shadow: 0 2px 6px $gray;
             }
 
             &:active {

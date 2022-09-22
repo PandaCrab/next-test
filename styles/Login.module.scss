@@ -1,5 +1,8 @@
 @use "mixins/MediaMixins" as media;
 
+$lightgrayBorder: #bbbbbb;
+$black: black;
+
 .loginForm {
     padding: 12px;
     width: 300px;
@@ -12,7 +15,7 @@
         margin-bottom: 30px;
         width: 100%;
         text-align: center;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 5px;
     }
 
@@ -21,12 +24,12 @@
         padding: 6px 12px;
         width: 100px;
         background: none;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 5px;
 
         &:hover {
-            color: black;
-            border-color: black;
+            color: $black;
+            border-color: $black;
             box-shadow: 0 2px 4px;
         }
 

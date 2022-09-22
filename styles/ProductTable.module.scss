@@ -1,6 +1,13 @@
 @use 'mixins/MediaMixins.scss' as media;
 @use 'mixins/ScrollbarMixin.module.scss' as *;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$containerBack: rgba(107, 107, 107, 0.3);
+$red: red;
+$blue: blue;
+
 .productsTable {
     min-width: 725px;
     max-width: 725px;
@@ -8,7 +15,7 @@
     min-height: 500px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #bbbbbb;
+    border: 1px solid $lightgrayBorder;
     position: relative;
 
     @include media.mobileS {
@@ -45,7 +52,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(107, 107, 107, 0.3);
+        background: $containerBack;
         position: absolute;
         top: 0;
         left: 0;
@@ -58,9 +65,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: white;
+            background: $white;
             font-size: 16px;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.desktop {
@@ -72,7 +79,7 @@
                 margin-right: 20px;
                 padding: 5px 10px;
                 background: none;
-                border: 1px solid #bbbbbb;
+                border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
 
                 @include media.desktop {
@@ -89,7 +96,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(107, 107, 107, 0.3);
+        background: $containerBack;
         position: absolute;
         top: 0;
         left: 0;
@@ -98,7 +105,7 @@
         .formContainer {
             padding: 12px;
             width: 90%;
-            background: white;
+            background: $white;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -133,7 +140,7 @@
                         margin-bottom: 5px;
                         padding: 6px 12px;
                         width: 300px;
-                        border: 1px solid #bbbbbb;
+                        border: 1px solid $lightgrayBorder;
                         border-radius: 5px;
 
                         @include media.mobileS {
@@ -174,7 +181,7 @@
                 padding: 4px 8px;
                 width: 100px;
                 background: none;
-                border: 1px solid #bbbbbb;
+                border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
 
                 @include media.desktop {
@@ -201,7 +208,7 @@
         position: absolute;
         overflow-y: auto;
 
-        @include scrollbars(1px, #bbbbbb, none);
+        @include scrollbars(1px, $lightgrayBorder, none);
 
         @include media.mobileS {
             padding: 6px;
@@ -219,7 +226,7 @@
             max-width: 680px;
             display: flex;
             flex-direction: row;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.mobileS {
@@ -282,7 +289,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border-right: 1px solid #bbbbbb;
+                border-right: 1px solid $lightgrayBorder;
 
                 @include media.laptop {
                     width: 140px;
@@ -368,24 +375,24 @@
                 }
 
                 &:hover {
-                    box-shadow: 0 0 10px gray;
+                    box-shadow: 0 0 10px $gray;
                 }
 
                 &:active {
-                    box-shadow: 0 0 5px gray;
+                    box-shadow: 0 0 5px $gray;
                 }
 
                 &.delete {
                     &:hover {
-                        color: white;
-                        background: red;
+                        color: $white;
+                        background: $red;
                     }
                 }
 
                 &.update {
                     &:hover {
-                        color: white;
-                        background: blue;
+                        color: $white;
+                        background: $blue;
                     }
                 }
             }

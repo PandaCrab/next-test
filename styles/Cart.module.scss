@@ -1,5 +1,8 @@
 @use 'mixins/MediaMixins' as media;
 
+$firebrick: firebrick;
+$white: white;
+
 .cartContainer {
     width: 30px;
     height: 30px;
@@ -41,8 +44,8 @@
         width: 15px;
         height: 15px;
         border-radius: 50%;
-        background-color: firebrick;
-        color: white;
+        background-color: $firebrick;
+        color: $white;
         top: 0;
         right: 0;
 

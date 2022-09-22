@@ -5,12 +5,20 @@ import {
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch'
 
-import type { storageData,} from '../../types';
+import type {
+    Product,
+    UpdateProduct,
+    UserRatedProductId,
+    Order,
+    Credentials,
+    Info,
+    Registration,
+} from '../../types/apiTypes';
 
 const url = 'http://localhost:4000';
 
 //Need write method to working correct
-const fetchFunc = (url: string, method: string, data?: any) => {
+const fetchFunc = (url: string, method: string, data?) => {
     if (method === 'GET') return fetch(url)
     if (method === 'POST') {
         return fetch(url, {
@@ -38,7 +46,7 @@ export const data$ = fromFetch(url + '/storage')
         })
     );
 
-export const takeSomeProducts = async (id) => {
+export const takeSomeProducts = async (id: string) => {
     try {
         const products = await fetchFunc(url + '/storage', 'POST', id);
 
@@ -48,7 +56,7 @@ export const takeSomeProducts = async (id) => {
     }
 };
 
-export const takeCategories = async (category, subcategory) => {
+export const takeCategories = async (category: string, subcategory: string) => {
     try {
         if (category && subcategory) {
             const response = await fetch(url + `/storage/categories/${category}/${subcategory}`);
@@ -66,11 +74,11 @@ export const takeCategories = async (category, subcategory) => {
     }
 };
 
-export const postProduct = (data: storageData) => fetchFunc( url + '/storage', 'POST', data);
+export const postProduct = (data: Product) => fetchFunc( url + '/storage', 'POST', data);
 
-export const deleteProduct = async (id) => {
+export const deleteProduct = async (id: string) => {
     try {
-        const res = await fetch(url +`/storage`, {
+        const res: Response = await fetch(url +`/storage`, {
             method: 'DELETE',
             mode: 'cors',
             headers: {
@@ -86,7 +94,7 @@ export const deleteProduct = async (id) => {
     }
 };
 
-export const rateProduct = async (id, rating) => {
+export const rateProduct = async (id: string, rating: number) => {
     try {
         const res = fetch(url + `/product/${id}/rating`, {
             method: 'PUT',
@@ -104,7 +112,7 @@ export const rateProduct = async (id, rating) => {
     }
 };
 
-export const commentProduct = async (id, comment) => {
+export const commentProduct = async (id: string, comment: string) => {
     try {
         await fetch(url + `/product/${id}/addComments`, {
             method: 'PUT',
@@ -120,7 +128,7 @@ export const commentProduct = async (id, comment) => {
     }
 };
 
-export const updateProductInStorage = async (product) => {
+export const updateProductInStorage = async (product: UpdateProduct) => {
     try {
         const res = await fetch(url + '/storage', {
             mode: 'cors',
@@ -138,7 +146,7 @@ export const updateProductInStorage = async (product) => {
     }
 };
 
-export const takeOneProduct = async (id) => {
+export const takeOneProduct = async (id: string) => {
     try {
         const product = await fetchFunc(url + `/storage/${id}`, 'GET');
         
@@ -149,7 +157,7 @@ export const takeOneProduct = async (id) => {
 };
 
 //oredrs section
-export const createOrder = async (order) => {
+export const createOrder = async (order: Order) => {
     try {
         const catchRes = await fetchFunc(url + '/orders/create', 'POST', order);
 
@@ -159,7 +167,7 @@ export const createOrder = async (order) => {
     }
 };
 
-export const getUserOrders = async (userId) => {
+export const getUserOrders = async (userId: string) => {
     try {
         const takeUserOrders = await fetchFunc(url + '/orders/userOrders', 'POST', userId); 
 
@@ -169,7 +177,7 @@ export const getUserOrders = async (userId) => {
     }
 };
 
-export const getUserOrder = async (orderId, userId) => {
+export const getUserOrder = async (orderId: string, userId: string) => {
     try {
         const catchRes = await fetchFunc(url + `/orders/userOrders/${orderId}`, 'POST', userId);
 
@@ -180,7 +188,7 @@ export const getUserOrder = async (orderId, userId) => {
 };
 
 //user section
-export const getUserInfo = async (id) => {
+export const getUserInfo = async (id: string) => {
     try {
         const response = await fetchFunc(url + `/user/${id}`, 'GET');
         
@@ -190,7 +198,7 @@ export const getUserInfo = async (id) => {
     }
 };
 
-export const updateUserInfo = async (id, info) => {
+export const updateUserInfo = async (id: string, info: Info) => {
     try {
         const response = await fetch(url + `/user/${id}`, {
             mode: 'cors',
@@ -208,7 +216,7 @@ export const updateUserInfo = async (id, info) => {
     }
 };
 
-export const userRated = async (userId, userRatedProductId) => {
+export const userRated = async (userId: string, userRatedProductId: UserRatedProductId) => {
     const { id, rated } = userRatedProductId;
     try {
         const res = fetch(url + '/user/ratedProduct', {
@@ -227,7 +235,7 @@ export const userRated = async (userId, userRatedProductId) => {
     }
 };
 
-export const deleteUser = async (id, pass) => {
+export const deleteUser = async (id: string, pass: string) => {
     try {
         const deleted = fetch(url + `/user/${id}`, {
             mode: 'cors',
@@ -245,7 +253,7 @@ export const deleteUser = async (id, pass) => {
     }
 };
 
-export const getUserLikes = async (userId, stuffId) => {
+export const getUserLikes = async (userId: string, stuffId: string) => {
     try {
         const response = await fetch(url + '/user', {
             mode: 'cors',
@@ -264,7 +272,7 @@ export const getUserLikes = async (userId, stuffId) => {
 };
 
 //auth and registration section
-export const loginUser = async (credentials) => {
+export const loginUser = async (credentials: Credentials) => {
     try {
         const catchRes = await fetchFunc(url + '/auth', 'POST', credentials);
         
@@ -274,7 +282,7 @@ export const loginUser = async (credentials) => {
     }
 };
 
-export const registrateUser = async (info) => {
+export const registrateUser = async (info: Registration) => {
     try {
         const catchRes = await fetchFunc(url + '/registration', 'POST', info);
         

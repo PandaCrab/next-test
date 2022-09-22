@@ -1,5 +1,7 @@
 @use 'mixins/MediaMixins' as media;
 
+$lightgrayBorder: #bbbbbb;
+
 .searchContainer {
     padding: 5px;
     width: 100%;
@@ -13,7 +15,7 @@
         padding: 3px 6px;
         width: 100%;
         font-size: 12px;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 5px;
 
         @include media.laptop {
@@ -36,7 +38,7 @@
         justify-content: center;
         background: none;
         font-size: 12px;
-        border: 1px solid #bbbbbb;
+        border: 1px solid $lightgrayBorder;
         border-radius: 50%;
 
         @include media.laptop {

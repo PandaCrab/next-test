@@ -1,6 +1,11 @@
 @use 'mixins/MediaMixins.scss' as media;
 @use 'mixins/ScrollbarMixin.module.scss' as *;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$red: red;
+$descriptionBack: rgb(243, 243, 243);
+
 .infoWrapper {
     padding: 12px;
     width: 100%;
@@ -124,10 +129,10 @@
                 }
 
                 &.invalid {
-                    border-color: red;
+                    border-color: $red;
 
                     &::placeholder {
-                        color: red;
+                        color: $red;
                     }
                 }
             }
@@ -218,11 +223,11 @@
             .description {
                 padding: 12px;
                 width: 400px;
-                background-color: rgb(243, 243, 243);
+                background-color: $descriptionBack;
                 text-align: center;
-                border: 1px solid #bbbbbb;
+                border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
-                box-shadow: 0 0 5px gray;
+                box-shadow: 0 0 5px $gray;
                 position: absolute;
                 top: -120px;
                 right: 0;

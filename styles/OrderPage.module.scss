@@ -1,6 +1,10 @@
 @use 'mixins/MediaMixins' as media;
 @use 'mixins/ScrollbarMixin.module.scss' as *;
 
+$lightgrayBorder: #bbbbbb;
+$black: black;
+$red: red;
+
 .orderContainer {
     margin: auto;
     width: 1360px;
@@ -78,7 +82,7 @@
             .autocompleteBtn {
                 padding: 2px;
                 font-weight: normal;
-                border: 1px solid #bbbbbb;
+                border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
 
                 @include media.desktop {
@@ -91,7 +95,7 @@
             margin-bottom: 30px;
             padding: 6px 12px;
             width: 100%;
-            border: 2px solid #bbb;
+            border: 2px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.mobileS {
@@ -107,10 +111,10 @@
             }
 
             &.invalid {
-                border-color: red;
+                border-color: $red;
 
                 &::placeholder {
-                    color: red;
+                    color: $red;
                 }
             }
         }
@@ -120,11 +124,11 @@
             padding: 6px 12px;
             width: auto;
             background: none;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
 
             &:hover {
-                border-color: black;
+                border-color: $black;
                 box-shadow: 0 0 3px;
             }
 

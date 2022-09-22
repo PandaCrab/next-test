@@ -5,16 +5,18 @@ import { useSelector } from 'react-redux';
 
 import { ProductCard } from '../components';
 
+import type { Stuff } from '../types/types';
+
 import styles from '../styles/CartPage.module.scss';
 
 const CartPage = () => {
     const router = useRouter();
-    const cart = useSelector((state) => state.order.clientOrder);
+    const cart: Array<object> = useSelector((state: {order: { clientOrder: Array<object> }}) => state.order.clientOrder);
 
     return (
         <div className={styles.cartContainer}>
             <div className={styles.productWrapper}>
-                {cart.length && cart.map((stuff, index) => (
+                {cart.length && cart.map((stuff: Stuff, index: number) => (
                     <ProductCard
                         key={index}
                         product={stuff}

@@ -1,11 +1,19 @@
 @use 'mixins/MediaMixins' as media;
 
+$white: white;
+$black: black;
+$successBack: rgb(38, 185, 38);
+$successBorder: rgb(28, 138, 28);
+$warningBack: yellow;
+$warningBorder: rgb(255, 166, 0);
+$errorBack: red;
+
 .alert {
     padding: 6px 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: $white;
     border-radius: 5px;
     position: fixed;
     bottom: 20px;
@@ -36,17 +44,17 @@
     }
 
     &.success {
-        background: rgb(38, 185, 38);
-        border: 1px solid rgb(28, 138, 28);
+        background: $successBack;
+        border: 1px solid $successBorder;
     }
 
     &.warning {
-        color: black;
-        background: rgb(255, 255, 0);
-        border: 1px solid yellow;
+        color: $black;
+        background: $warningBack;
+        border: 1px solid $warningBorder;
     }
 
     &.error {
-        background: rgb(255, 0, 0);
+        background: $errorBack;
     }
 }

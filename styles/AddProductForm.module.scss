@@ -1,6 +1,12 @@
 @use 'mixins/MediaMixins.scss' as media;
 @use 'mixins/ScrollbarMixin.module.scss' as *;
 
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+$red: red;
+
 .addProductForm {
     padding: 24px;
     width: 900px;
@@ -33,7 +39,7 @@
             margin-bottom: 10px;
             padding: 12px 6px;
             width: 350px;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
             position: relative;
 
@@ -67,18 +73,18 @@
             }
 
             &.invalid {
-                border-color: red;
+                border-color: $red;
 
                 &::placeholder {
-                    color: red;
+                    color: $red;
                 }
             }
 
             .dropdown {
                 width: 140px;
                 max-height: 200px;
-                background: white;
-                border: 1px solid #bbbbbb;
+                background: $white;
+                border: 1px solid $lightgrayBorder;
                 border-radius: 0 0 5px 5px;
                 position: absolute;
                 top: 90%;
@@ -86,7 +92,7 @@
                 z-index: 100;
                 overflow-y: scroll;
 
-                @include scrollbars(1px, #bbbbbb, none);
+                @include scrollbars(1px, $lightgrayBorder, none);
 
                 @include media.laptop {
                     width: 240px;
@@ -100,8 +106,8 @@
                     padding: 5px;
 
                     &:hover {
-                        background-color: #c7c7c7;
-                        color: white;
+                        background-color: $backOnHover;
+                        color: $white;
                         cursor: pointer;
                     }
                 }
@@ -137,7 +143,7 @@
             padding: 5px 10px;
             text-align: center;
             background: none;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
         }
 
@@ -146,7 +152,7 @@
             width: 200px;
             text-align: center;
             background: none;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.mobileS {
@@ -161,7 +167,7 @@
             }
 
             &:hover {
-                box-shadow: 0 2px 4px gray;
+                box-shadow: 0 2px 4px $gray;
             }
 
             &:active {
@@ -201,7 +207,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #bbbbbb;
+            border: 1px solid $lightgrayBorder;
             border-radius: 50%;
         }
 
@@ -210,10 +216,10 @@
             margin: 0 20px;
             width: 350px;
             height: 250px;
-            background: white;
-            border: 1px solid #bbbbbb;
+            background: $white;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
-            box-shadow: 0 0 10px gray;
+            box-shadow: 0 0 10px $gray;
             position: relative;
 
             @include media.mobileS {
@@ -274,7 +280,7 @@
                 height: 30px;
                 display: flex;
                 justify-content: flex-end;
-                border-top: 1px solid #bbbbbb;
+                border-top: 1px solid $lightgrayBorder;
                 bottom: 25px;
 
                 @include media.mobileS {
@@ -291,7 +297,7 @@
                     width: 35px;
                     height: 35px;
                     background: none;
-                    border: 1px solid #bbbbbb;
+                    border: 1px solid $lightgrayBorder;
                     border-radius: 50%;
 
                     @include media.tablet {
