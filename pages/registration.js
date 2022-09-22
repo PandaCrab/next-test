@@ -10,148 +10,148 @@ import { catchError, catchSuccess } from '../redux/ducks/alerts';
 import styles from '../styles/Registration.module.scss';
 
 const RegistrationPage = () => {
-	const [reg, setReg] = useState({
-		username: '',
-		email: '',
-		password: '',
-		phone: '',
-		age: 0,
-	});
+    const [reg, setReg] = useState({
+        username: '',
+        email: '',
+        password: '',
+        phone: '',
+        age: 0,
+    });
 
-	const [invalid, setInvalid] = useState({
-		path: {},
-		isInvalid: true,
-	});
+    const [invalid, setInvalid] = useState({
+        path: {},
+        isInvalid: true,
+    });
 
-	const dispatch = useDispatch();
-	const router = useRouter();
+    const dispatch = useDispatch();
+    const router = useRouter();
 
-	useEffect(() => {
-		const takeToken = localStorage.getItem('token');
-		const token = JSON.parse(takeToken);
+    useEffect(() => {
+        const takeToken = localStorage.getItem('token');
+        const token = JSON.parse(takeToken);
 
-		if (token) {
-			router.push('/');
-		}
-	}, []);
+        if (token) {
+            router.push('/');
+        }
+    }, []);
 
-	const handleChange = (target) => {
-		const { name, value } = target;
-		setReg({
-			...reg,
-			[name]: value,
-		});
-	};
+    const handleChange = (target) => {
+        const { name, value } = target;
+        setReg({
+            ...reg,
+            [name]: value,
+        });
+    };
 
-	const handleSubmit = async () => {
-		await registrationSchema
-			.validate(reg, { abortEarly: false })
-			.then(async (value) => {
-				if (value) {
-					const newUser = await registrateUser({
-						username: String(reg.username).toLowerCase(),
-						email: reg.email,
-						password: reg.password,
-						phone: reg.phone,
-						age: reg.age,
-					});
+    const handleSubmit = async () => {
+        await registrationSchema
+            .validate(reg, { abortEarly: false })
+            .then(async (value) => {
+                if (value) {
+                    const newUser = await registrateUser({
+                        username: String(reg.username).toLowerCase(),
+                        email: reg.email,
+                        password: reg.password,
+                        phone: reg.phone,
+                        age: reg.age,
+                    });
 
-					if (newUser && newUser.message === 'ok') {
-						dispatch(getToken(newUser.token));
-						dispatch(getInfo(newUser.user));
+                    if (newUser && newUser.message === 'ok') {
+                        dispatch(getToken(newUser.token));
+                        dispatch(getInfo(newUser.user));
 
-						setInvalid({
-							path: {},
-							isInvalid: false,
-						});
+                        setInvalid({
+                            path: {},
+                            isInvalid: false,
+                        });
 
-						setReg({
-							username: '',
-							email: '',
-							password: '',
-							phone: '',
-							age: '',
-						});
+                        setReg({
+                            username: '',
+                            email: '',
+                            password: '',
+                            phone: '',
+                            age: '',
+                        });
 
-						dispatch(catchSuccess('Account created'));
-						localStorage.setItem('token', JSON.stringify(newUser.token));
-						router.push('/');
-					}
+                        dispatch(catchSuccess('Account created'));
+                        localStorage.setItem('token', JSON.stringify(newUser.token));
+                        router.push('/');
+                    }
 
-					if (newUser.duplicate) {
-						dispatch(catchError(newUser.duplicate));
-					}
-				}
-			})
-			.catch((error) => {
-				const validationError = {};
+                    if (newUser.duplicate) {
+                        dispatch(catchError(newUser.duplicate));
+                    }
+                }
+            })
+            .catch((error) => {
+                const validationError = {};
 
-				error.inner.forEach((err) => {
-					if (err.path) {
-						validationError[err.path] = err.message;
-					}
-				});
+                error.inner.forEach((err) => {
+                    if (err.path) {
+                        validationError[err.path] = err.message;
+                    }
+                });
 
-				setInvalid({
-					path: validationError,
-					isInvalid: true,
-				});
+                setInvalid({
+                    path: validationError,
+                    isInvalid: true,
+                });
 
-				dispatch(catchError('Form is Invalid'));
-			});
-	};
+                dispatch(catchError('Form is Invalid'));
+            });
+    };
 
-	return (
-		<div className={styles.regForm}>
-			<div className={styles.regTitle}>Registration information</div>
-			<input
-				className={invalid.path.email ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
-				name="email"
-				type="email"
-				placeholder={invalid.path.email || 'Enter your email'}
-				value={reg.email}
-				onChange={({ target }) => handleChange(target)}
-			/>
-			<input
-				className={invalid.path.username ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
-				name="username"
-				type="text"
-				placeholder={invalid.path.username || 'Enter your full Name'}
-				value={reg.username}
-				onChange={({ target }) => handleChange(target)}
-			/>
-			<input
-				className={invalid.path.password ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
-				name="password"
-				type="password"
-				placeholder={invalid.path.password || 'Enter strong password'}
-				value={reg.password}
-				onChange={({ target }) => handleChange(target)}
-			/>
-			<input
-				className={invalid.path.phone ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
-				name="phone"
-				type="text"
-				placeholder={invalid.path.phone || 'Enter your phone'}
-				value={reg.phone}
-				onChange={({ target }) => handleChange(target)}
-			/>
-			<input
-				className={invalid.path.age ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
-				name="age"
-				type="text"
-				placeholder={invalid.path.age || 'Enter your age'}
-				value={reg.age === 0 ? '' : reg.age}
-				onChange={({ target }) => handleChange(target)}
-			/>
-			<button
-				onClick={() => handleSubmit()}
-				className={styles.regBtn}
-			>
-				Sign in
-			</button>
-		</div>
-	);
+    return (
+        <div className={styles.regForm}>
+            <div className={styles.regTitle}>Registration information</div>
+            <input
+                className={invalid.path.email ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
+                name="email"
+                type="email"
+                placeholder={invalid.path.email || 'Enter your email'}
+                value={reg.email}
+                onChange={({ target }) => handleChange(target)}
+            />
+            <input
+                className={invalid.path.username ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
+                name="username"
+                type="text"
+                placeholder={invalid.path.username || 'Enter your full Name'}
+                value={reg.username}
+                onChange={({ target }) => handleChange(target)}
+            />
+            <input
+                className={invalid.path.password ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
+                name="password"
+                type="password"
+                placeholder={invalid.path.password || 'Enter strong password'}
+                value={reg.password}
+                onChange={({ target }) => handleChange(target)}
+            />
+            <input
+                className={invalid.path.phone ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
+                name="phone"
+                type="text"
+                placeholder={invalid.path.phone || 'Enter your phone'}
+                value={reg.phone}
+                onChange={({ target }) => handleChange(target)}
+            />
+            <input
+                className={invalid.path.age ? `${styles.regInput} ${styles.invalid}` : `${styles.regInput}`}
+                name="age"
+                type="text"
+                placeholder={invalid.path.age || 'Enter your age'}
+                value={reg.age === 0 ? '' : reg.age}
+                onChange={({ target }) => handleChange(target)}
+            />
+            <button
+                onClick={() => handleSubmit()}
+                className={styles.regBtn}
+            >
+                Sign in
+            </button>
+        </div>
+    );
 };
 
 export default RegistrationPage;

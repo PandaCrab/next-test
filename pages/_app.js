@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { SiteLayout } from '../components';
 
@@ -5,14 +7,17 @@ import store from '../redux/store';
 
 import '../styles/globals.scss';
 
-function MyApp({ Component, pageProps }) {
-	return (
-		<Provider store={store}>
-			<SiteLayout>
-				<Component {...pageProps} />
-			</SiteLayout>
-		</Provider>
-	);
-}
+const MyApp = ({ Component, pageProps }) => (
+    <Provider store={store}>
+        <SiteLayout>
+            <Component {...pageProps} />
+        </SiteLayout>
+    </Provider>
+);
+
+MyApp.propType = {
+    Component: PropTypes.element,
+    pageProps: PropTypes.object,
+};
 
 export default MyApp;

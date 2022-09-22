@@ -45,7 +45,7 @@ const UserOrder = () => {
     return (
         <div className={styles.container}>
             {loged ? (
-                order ? (
+                order && (
                     <>
                         <div onClick={() => router.back()} className={styles.backBtn}>
                             <HiArrowNarrowLeft />
@@ -86,8 +86,6 @@ const UserOrder = () => {
                             </div>
                         </div>
                     </>
-                ) : (
-                    <div>Somthing wrong</div>
                 )
             ) : (
                 <LoginPage />

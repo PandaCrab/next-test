@@ -10,7 +10,7 @@ import styles from '../styles/Login.module.scss';
 const LoginPage = () => {
     const [login, setLogin] = useState({
         username: '',
-        password: ''
+        password: '',
     });
     const [error, setError] = useState('');
 
@@ -24,7 +24,7 @@ const LoginPage = () => {
     const handleLogin = async () => {
         const token = await loginUser({
             username: String(login.username).toLowerCase(),
-            password: login.password
+            password: login.password,
         });
 
         if (token.token) {
@@ -34,13 +34,13 @@ const LoginPage = () => {
             setToken(token.token);
 
             setLogin({ username: '', password: '' });
-            
+
             if (router.pathname === '/login') {
                 router.push('/');
             }
         } else {
             setError(token.message);
-            setLogin({...login, password: ''});
+            setLogin({ ...login, password: '' });
         }
     };
 
@@ -54,7 +54,7 @@ const LoginPage = () => {
                 value={login.username}
                 onChange={({ target }) => setLogin({
                     ...login,
-                    username: target.value
+                    username: target.value,
                 })}
             />
             <input
@@ -65,7 +65,7 @@ const LoginPage = () => {
                 value={login.password}
                 onChange={({ target }) => setLogin({
                     ...login,
-                    password: target.value
+                    password: target.value,
                 })}
             />
             <button onClick={() => handleLogin()} className={styles.logBtn}>Log In</button>

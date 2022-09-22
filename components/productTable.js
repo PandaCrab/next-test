@@ -28,6 +28,19 @@ const ProductTable = () => {
 
     const dispatch = useDispatch();
 
+    const takeProducts = async () => {
+        try {
+            const allStorage = await fetch('http://localhost:4000/storage');
+            const catchRes = await allStorage.json();
+
+            if (allStorage.ok) {
+                setAllProducts(catchRes);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const deleteFromStorage = async (id) => {
         try {
             const res = await deleteProduct(id);
@@ -57,19 +70,6 @@ const ProductTable = () => {
                 updating: false,
                 updateItem: {},
             });
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const takeProducts = async () => {
-        try {
-            const allProducts = await fetch('http://localhost:4000/storage');
-            const catchRes = await allProducts.json();
-
-            if (allProducts.ok) {
-                setAllProducts(catchRes);
-            }
         } catch (err) {
             console.log(err);
         }
@@ -119,14 +119,13 @@ const ProductTable = () => {
                             <div className={styles.rowItems}>
                                 <button
                                     className={`${styles.rowBtn} ${styles.delete}`}
-                                    onClick={() =>
-                                        setDeleteItem({
-                                            item: {
-                                                id: product._id,
-                                                name: product.name,
-                                            },
-                                            onSubmit: true,
-                                        })
+                                    onClick={() => setDeleteItem({
+                                        item: {
+                                            id: product._id,
+                                            name: product.name,
+                                        },
+                                        onSubmit: true,
+                                    })
                                     }
                                 >
                                     <AiOutlineDelete />
@@ -206,11 +205,10 @@ const ProductTable = () => {
                             </button>
                             <button
                                 className={styles.saveBtn}
-                                onClick={() =>
-                                    setUpdate({
-                                        ...inUpdate,
-                                        updating: false,
-                                    })
+                                onClick={() => setUpdate({
+                                    ...inUpdate,
+                                    updating: false,
+                                })
                                 }
                             >
                                 close
@@ -225,21 +223,19 @@ const ProductTable = () => {
                         <div>Are You agree to delete {deleteItem.item.name} </div>
                         <div className={styles.updateBtnWrapper}>
                             <button
-                                onClick={() =>
-                                    deleteFromStorage({
-                                        _id: deleteItem.item.id,
-                                    })
+                                onClick={() => deleteFromStorage({
+                                    _id: deleteItem.item.id,
+                                })
                                 }
                                 className={styles.deletionBtn}
                             >
                                 Yes
                             </button>
                             <button
-                                onClick={() =>
-                                    setDeleteItem({
-                                        item: null,
-                                        onSubmit: false,
-                                    })
+                                onClick={() => setDeleteItem({
+                                    item: null,
+                                    onSubmit: false,
+                                })
                                 }
                                 className={styles.deletionBtn}
                             >

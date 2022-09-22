@@ -4,8 +4,8 @@ import { RiCloseLine } from 'react-icons/ri';
 import { BsCart } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 
-import { catchSuccess } from '../redux/ducks/alerts';
-import { postProduct } from '../pages/api/api';
+import { catchSuccess } from '../redux/ducks/alerts.ts';
+import { postProduct } from '../pages/api/api.ts';
 import { addProductSchema } from '../helpers/validation';
 import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
 import useWindowSize from '../hooks/windowSize';
@@ -103,11 +103,10 @@ const AddProductForm = () => {
                     name="name"
                     placeholder={invalidProductInfo.path.name ? invalidProductInfo.path.name : 'Name of product'}
                     value={addProduct.name}
-                    onChange={({ target }) =>
-                        setProduct({
-                            ...addProduct,
-                            name: target.value,
-                        })
+                    onChange={({ target }) => setProduct({
+                        ...addProduct,
+                        name: target.value,
+                    })
                     }
                 />
                 <input
@@ -120,11 +119,10 @@ const AddProductForm = () => {
                     name="price"
                     placeholder={invalidProductInfo.path.price ? invalidProductInfo.path.price : 'Enter product price'}
                     value={addProduct.price}
-                    onChange={({ target }) =>
-                        setProduct({
-                            ...addProduct,
-                            price: target.value,
-                        })
+                    onChange={({ target }) => setProduct({
+                        ...addProduct,
+                        price: target.value,
+                    })
                     }
                 />
                 <input
@@ -137,11 +135,10 @@ const AddProductForm = () => {
                     name="imgUrl"
                     placeholder={invalidProductInfo.path.imgUrl ? invalidProductInfo.path.imgUrl : 'Image path'}
                     value={addProduct.imgUrl}
-                    onChange={({ target }) =>
-                        setProduct({
-                            ...addProduct,
-                            imgUrl: target.value,
-                        })
+                    onChange={({ target }) => setProduct({
+                        ...addProduct,
+                        imgUrl: target.value,
+                    })
                     }
                 />
                 <input
@@ -154,11 +151,10 @@ const AddProductForm = () => {
                     name="color"
                     placeholder="Enter product color (optional)"
                     value={addProduct.color}
-                    onChange={({ target }) =>
-                        setProduct({
-                            ...addProduct,
-                            color: target.value,
-                        })
+                    onChange={({ target }) => setProduct({
+                        ...addProduct,
+                        color: target.value,
+                    })
                     }
                 />
                 <input
@@ -175,21 +171,19 @@ const AddProductForm = () => {
                             : 'Enter quantity of available products'
                     }
                     value={addProduct.quantity}
-                    onChange={({ target }) =>
-                        setProduct({
-                            ...addProduct,
-                            quantity: target.value,
-                        })
+                    onChange={({ target }) => setProduct({
+                        ...addProduct,
+                        quantity: target.value,
+                    })
                     }
                 />
                 <div className={styles.row}>
                     <div className={styles.dropdownCategories}>
                         <div
-                            onClick={() =>
-                                setCategories((prev) => ({
-                                    ...prev,
-                                    category: true,
-                                }))
+                            onClick={() => setCategories((prev) => ({
+                                ...prev,
+                                category: true,
+                            }))
                             }
                         >
                             {addProduct.category ? addProduct.category : 'category'}
@@ -221,39 +215,38 @@ const AddProductForm = () => {
                     {addProduct.category && (
                         <div className={styles.dropdownCategories}>
                             <div
-                                onClick={() =>
-                                    setCategories((prev) => ({
-                                        ...prev,
-                                        subcategory: true,
-                                    }))
+                                onClick={() => setCategories((prev) => ({
+                                    ...prev,
+                                    subcategory: true,
+                                }))
                                 }
                             >
                                 {addProduct.subcategory ? addProduct.subcategory : 'subcategory'}
                             </div>
-                            {dropdownCategories.subcategory ? (
-                                <div className={styles.dropdown}>
-                                    {addProduct.category === 'devices' ?
-                                        devicesSubcategories.map((subcategory, index) => (
-                                            <div
-                                                className={styles.dropdownItems}
-                                                key={index}
-                                                onClick={() => {
-                                                    setProduct({
-                                                        ...addProduct,
-                                                        subcategory,
-                                                    });
-                                                    setCategories((prev) => ({
-                                                        ...prev,
-                                                        subcategory: false,
-                                                    }));
-                                                }}
-                                            >
-                                                {subcategory}
-                                            </div>
-                                            )
-                                        )
-                                    : addProduct.category === 'clothes' && 
-                                        clothesSubcategories.map((subcategory, index) => (
+                            {dropdownCategories.subcategory
+                                ? (
+                                    <div className={styles.dropdown}>
+                                        {addProduct.category === 'devices'
+                                            ? devicesSubcategories.map((subcategory, index) => (
+                                                <div
+                                                    className={styles.dropdownItems}
+                                                    key={index}
+                                                    onClick={() => {
+                                                        setProduct({
+                                                            ...addProduct,
+                                                            subcategory,
+                                                        });
+                                                        setCategories((prev) => ({
+                                                            ...prev,
+                                                            subcategory: false,
+                                                        }));
+                                                    }}
+                                                >
+                                                    {subcategory}
+                                                </div>
+                                            ))
+                                            : addProduct.category === 'clothes'
+                                        && clothesSubcategories.map((subcategory, index) => (
                                             <div
                                                 className={styles.dropdownItems}
                                                 key={index}
@@ -270,10 +263,10 @@ const AddProductForm = () => {
                                             >
                                                 {subcategory}
                                             </div>
-                                        )
-                                    )}
-                                </div>
-                            ) : null}
+                                        ))}
+                                    </div>
+                                )
+                                : null}
                         </div>
                     )}
                 </div>
@@ -292,11 +285,10 @@ const AddProductForm = () => {
                                 : 'Enter width of product image'
                         }
                         value={addProduct.width}
-                        onChange={({ target }) =>
-                            setProduct({
-                                ...addProduct,
-                                width: target.value,
-                            })
+                        onChange={({ target }) => setProduct({
+                            ...addProduct,
+                            width: target.value,
+                        })
                         }
                     />
                     <input
@@ -313,11 +305,10 @@ const AddProductForm = () => {
                                 : 'Enter height of product image'
                         }
                         value={addProduct.height}
-                        onChange={({ target }) =>
-                            setProduct({
-                                ...addProduct,
-                                height: target.value,
-                            })
+                        onChange={({ target }) => setProduct({
+                            ...addProduct,
+                            height: target.value,
+                        })
                         }
                     />
                 </div>
@@ -334,11 +325,10 @@ const AddProductForm = () => {
                     cols="200"
                     placeholder="Add description (optional)"
                     value={addProduct.description}
-                    onChange={({ target }) =>
-                        setProduct({
-                            ...addProduct,
-                            description: target.value,
-                        })
+                    onChange={({ target }) => setProduct({
+                        ...addProduct,
+                        description: target.value,
+                    })
                     }
                 />
                 <div className={styles.btnsWrapper}>

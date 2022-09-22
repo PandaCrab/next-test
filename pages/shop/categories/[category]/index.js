@@ -7,38 +7,38 @@ import { ProductCard } from '../../../../components';
 import styles from '../../../../styles/CategoryPage.module.scss';
 
 const ClothesCategory = () => {
-	const [stuff, setStuff] = useState([]);
+    const [stuff, setStuff] = useState([]);
 
-	const router = useRouter();
+    const router = useRouter();
 
-	const takeProducts = async (category, subcategory) => {
-		const res = await takeCategories(category, subcategory);
+    const takeProducts = async (category, subcategory) => {
+        const res = await takeCategories(category, subcategory);
 
-		setStuff(res);
-	};
+        setStuff(res);
+    };
 
-	useEffect(() => {
-		const { category, items } = router.query;
+    useEffect(() => {
+        const { category } = router.query;
 
-		if (router.isReady) {
-			takeProducts(category, null);
-		}
-	}, [router]);
+        if (router.isReady) {
+            takeProducts(category, null);
+        }
+    }, [router]);
 
-	return (
-		<div className={styles.container}>
-			{stuff ? (
-				stuff.map((product) => (
-					<ProductCard
-						key={product._id}
-						product={product}
-					/>
-				))
-			) : (
-				<div>This category is empty</div>
-			)}
-		</div>
-	);
+    return (
+        <div className={styles.container}>
+            {stuff ? (
+                stuff.map((product) => (
+                    <ProductCard
+                        key={product._id}
+                        product={product}
+                    />
+                ))
+            ) : (
+                <div>This category is empty</div>
+            )}
+        </div>
+    );
 };
 
 export default ClothesCategory;

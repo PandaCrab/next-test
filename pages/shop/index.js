@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { interval, map, take, repeat } from 'rxjs';
+import {
+    interval, map, take, repeat,
+} from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchBar, ProductCard } from '../../components';
@@ -9,120 +11,120 @@ import { data$ } from '../api/api';
 import styles from '../../styles/Shop.module.scss';
 
 const Shop = () => {
-	const [stuffs, setStuffs] = useState([]);
-	const [error, setError] = useState({
-		status: false,
-		message: null,
-	});
+    const [stuffs, setStuffs] = useState([]);
+    const [error, setError] = useState({
+        status: false,
+        message: null,
+    });
 
-	const [isLoading, setLoading] = useState({
-		status: false,
-		loader: null,
-	});
+    const [isLoading, setLoading] = useState({
+        status: false,
+        loader: null,
+    });
 
-	const catchSearchInput = useSelector((state) => state.search.search);
-	const stuff = useSelector((state) => state.stuff.stuff);
+    const catchSearchInput = useSelector((state) => state.search.search);
+    const stuff = useSelector((state) => state.stuff.stuff);
 
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-	const observable$ = interval(400);
+    const observable$ = interval(400);
 
-	const searchProducts = (text) => {
-		if (text) {
-			const filtered = stuff.filter((products) =>
-				Object.values(products).join('').toLowerCase().includes(text.toLowerCase())
-			);
+    const searchProducts = (text) => {
+        if (text) {
+            const filtered = stuff
+                .filter((products) => Object.values(products).join('').toLowerCase().includes(text.toLowerCase()));
 
-			setStuffs(filtered);
-		} else {
-			setStuffs(stuff);
-		}
-	};
+            setStuffs(filtered);
+        } else {
+            setStuffs(stuff);
+        }
+    };
 
-	useEffect(() => {
-		const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
+    useEffect(() => {
+        const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
 
-		const subscription = observable$
-			.pipe(
-				take(loadProgress.length),
-				map((value) => loadProgress[value]),
+        const subscription = observable$
+            .pipe(
+                take(loadProgress.length),
+                map((value) => loadProgress[value]),
 
-				repeat()
-			)
-			.subscribe((res) =>
-				setLoading({
-					loading: true,
-					loader: res,
-				})
-			);
-		return () => subscription.unsubscribe();
-	}, [isLoading.loader]);
+                repeat(),
+            )
+            .subscribe((res) => setLoading({
+                loading: true,
+                loader: res,
+            }));
+        return () => subscription.unsubscribe();
+    }, [isLoading.loader]);
 
-	useEffect(() => {
-		setLoading({
-			...isLoading,
-			status: true,
-		});
+    useEffect(() => {
+        setLoading({
+            ...isLoading,
+            status: true,
+        });
 
-		data$ &&
-			data$.subscribe({
-				next: async (result) => {
-					try {
-						if (result) {
-							if (result.length) {
-								dispatch(storeStuff(result));
-							}
+        data$.subscribe({
+            next: async (result) => {
+                try {
+                    if (result) {
+                        if (result.length) {
+                            dispatch(storeStuff(result));
+                        }
 
-							if (result.error) {
-								setError({
-									status: result.error,
-									message: result.message,
-								});
-							}
-						}
-					} catch (err) {
-						console.log(err);
-					}
-				},
-				complete: () => {
-					setLoading({ status: false, loader: null });
-				},
-			});
-		data$.unsubscribe;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+                        if (result.error) {
+                            setError({
+                                status: result.error,
+                                message: result.message,
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+            },
+            complete: () => {
+                setLoading({ status: false, loader: null });
+            },
+        });
+        // eslint-disable-next-line no-unused-expressions
+        data$.unsubscribe;
+    }, []);
 
-	useEffect(() => {
-		setStuffs(stuff);
-	}, [stuff]);
+    useEffect(() => {
+        setStuffs(stuff);
+    }, [stuff]);
 
-	useEffect(() => {
-		searchProducts(catchSearchInput);
-	}, [catchSearchInput]);
+    useEffect(() => {
+        searchProducts(catchSearchInput);
+    }, [catchSearchInput]);
 
-	return (
-		<>
-			<div className={styles.contentContainer}>
-				<SearchBar />
-				{isLoading.status ? (
-					<div className={styles.loader}>{isLoading.loader}</div>
-				) : error.status ? (
-					<div className={styles.errorWrapper}>{error.message}</div>
-				) : stuffs ? (
-					<div className={styles.productWrapper}>
-						{stuffs.map((product) => (
-							<ProductCard
-								key={product._id}
-								product={product}
-							/>
-						))}
-					</div>
-				) : (
-					<div className={styles.errorWrapper}>Error</div>
-				)}
-			</div>
-		</>
-	);
+    if (isLoading.status) {
+        return (<div className={styles.loader}>{ isLoading.loader }</div>);
+    }
+
+    if (error.status) {
+        return (<div className={styles.errorWrapper}>{ error.message }</div>);
+    }
+
+    return (
+        <>
+            <div className={styles.contentContainer}>
+                <SearchBar />
+                {stuffs ? (
+                    <div className={styles.productWrapper}>
+                        {stuffs.map((product) => (
+                            <ProductCard
+                                key={product._id}
+                                product={product}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.errorWrapper}>Error!</div>
+                )}
+            </div>
+        </>
+    );
 };
 
 export default Shop;

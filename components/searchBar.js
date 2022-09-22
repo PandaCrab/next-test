@@ -17,7 +17,7 @@ const SearchBar = () => {
         }
 
         if (isSearch.length < 3) {
-            dispatch(putSearch(''))
+            dispatch(putSearch(''));
         }
     }, [isSearch]);
 

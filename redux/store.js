@@ -6,16 +6,15 @@ import alertReducer from './ducks/alerts';
 import searchReducer from './ducks/search';
 import orderReducer from './ducks/order';
 
-export const makeStore = () =>
-	configureStore({
-		reducer: {
-			stuff: stuffReducer,
-			user: userReducer,
-			alert: alertReducer,
-			search: searchReducer,
-			order: orderReducer,
-		},
-	});
+export const makeStore = () => configureStore({
+    reducer: {
+        stuff: stuffReducer,
+        user: userReducer,
+        alert: alertReducer,
+        search: searchReducer,
+        order: orderReducer,
+    },
+});
 
 const store = makeStore();
 

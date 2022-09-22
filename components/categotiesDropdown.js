@@ -11,10 +11,9 @@ const CategoriesDropdown = () => {
             <div className={styles.mainCategories}>
                 <div
                     className={styles.categoriesItems}
-                    onMouseEnter={() =>
-                        setShow({
-                            devices: true,
-                        })
+                    onMouseEnter={() => setShow({
+                        devices: true,
+                    })
                     }
                 >
                     <Link href="/shop/categories/devices">
@@ -23,10 +22,9 @@ const CategoriesDropdown = () => {
                 </div>
                 <div
                     className={styles.categoriesItems}
-                    onMouseEnter={() =>
-                        setShow({
-                            clothes: true,
-                        })
+                    onMouseEnter={() => setShow({
+                        clothes: true,
+                    })
                     }
                 >
                     <Link href="/shop/categories/clothes">
@@ -48,7 +46,7 @@ const CategoriesDropdown = () => {
                                 <a className={styles.categoriesItems}>Watches</a>
                             </Link>
                         </>
-                    ) : show?.clothes ? (
+                    ) : show?.clothes && (
                         <>
                             <Link href="/shop/categories/clothes/shirts">
                                 <a className={styles.categoriesItems}>Shirts</a>
@@ -60,7 +58,7 @@ const CategoriesDropdown = () => {
                                 <a className={styles.categoriesItems}>Bags</a>
                             </Link>
                         </>
-                    ) : null}
+                    )}
                 </div>
             )}
         </div>

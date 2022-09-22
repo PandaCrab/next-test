@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,86 +10,115 @@ import { getInfo } from '../redux/ducks/user';
 import styles from '../styles/StarRating.module.scss';
 
 const StarRating = ({ product }) => {
-	const [tooltip, setTooltip] = useState(false);
-	const [rating, setRating] = useState(0);
-	const [hover, setHover] = useState(0);
+    const [tooltip, setTooltip] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [hover, setHover] = useState(0);
 
-	const dispatch = useDispatch();
-	const userInfo = useSelector((state) => state.user.info);
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.user.info);
 
-	const calculateRating = ({ stars }) => {
-		if (stars) {
-			const { five, four, three, two, one } = stars;
+    const calculateRating = ({ stars }) => {
+        if (stars) {
+            const {
+                five, four, three, two, one,
+            } = stars;
 
-			const rating =
-				(5 * five + 4 * four + 3 * three + 2 * two + 1 * one) / (five + four + three + two + one).toFixed(2);
+            const calculated = (
+                5 * five + 4 * four + 3 * three + 2 * two + 1 * one
+            ) / (five + four + three + two + one).toFixed(2);
 
-			setRating(rating);
-		} else {
-			setRating(0);
-		}
-	};
+            setRating(calculated);
+        } else {
+            setRating(0);
+        }
+    };
 
-	const putRatedInUserData = async (rated) => {
-		const res = await userRated(userInfo._id, { id: product._id, rated });
-		dispatch(getInfo(res));
-	};
+    const showRating = (index, rate) => {
+        if (rate >= 4.5) {
+            return <BsStarFill />;
+        }
 
-	const getRating = async (rated) => {
-		putRatedInUserData(rated);
-		const catchRes = await rateProduct(product._id, { rated: rated });
+        if (index - 1 < rate && index > rate) {
+            return <BsStarHalf />;
+        }
 
-		setHover(0);
-		dispatch(storeStuff(catchRes));
-	};
+        if (index <= rate) {
+            return <BsStarFill />;
+        }
 
-	useEffect(() => {
-		calculateRating(product);
-	}, [product]);
-	return (
-		<div className={styles.starsContainer}>
-			{tooltip && <div className={styles.tooltip}>{`You rated already`}</div>}
-			{[...Array(5)].map((star, index) => {
-				index += 1;
-				return (
-					<button
-						key={index}
-						className={
-							index - 0.9999 <= (hover || rating)
-								? `${styles.starButton} ${styles.rated}`
-								: `${styles.starButton} ${styles.unrated}`
-						}
-						onClick={
-							userInfo?._id && userInfo?.rated?.find((el) => el.productId === product._id)
-								? null
-								: () => getRating(index)
-						}
-						onMouseEnter={
-							userInfo?._id && userInfo?.rated?.find((el) => el.productId === product._id)
-								? () => { setTooltip(true); } : () => { setHover(index); }
-						}
-						onMouseLeave={
-							userInfo?.rated?.find((el) => el.productId === product._id)
-								? () => setTooltip(false)
-								: () => setHover(0)
-						}
-					>
-						<span>
-							{rating >= 4.5 ? (
-								<BsStarFill />
-							) : index - 1 < rating && index > rating ? (
-								<BsStarHalf />
-							) : index <= rating ? (
-								<BsStarFill />
-							) : (
-								index > rating && <BsStar />
-							)}
-						</span>
-					</button>
-				);
-			})}
-		</div>
-	);
+        if (index > rate) {
+            return <BsStar />;
+        }
+    };
+
+    const starsClassName = (index) => {
+        const ratedStars = index - 0.9999 <= (hover || rating);
+
+        return ratedStars ? `${styles.starButton} ${styles.rated}` : `${styles.starButton} ${styles.unrated}`;
+    };
+
+    const starMouseEnterHendler = (info, index) => {
+        const rated = info?._id && userInfo?.rated?.find((el) => el.productId === product._id);
+
+        return rated ? () => { setTooltip(true); } : () => { setHover(index); };
+    };
+
+    const starMouseLeaveHendler = (info) => {
+        if (info?.rated?.find((el) => el.productId === product._id)) {
+            setTooltip(false);
+        } else {
+            setHover(0);
+        }
+    };
+
+    const putRatedInUserData = async (rated) => {
+        const res = await userRated(userInfo._id, { id: product._id, rated });
+        dispatch(getInfo(res));
+    };
+
+    const getRating = async (rated) => {
+        putRatedInUserData(rated);
+        const catchRes = await rateProduct(product._id, { rated });
+
+        setHover(0);
+        dispatch(storeStuff(catchRes));
+    };
+
+    const starClickHendler = (info, index) => {
+        const notRated = info?._id && info?.rated?.find((el) => el.productId === product._id);
+
+        return notRated ? null : () => getRating(index);
+    };
+
+    useEffect(() => {
+        calculateRating(product);
+    }, [product]);
+    return (
+        <div className={styles.starsContainer}>
+            {tooltip && <div className={styles.tooltip}>{'You rated already'}</div>}
+            {[...Array(5)].map((star, index) => {
+                // eslint-disable-next-line no-param-reassign
+                index += 1;
+                return (
+                    <button
+                        key={index}
+                        className={ starsClassName(index) }
+                        onClick={ starClickHendler(userInfo, index) }
+                        onMouseEnter={ starMouseEnterHendler(userInfo, index) }
+                        onMouseLeave={ () => starMouseLeaveHendler(userInfo) }
+                    >
+                        <span>
+                            { showRating(index, rating) }
+                        </span>
+                    </button>
+                );
+            })}
+        </div>
+    );
+};
+
+StarRating.propTypes = {
+    product: PropTypes.object,
 };
 
 export default StarRating;
