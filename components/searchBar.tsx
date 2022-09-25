@@ -7,7 +7,7 @@ import { putSearch } from '../redux/ducks/search';
 import styles from '../styles/SearchBar.module.scss';
 
 const SearchBar = () => {
-    const [isSearch, setSearch] = useState('');
+    const [isSearch, setSearch] = useState<string>('');
 
     const dispatch = useDispatch();
 

@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import { BsCart } from 'react-icons/bs';
 import { useRouter } from 'next/router';
 
+import type { Stuff } from '../types/types';
+
 import styles from '../styles/Cart.module.scss';
 
 const Cart = () => {
-    const ordered = useSelector((state) => state.order.clientOrder);
+    const ordered = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
     const route = useRouter();
 
     return (

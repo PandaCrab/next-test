@@ -3,8 +3,13 @@ import Link from 'next/link';
 
 import styles from '../styles/CategoriesDropdown.module.scss';
 
+interface DropdownState {
+    devices?: boolean;
+    clothes?: boolean;
+};
+
 const CategoriesDropdown = () => {
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState<DropdownState | false>(false);
 
     return (
         <div className={styles.categories}>

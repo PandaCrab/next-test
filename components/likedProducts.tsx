@@ -4,41 +4,53 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
-import styles from '../styles/StuffInBucket.module.scss';
+import { takeSomeProducts } from '../pages/api/api';
 
-const StuffinBucket = ({ view, setView }) => {
-    const [ordersInBucket, setOrders] = useState();
+import type { UserInfo, Stuff } from '../types/types';
+
+import styles from '../styles/LikedProducts.module.scss';
+
+const LikedProducts = ({ view, setView }) => {
+    const [likes, setLikes] = useState<Stuff[]>();
 
     const router = useRouter();
 
-    const order = useSelector((state) => state.order.clientOrder);
+    const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
+
+    const catchLikedProducts = async (ids) => {
+        const likedProducts = await takeSomeProducts(ids);
+
+        if (likedProducts) {
+            setLikes(likedProducts);
+        }
+    };
 
     useEffect(() => {
-        if (order?.length) {
-            setOrders(order);
+        if (user?.likes?.length) {
+            catchLikedProducts(user.likes);
+        } else {
+            return null;
         }
-    }, [order]);
+    }, [user]);
 
     return (
-        <div className={styles.inBucket}>
+        <div className={styles.likes}>
             <div
                 onClick={() => setView({
                     ...view,
-                    inBucket: !view.inBucket,
+                    likes: !view.likes,
                 })
                 }
                 className={styles.itemsHeader}
             >
-                Stuff in bucket
+                Your liked stuff
             </div>
             <div
-                style={{
-                    display: view.inBucket ? 'flex' : 'none',
-                }}
+                style={{ display: view.likes ? 'flex' : 'none' }}
                 className={styles.itemsWrapper}
             >
-                {ordersInBucket ? (
-                    ordersInBucket.map((product) => (
+                {likes ? (
+                    likes.map((product) => (
                         <div
                             key={product._id}
                             className={styles.items}
@@ -59,16 +71,16 @@ const StuffinBucket = ({ view, setView }) => {
                         </div>
                     ))
                 ) : (
-                    <div>Your shopping cart is empty</div>
+                    <div>You didn`t liked anything yet</div>
                 )}
             </div>
         </div>
     );
 };
 
-StuffinBucket.propTypes = {
+LikedProducts.propTypes = {
     view: PropTypes.object,
     setView: PropTypes.func,
 };
 
-export default StuffinBucket;
+export default LikedProducts;

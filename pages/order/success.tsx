@@ -3,8 +3,16 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
+interface OrderId {
+    order: {
+        orderId: {
+            order: string;
+        };
+    };
+};
+
 const SuccessPage = () => {
-    const orderId = useSelector((state) => state.order.orderId.order);
+    const orderId = useSelector((state: OrderId) => state.order.orderId.order);
 
     const router = useRouter();
 

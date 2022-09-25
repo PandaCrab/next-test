@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { string } from 'yup';
 
 import { clearAlerts } from '../redux/ducks/alerts';
 
 import styles from '../styles/PopupAlert.module.scss';
 
-const PopupAlert = () => {
-    const [success, setSuccess] = useState('');
-    const [warning, setWarning] = useState('');
-    const [error, setError] = useState('');
+interface AlertReduxState {
+    alert: {
+        success?: string;
+        warning?: string;
+        error?: string;
+    };
+};
 
-    const alert = useSelector((state) => state.alert);
+const PopupAlert: React.FC = () => {
+    const [success, setSuccess] = useState<string>('');
+    const [warning, setWarning] = useState<string>('');
+    const [error, setError] = useState<string>('');
+
+    const alert = useSelector((state: AlertReduxState) => state.alert);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -35,15 +44,15 @@ const PopupAlert = () => {
     }, [alert.success, alert.warning, alert.error]);
 
     if (success) {
-        <div className={`${styles.alert} ${styles.success}`}>{success}</div>;
+        return <div className={`${styles.alert} ${styles.success}`}>{success}</div>;
     }
 
     if (warning) {
-        <div className={`${styles.alert} ${styles.warning}`}>{warning}</div>;
+        return <div className={`${styles.alert} ${styles.warning}`}>{warning}</div>;
     }
 
     if (error) {
-        <div className={`${styles.alert} ${styles.error}`}>{error}</div>;
+        return <div className={`${styles.alert} ${styles.error}`}>{error}</div>;
     }
 };
 

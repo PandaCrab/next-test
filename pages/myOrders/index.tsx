@@ -2,19 +2,22 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import styles from '../../styles/myOrder.module.scss';
 import { getUserOrders } from '../api/api';
 import LoginPage from '../login';
 
+import type { OrderInfo, userObject } from '../../types/types';
+
+import styles from '../../styles/myOrder.module.scss';
+
 const UserOrdersPage = () => {
     const [loged, setloged] = useState(false);
-    const [orders, setOrders] = useState();
+    const [orders, setOrders] = useState<OrderInfo[]>();
 
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state: { user: userObject }) => state.user);
     const router = useRouter();
 
     const takeOrders = async (id) => {
-        const catchResponse = await getUserOrders(id);
+        const catchResponse: OrderInfo[] = await getUserOrders(id);
         if (catchResponse.length) {
             setOrders(catchResponse);
         }

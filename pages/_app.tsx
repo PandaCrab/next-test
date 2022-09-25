@@ -7,7 +7,7 @@ import store from '../redux/store';
 
 import '../styles/globals.scss';
 
-const MyApp = ({ Component, pageProps }) => (
+const MyApp = ({ Component, pageProps }: {Component: React.FC, pageProps: object}) => (
     <Provider store={store}>
         <SiteLayout>
             <Component {...pageProps} />

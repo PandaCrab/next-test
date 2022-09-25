@@ -6,7 +6,9 @@ import alertReducer from './ducks/alerts';
 import searchReducer from './ducks/search';
 import orderReducer from './ducks/order';
 
-export const makeStore = () => configureStore({
+import type { ReduxStore } from '../types/types';
+
+const makeStore = () => configureStore<ReduxStore>({
     reducer: {
         stuff: stuffReducer,
         user: userReducer,

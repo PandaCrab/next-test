@@ -10,15 +10,38 @@ import { catchSuccess, catchError } from '../../redux/ducks/alerts';
 import { addressSchema, phoneSchema } from '../../helpers/validation';
 import { UserInfoSection, DelitionAccount, AddressForm } from '../../components';
 
+import type { UserInfo } from '../../types/types';
+
 import styles from '../../styles/AccountPage.module.scss';
 
+interface ViewState {
+    inBucket: boolean;
+    likes: boolean;
+    addressForm: boolean;
+    phoneChanging: boolean;
+    settings: boolean;
+    agreeDeletion: boolean;
+    confirmPassword: boolean;
+};
+
+interface InvalidState {
+    path: {
+        phone?: string;
+        street?: string;
+        city?: string;
+        country?: string;
+        zip?:string;
+    };
+    isValid: boolean;
+};
+
 const AccountPage = () => {
-    const [loged, setLoged] = useState(false);
-    const [invalid, setInvalid] = useState({
+    const [loged, setLoged] = useState<boolean>(false);
+    const [invalid, setInvalid] = useState<InvalidState>({
         path: {},
         isValid: false,
     });
-    const [view, setView] = useState({
+    const [view, setView] = useState<ViewState>({
         inBucket: false,
         likes: false,
         addressForm: false,
@@ -28,19 +51,19 @@ const AccountPage = () => {
         confirmPassword: false,
     });
 
-    const settingsRef = useRef();
+    const settingsRef: React.MutableRefObject<HTMLDivElement> | undefined = useRef();
 
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const token = useSelector((state) => state.user.token);
-    const user = useSelector((state) => state.user.info);
+    const token = useSelector((state: { user: { token: string } }) => state.user.token);
+    const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
 
     const updateInfo = async (info, setPhone, setAddressForm) => {
         const id = router.query.userAccount;
 
         if (info.shippingAddress && Object.keys(info.shippingAddress).length === 0) {
-            const res = await updateUserInfo(id, info);
+            const res = await updateUserInfo(id.toString(), info);
 
             dispatch(catchSuccess(res.message));
             dispatch(getInfo(res.updated));
@@ -52,7 +75,7 @@ const AccountPage = () => {
                     .validate(info)
                     .then(async (value) => {
                         if (value) {
-                            const res = await updateUserInfo(id, info);
+                            const res = await updateUserInfo(id.toString(), info);
 
                             if (res.message) {
                                 dispatch(catchSuccess(res.message));
@@ -91,7 +114,7 @@ const AccountPage = () => {
                     .validate(info, { abortEarly: false })
                     .then(async (value) => {
                         if (value) {
-                            const res = await updateUserInfo(id, info);
+                            const res = await updateUserInfo(id.toString(), info);
 
                             if (res.message) {
                                 dispatch(catchSuccess(res.message));

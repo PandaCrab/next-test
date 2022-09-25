@@ -8,22 +8,34 @@ import { SearchBar, ProductCard } from '../../components';
 import { storeStuff } from '../../redux/ducks/stuff';
 import { data$ } from '../api/api';
 
+import type { Stuff } from '../../types/types';
+
 import styles from '../../styles/Shop.module.scss';
 
+interface Error {
+    status: boolean;
+    message: string | null
+};
+
+interface Loader {
+    status: boolean;
+    loader: string | null;
+};
+
 const Shop = () => {
-    const [stuffs, setStuffs] = useState([]);
-    const [error, setError] = useState({
+    const [stuffs, setStuffs] = useState<Stuff[]>([]);
+    const [error, setError] = useState<Error>({
         status: false,
         message: null,
     });
 
-    const [isLoading, setLoading] = useState({
+    const [isLoading, setLoading] = useState<Loader>({
         status: false,
         loader: null,
     });
 
-    const catchSearchInput = useSelector((state) => state.search.search);
-    const stuff = useSelector((state) => state.stuff.stuff);
+    const catchSearchInput = useSelector((state: { search: { search: string } }) => state.search.search);
+    const stuff = useSelector((state: { stuff: { stuff: Stuff[] } }) => state.stuff.stuff);
 
     const dispatch = useDispatch();
 
@@ -51,10 +63,10 @@ const Shop = () => {
                 repeat(),
             )
             .subscribe((res) => setLoading({
-                loading: true,
+                status: true,
                 loader: res,
             }));
-        return () => subscription.unsubscribe();
+        subscription.unsubscribe();
     }, [isLoading.loader]);
 
     useEffect(() => {
@@ -86,8 +98,6 @@ const Shop = () => {
                 setLoading({ status: false, loader: null });
             },
         });
-        // eslint-disable-next-line no-unused-expressions
-        data$.unsubscribe;
     }, []);
 
     useEffect(() => {

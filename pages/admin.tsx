@@ -6,13 +6,14 @@ import LoginPage from './login';
 import { AddProductForm, ProductTable } from '../components';
 
 import styles from '../styles/Admin.module.scss';
+import { userObject } from '../types/types';
 
 const AdminPage = () => {
-    const [loged, setloged] = useState(false);
-    const [permission, setPermission] = useState(false);
-    const [show, setShow] = useState('addProduct');
+    const [loged, setloged] = useState<boolean>(false);
+    const [permission, setPermission] = useState<boolean>(false);
+    const [show, setShow] = useState<string>('addProduct');
 
-    const user = useSelector((state) => state.user);
+    const user: userObject = useSelector((state: { user: userObject }) => state.user);
     const router = useRouter();
 
     useEffect(() => {

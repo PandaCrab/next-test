@@ -6,27 +6,48 @@ import { OrderList } from '../../components';
 import { fillShipping, getOrderId } from '../../redux/ducks/order';
 import { addressSchema, userInfoSchema } from '../../helpers/validation';
 
+import type { AddressInfo, ShippingInfo, userObject } from '../../types/types';
+
 import styles from '../../styles/OrderPage.module.scss';
 
+interface AddressInvalid {
+    path: {
+        street?: string;
+        city?: string;
+        country?: string;
+        zip?: string;
+    };
+    isValid: boolean;
+};
+
+interface ShippingInvalid {
+    path: {
+        name?: string;
+        phone?: string;
+        address?: AddressInvalid;
+    };
+    isValid: boolean;
+};
+
 const OrderForm = () => {
-    const [address, setAddress] = useState({
+    const [address, setAddress] = useState<AddressInfo>({
         street: '',
         city: '',
         country: '',
         zip: '',
     });
-    const [invalidAddress, setInvalidAddress] = useState({
+    const [invalidAddress, setInvalidAddress] = useState<AddressInvalid>({
         path: {},
         isValid: false,
     });
 
-    const [shipping, setShipping] = useState({
+    const [shipping, setShipping] = useState<ShippingInfo>({
         name: '',
         phone: '',
         optional: '',
         address,
     });
-    const [invalidUserInfo, setInvalidUserInfo] = useState({
+    const [invalidUserInfo, setInvalidUserInfo] = useState<ShippingInvalid>({
         path: {},
         isValid: false,
     });
@@ -61,7 +82,7 @@ const OrderForm = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const userAddress = useSelector((state) => state.user.info?.shippingAddress);
+    const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
 
     const handleChange = (target) => {
         const { name, value } = target;
@@ -165,9 +186,7 @@ const OrderForm = () => {
 
                 <label className={styles.formLabel}>optional</label>
                 <input
-                    className={
-                        invalidUserInfo.path.optional ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
+                    className={styles.formInput}
                     name="optional"
                     value={shipping.optional}
                     onChange={({ target }) => handleChange(target)}

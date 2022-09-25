@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import PropTypes from 'prop-types';
 
+import type { AddressInfo } from '../types/types';
+
 import styles from '../styles/AddressForm.module.scss';
 
 const AddressForm = ({
     updateInfo, view, setView, invalid,
 }) => {
-    const [addressForm, setAddressForm] = useState({
+    const [addressForm, setAddressForm] = useState<AddressInfo>({
         street: '',
         city: '',
         country: '',
         zip: '',
     });
 
-    const addressInputChange = (target) => {
+    const addressInputChange = (target: { name: string, value: string }) => {
         const { name, value } = target;
 
         setAddressForm({

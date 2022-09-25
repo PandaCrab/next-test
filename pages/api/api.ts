@@ -1,7 +1,8 @@
 import {
     switchMap,
     of,
-    catchError
+    catchError,
+    Observable
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch'
 
@@ -13,7 +14,9 @@ import type {
     Credentials,
     Info,
     Registration,
+    CommentApi,
 } from '../../types/apiTypes';
+import { ObservableResult, Stuff } from '../../types/types';
 
 const url = 'http://localhost:4000';
 
@@ -94,7 +97,7 @@ export const deleteProduct = async (id: string) => {
     }
 };
 
-export const rateProduct = async (id: string, rating: number) => {
+export const rateProduct = async (id: string, rating: { rated: number}) => {
     try {
         const res = fetch(url + `/product/${id}/rating`, {
             method: 'PUT',
@@ -112,7 +115,7 @@ export const rateProduct = async (id: string, rating: number) => {
     }
 };
 
-export const commentProduct = async (id: string, comment: string) => {
+export const commentProduct = async (id: string, comment: CommentApi) => {
     try {
         await fetch(url + `/product/${id}/addComments`, {
             method: 'PUT',
@@ -235,7 +238,7 @@ export const userRated = async (userId: string, userRatedProductId: UserRatedPro
     }
 };
 
-export const deleteUser = async (id: string, pass: string) => {
+export const deleteUser = async (id: string, pass: { password: string }) => {
     try {
         const deleted = fetch(url + `/user/${id}`, {
             mode: 'cors',

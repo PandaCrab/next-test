@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { useDispatch } from 'react-redux';
-import { catchError, catchWarning } from '../redux/ducks/alerts.ts';
+import { catchError, catchWarning } from '../redux/ducks/alerts';
 import { deleteUser } from '../pages/api/api';
 import { logout } from '../redux/ducks/user';
 import { clearOrder } from '../redux/ducks/order';
@@ -11,7 +11,7 @@ import { clearOrder } from '../redux/ducks/order';
 import styles from '../styles/DelitionAccount.module.scss';
 
 const DelitionAccount = ({ view, setView }) => {
-    const [confirmPass, setConfirmPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState<string>('');
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const DelitionAccount = ({ view, setView }) => {
     const deleteAccount = async () => {
         const id = router.query.userAccount;
 
-        const deleted = await deleteUser(id, { password: confirmPass });
+        const deleted = await deleteUser(id.toString(), { password: confirmPass });
 
         if (deleted.error) {
             dispatch(catchError(deleted.error));

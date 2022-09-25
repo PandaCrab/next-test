@@ -1,37 +1,55 @@
-import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { BsCart } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 
-import { catchSuccess } from '../redux/ducks/alerts.ts';
-import { postProduct } from '../pages/api/api.ts';
+import { catchSuccess } from '../redux/ducks/alerts';
+import { postProduct } from '../pages/api/api';
 import { addProductSchema } from '../helpers/validation';
 import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
 import useWindowSize from '../hooks/windowSize';
 
+import type { Stuff } from '../types/types';
+
 import styles from '../styles/AddProductForm.module.scss';
+import { valueFromAST } from 'graphql';
+
+interface InvalidProductState {
+    path?: {
+        name: string;
+        price: string;
+        imgUrl: string;
+        color: string;
+        quantity: string;
+        category: string;
+        sybcategory: string;
+        width: string;
+        height: string;
+        description: string;
+    };
+    isValid: boolean;
+};
 
 const AddProductForm = () => {
-    const [productPriview, setPreview] = useState(false);
+    const [productPriview, setPreview] = useState<boolean>(false);
     const [dropdownCategories, setCategories] = useState({
         category: false,
         subcategory: false,
     });
-    const [addProduct, setProduct] = useState({
+    const [addProduct, setProduct] = useState<Stuff>({
         name: '',
-        price: '',
+        price: 0,
         imgUrl: '',
         color: '',
-        quantity: '',
+        quantity: 0,
         category: '',
-        sybcategory: '',
-        width: '',
-        height: '',
+        width: 0,
+        height: 0,
         description: '',
     });
-    const [invalidProductInfo, setProductInfo] = useState({
-        path: {},
+    const [invalidProductInfo, setProductInfo] = useState<InvalidProductState>({
+        path: null,
         isValid: false,
     });
 
@@ -39,23 +57,32 @@ const AddProductForm = () => {
 
     const size = useWindowSize();
 
+    const handleChange = (target: { name: string, value: string | number }) => {
+        const { name, value } = target;
+
+        setProduct({
+            ...addProduct,
+            [name]: value,
+        });
+    };
+
     const onPostProduct = async (info) => {
         await addProductSchema
             .validate(addProduct, { abortEarly: false })
             .then(async (value) => {
                 if (value) {
-                    const { message } = await postProduct(info);
+                    await postProduct(info);
 
                     setProduct({
                         name: '',
-                        price: '',
+                        price: 0,
                         imgUrl: '',
                         color: '',
-                        quantity: '',
+                        quantity: 0,
                         category: '',
                         subcategory: '',
-                        width: '',
-                        height: '',
+                        width: 0,
+                        height: 0,
                         description: '',
                     });
 
@@ -63,11 +90,11 @@ const AddProductForm = () => {
                         setPreview(false);
                     }
 
-                    dispatch(catchSuccess(message));
+                    dispatch(catchSuccess('Product added'));
                 }
             })
             .catch((error) => {
-                const validationError = {};
+                const validationError = null;
 
                 error.inner.forEach((err) => {
                     if (err.path) {
@@ -96,86 +123,66 @@ const AddProductForm = () => {
                 <input
                     id="name"
                     className={
-                        invalidProductInfo.path.name
+                        invalidProductInfo.path?.name
                             ? `${styles.addProductInput} ${styles.invalid}`
                             : `${styles.addProductInput}`
                     }
                     name="name"
-                    placeholder={invalidProductInfo.path.name ? invalidProductInfo.path.name : 'Name of product'}
+                    placeholder={invalidProductInfo.path?.name ? invalidProductInfo.path?.name : 'Name of product'}
                     value={addProduct.name}
-                    onChange={({ target }) => setProduct({
-                        ...addProduct,
-                        name: target.value,
-                    })
-                    }
+                    onChange={({ target }) => handleChange(target)}
                 />
                 <input
                     id="price"
                     className={
-                        invalidProductInfo.path.price
+                        invalidProductInfo.path?.price
                             ? `${styles.addProductInput} ${styles.invalid}`
                             : `${styles.addProductInput}`
                     }
                     name="price"
-                    placeholder={invalidProductInfo.path.price ? invalidProductInfo.path.price : 'Enter product price'}
-                    value={addProduct.price}
-                    onChange={({ target }) => setProduct({
-                        ...addProduct,
-                        price: target.value,
-                    })
-                    }
+                    placeholder={invalidProductInfo.path?.price ? invalidProductInfo.path?.price : 'Enter product price'}
+                    value={addProduct.price === 0 ? '' : addProduct.price}
+                    onChange={({ target }) => handleChange(target)}
                 />
                 <input
                     id="imgUrl"
                     className={
-                        invalidProductInfo.path.imgUrl
+                        invalidProductInfo.path?.imgUrl
                             ? `${styles.addProductInput} ${styles.invalid}`
                             : `${styles.addProductInput}`
                     }
                     name="imgUrl"
-                    placeholder={invalidProductInfo.path.imgUrl ? invalidProductInfo.path.imgUrl : 'Image path'}
+                    placeholder={invalidProductInfo.path?.imgUrl ? invalidProductInfo.path?.imgUrl : 'Image path?'}
                     value={addProduct.imgUrl}
-                    onChange={({ target }) => setProduct({
-                        ...addProduct,
-                        imgUrl: target.value,
-                    })
-                    }
+                    onChange={({ target }) => handleChange(target)}
                 />
                 <input
                     id="color"
                     className={
-                        invalidProductInfo.path.color
+                        invalidProductInfo.path?.color
                             ? `${styles.addProductInput} ${styles.invalid}`
                             : `${styles.addProductInput}`
                     }
                     name="color"
                     placeholder="Enter product color (optional)"
                     value={addProduct.color}
-                    onChange={({ target }) => setProduct({
-                        ...addProduct,
-                        color: target.value,
-                    })
-                    }
+                    onChange={({ target }) => handleChange(target)}
                 />
                 <input
                     id="quantity"
                     className={
-                        invalidProductInfo.path.quantity
+                        invalidProductInfo.path?.quantity
                             ? `${styles.addProductInput} ${styles.invalid}`
                             : `${styles.addProductInput}`
                     }
                     name="quantity"
                     placeholder={
-                        invalidProductInfo.path.quantity
-                            ? invalidProductInfo.path.quantity
+                        invalidProductInfo?.path?.quantity
+                            ? invalidProductInfo.path?.quantity
                             : 'Enter quantity of available products'
                     }
-                    value={addProduct.quantity}
-                    onChange={({ target }) => setProduct({
-                        ...addProduct,
-                        quantity: target.value,
-                    })
-                    }
+                    value={addProduct.quantity === 0 ? '' : addProduct.quantity}
+                    onChange={({ target }) => handleChange(target)}
                 />
                 <div className={styles.row}>
                     <div className={styles.dropdownCategories}>
@@ -198,7 +205,7 @@ const AddProductForm = () => {
                                             setProduct({
                                                 ...addProduct,
                                                 category,
-                                                subcategory: '',
+                                                subcategory: ''
                                             });
                                             setCategories({
                                                 category: false,
@@ -234,7 +241,7 @@ const AddProductForm = () => {
                                                     onClick={() => {
                                                         setProduct({
                                                             ...addProduct,
-                                                            subcategory,
+                                                            subcategory
                                                         });
                                                         setCategories((prev) => ({
                                                             ...prev,
@@ -253,7 +260,7 @@ const AddProductForm = () => {
                                                 onClick={() => {
                                                     setProduct({
                                                         ...addProduct,
-                                                        subcategory,
+                                                        subcategory
                                                     });
                                                     setCategories((prev) => ({
                                                         ...prev,
@@ -274,62 +281,49 @@ const AddProductForm = () => {
                     <input
                         id="width"
                         className={
-                            invalidProductInfo.path.width
+                            invalidProductInfo.path?.width
                                 ? `${styles.addProductInput} ${styles.invalid}`
                                 : `${styles.addProductInput}`
                         }
                         name="width"
                         placeholder={
-                            invalidProductInfo.path.width
-                                ? invalidProductInfo.path.width
+                            invalidProductInfo.path?.width
+                                ? invalidProductInfo.path?.width
                                 : 'Enter width of product image'
                         }
-                        value={addProduct.width}
-                        onChange={({ target }) => setProduct({
-                            ...addProduct,
-                            width: target.value,
-                        })
-                        }
+                        value={addProduct.width === 0 ? '' : addProduct.width}
+                        onChange={({ target }) => handleChange(target)}
                     />
                     <input
                         id="height"
                         className={
-                            invalidProductInfo.path.height
+                            invalidProductInfo.path?.height
                                 ? `${styles.addProductInput} ${styles.invalid}`
                                 : `${styles.addProductInput}`
                         }
                         name="height"
                         placeholder={
-                            invalidProductInfo.path.height
-                                ? invalidProductInfo.path.height
+                            invalidProductInfo.path?.height
+                                ? invalidProductInfo.path?.height
                                 : 'Enter height of product image'
                         }
-                        value={addProduct.height}
-                        onChange={({ target }) => setProduct({
-                            ...addProduct,
-                            height: target.value,
-                        })
-                        }
+                        value={addProduct.height === 0 ? '' : addProduct.height}
+                        onChange={({ target }) => handleChange(target)}
                     />
                 </div>
                 <textarea
-                    type="textarea"
                     id="description"
                     className={
-                        invalidProductInfo.path.description
+                        invalidProductInfo.path?.description
                             ? `${styles.addProductInput} ${styles.description} ${styles.invalid}`
                             : `${styles.addProductInput} ${styles.description}`
                     }
                     name="description"
-                    rows="20"
-                    cols="200"
+                    rows={20}
+                    cols={200}
                     placeholder="Add description (optional)"
                     value={addProduct.description}
-                    onChange={({ target }) => setProduct({
-                        ...addProduct,
-                        description: target.value,
-                    })
-                    }
+                    onChange={({ target }) => handleChange(target)}
                 />
                 <div className={styles.btnsWrapper}>
                     {size.width < 767 && (
@@ -348,7 +342,7 @@ const AddProductForm = () => {
                     display: productPriview ? 'flex' : 'none',
                 }}
             >
-                <div className={styles.productCard} key={addProduct.id}>
+                <div className={styles.productCard} key={addProduct._id}>
                     {size.width < 767 && (
                         <div
                             onClick={() => {

@@ -7,23 +7,45 @@ import { useDispatch } from 'react-redux';
 import { deleteProduct, updateProductInStorage } from '../pages/api/api';
 import { catchSuccess, catchWarning } from '../redux/ducks/alerts';
 
+import type { Stuff } from '../types/types';
+
 import styles from '../styles/ProductTable.module.scss';
 
+interface UpdateState {
+    updating: boolean;
+    updateItem?: {
+        _id: string;
+        name: string;
+        imgUrl?: string;
+        price: number;
+        color: string;
+        quantity: number
+    } | null;
+};
+
+interface DeleteItemState {
+    item: {
+        id: string;
+        name: string;
+    };
+    onSubmit: boolean;
+};
+
 const ProductTable = () => {
-    const [allProducts, setAllProducts] = useState();
-    const [deleteItem, setDeleteItem] = useState({
+    const [allProducts, setAllProducts] = useState<Stuff[]>();
+    const [deleteItem, setDeleteItem] = useState<DeleteItemState>({
         item: null,
         onSubmit: false,
     });
-    const [inUpdate, setUpdate] = useState({
+    const [inUpdate, setUpdate] = useState<UpdateState>({
         updating: false,
         updateItem: {
             _id: '',
             name: '',
-            price: '',
+            price: 0,
             color: '',
-            quantity: '',
-        },
+            quantity: 0,
+        }
     });
 
     const dispatch = useDispatch();
@@ -68,7 +90,7 @@ const ProductTable = () => {
             takeProducts();
             setUpdate({
                 updating: false,
-                updateItem: {},
+                updateItem: null,
             });
         } catch (err) {
             console.log(err);

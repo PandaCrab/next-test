@@ -7,28 +7,42 @@ import { catchSuccess } from '../../redux/ducks/alerts';
 import { clearOrder } from '../../redux/ducks/order';
 import { createOrder } from '../api/api';
 
+import type { ShippingInfo, Stuff, userObject } from '../../types/types';
+
 import styles from '../../styles/PaymentForm.module.scss';
 
+interface PaymentState {
+    cardholder: string;
+    cardNum: number;
+    expiry: string;
+    cvv: number
+}
+
+interface OnChangeValues {
+    value: string | number;
+    name: string;
+}
+
 const PaymentForm = () => {
-    const [paymentType, setPaymentType] = useState('online');
-    const [payment, setPayment] = useState({
+    const [paymentType, setPaymentType] = useState<string>('online');
+    const [payment, setPayment] = useState<PaymentState>({
         cardholder: '',
-        cardNum: '',
+        cardNum: 0,
         expiry: '',
-        cvv: '',
+        cvv: 0,
     });
     const [invalid, setInvalid] = useState({
         path: null,
-        valid: false,
+        isValid: false,
     });
 
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const clientOrder = useSelector((state) => state.order.clientOrder);
-    const userId = useSelector((state) => state.user.info?._id);
-    const orderId = useSelector((state) => state.order.orderId.order);
-    const shipping = useSelector((state) => state.order.shippingInfo);
+    const clientOrder = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
+    const userId = useSelector((state: { user: userObject }) => state.user.info?._id);
+    const orderId = useSelector((state: {order: {orderId: {order: string}}}) => state.order.orderId.order);
+    const shipping = useSelector((state: { order: { shippingInfo: ShippingInfo } }) => state.order.shippingInfo);
 
     const onSubmit = async () => {
         const payed = paymentType === 'online';
@@ -79,7 +93,7 @@ const PaymentForm = () => {
 
                     setInvalid({
                         path: validationError,
-                        valid: false,
+                        isValid: false,
                     });
                 });
         }
@@ -117,9 +131,10 @@ const PaymentForm = () => {
     };
 
     const changeHandler = ({ target }) => {
-        const { value, name } = target;
+        const { value, name }: OnChangeValues = target;
 
         setPayment({
+            ...payment,
             [name]: value,
         });
     };

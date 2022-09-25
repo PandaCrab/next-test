@@ -2,10 +2,12 @@ import Image from 'next/image';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import type { Stuff } from '../types/types';
+
 import styles from '../styles/OrderList.module.scss';
 
 const OrderList = () => {
-    const clientOrder = useSelector((state) => state.order.clientOrder);
+    const clientOrder = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
 
     return clientOrder.length ? (
         <div className={styles.stuffWrapper}>

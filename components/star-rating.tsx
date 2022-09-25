@@ -7,17 +7,27 @@ import { rateProduct, userRated } from '../pages/api/api';
 import { storeStuff } from '../redux/ducks/stuff';
 import { getInfo } from '../redux/ducks/user';
 
+import type { UserInfo, Stuff } from '../types/types';
+
 import styles from '../styles/StarRating.module.scss';
 
-const StarRating = ({ product }) => {
+interface StarObject {
+    one: number;
+    two: number;
+    three: number;
+    four: number;
+    five: number;
+};
+
+const StarRating = ({ product }: { product: Stuff }) => {
     const [tooltip, setTooltip] = useState(false);
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
 
     const dispatch = useDispatch();
-    const userInfo = useSelector((state) => state.user.info);
+    const userInfo = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
 
-    const calculateRating = ({ stars }) => {
+    const calculateRating = ({ stars }: { stars?: StarObject }) => {
         if (stars) {
             const {
                 five, four, three, two, one,
@@ -25,7 +35,7 @@ const StarRating = ({ product }) => {
 
             const calculated = (
                 5 * five + 4 * four + 3 * three + 2 * two + 1 * one
-            ) / (five + four + three + two + one).toFixed(2);
+            ) / (five + four + three + two + one);
 
             setRating(calculated);
         } else {
@@ -33,7 +43,7 @@ const StarRating = ({ product }) => {
         }
     };
 
-    const showRating = (index, rate) => {
+    const showRating = (index: number, rate: number) => {
         if (rate >= 4.5) {
             return <BsStarFill />;
         }
@@ -51,19 +61,19 @@ const StarRating = ({ product }) => {
         }
     };
 
-    const starsClassName = (index) => {
+    const starsClassName = (index: number) => {
         const ratedStars = index - 0.9999 <= (hover || rating);
 
         return ratedStars ? `${styles.starButton} ${styles.rated}` : `${styles.starButton} ${styles.unrated}`;
     };
 
-    const starMouseEnterHendler = (info, index) => {
+    const starMouseEnterHendler = (info: UserInfo, index: number) => {
         const rated = info?._id && userInfo?.rated?.find((el) => el.productId === product._id);
 
         return rated ? () => { setTooltip(true); } : () => { setHover(index); };
     };
 
-    const starMouseLeaveHendler = (info) => {
+    const starMouseLeaveHendler = (info: UserInfo) => {
         if (info?.rated?.find((el) => el.productId === product._id)) {
             setTooltip(false);
         } else {
@@ -71,12 +81,12 @@ const StarRating = ({ product }) => {
         }
     };
 
-    const putRatedInUserData = async (rated) => {
+    const putRatedInUserData = async (rated: number) => {
         const res = await userRated(userInfo._id, { id: product._id, rated });
         dispatch(getInfo(res));
     };
 
-    const getRating = async (rated) => {
+    const getRating = async (rated: number) => {
         putRatedInUserData(rated);
         const catchRes = await rateProduct(product._id, { rated });
 
@@ -84,7 +94,7 @@ const StarRating = ({ product }) => {
         dispatch(storeStuff(catchRes));
     };
 
-    const starClickHendler = (info, index) => {
+    const starClickHendler = (info: UserInfo, index: number) => {
         const notRated = info?._id && info?.rated?.find((el) => el.productId === product._id);
 
         return notRated ? null : () => getRating(index);

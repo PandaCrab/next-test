@@ -7,18 +7,20 @@ import Image from 'next/image';
 import { getUserOrder } from '../api/api';
 import LoginPage from '../login';
 
+import type { OrderInfo, userObject } from '../../types/types';
+
 import styles from '../../styles/userOrder.module.scss';
 
 const UserOrder = () => {
-    const [loged, setLoged] = useState(false);
-    const [order, setOrder] = useState();
+    const [loged, setLoged] = useState<boolean>(false);
+    const [order, setOrder] = useState<OrderInfo>();
 
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state: { user: userObject }) => state.user);
     const router = useRouter();
 
     const userOrderId = router.query.userOrder;
     const takeUserOrder = async (orderId, userId) => {
-        const res = await getUserOrder(orderId, userId);
+        const res: OrderInfo = await getUserOrder(orderId, userId);
         if (res) {
             setOrder(res);
         } else {
@@ -65,7 +67,7 @@ const UserOrder = () => {
                             </div>
                             <div className={styles.productsList}>
                                 {order.orderInfo.products.map((product) => (
-                                    <div className={styles.productCard} key={product.id}>
+                                    <div className={styles.productCard} key={product._id}>
                                         {product.imgUrl && (
                                             <div className={styles.imageWrapper}>
                                                 <Image

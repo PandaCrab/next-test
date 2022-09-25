@@ -1,12 +1,20 @@
+import type { ShippingInfo, Stuff } from "../../types/types";
+
 const FILL_SHIPPING_INFO = "order/FILL_SHIPPING_INFO";
 const GET_ORDER_ID = 'order/GET_ORDER_ID';
 const ADD_TO_ORDER = 'order/ADD_TO_ORDER';
 const DELETE_FROM_ORDER = 'order/DELETE_FROM_ORDER';
 const CLEAR_USER_ORDER = 'order/CLEAR_USER_ORDER';
 
-const initialState = {
+interface State {
+    shippingInfo: ShippingInfo | {};
+    orderId: string;
+    clientOrder: Stuff[];
+}
+
+const initialState: State = {
     shippingInfo: {},
-    orderId: {},
+    orderId: '',
     clientOrder: [],
 };
 

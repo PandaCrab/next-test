@@ -46,10 +46,18 @@ export type Order = {
     };
 };
 
+export type CommentApi = {
+    userId: string | null;
+    userAvatar: any | null;
+    username: string;
+    createdDate: Date;
+    message: string;
+};
+
 export type Credentials = {
     username: string;
     password: string;
-}
+};
 
 export type Info = {
     street: string,

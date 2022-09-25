@@ -11,28 +11,30 @@ import CategoriesDropdown from './categotiesDropdown';
 import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 
+import type { userObject } from '../types/types';
+
 import styles from '../styles/SiteLayout.module.scss';
 
 const SiteLayout = ({ children }) => {
-    const [isOpen, setOpen] = useState(false);
-    const [menuDropdown, setMenuDropdown] = useState(false);
-    const [admin, setAdmin] = useState(false);
-    const [showCategories, setShowCategories] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const [menuDropdown, setMenuDropdown] = useState<boolean>(false);
+    const [admin, setAdmin] = useState<boolean>(false);
+    const [showCategories, setShowCategories] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
-    const profileRef = useRef();
+    const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef();
     const router = useRouter();
 
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state: { user: userObject }) => state.user);
 
     const setToken = (token) => {
         localStorage.setItem('token', JSON.stringify(token));
     };
 
-    const takeUserInfo = async (id) => {
+    const takeUserInfo = async (id: string) => {
         const info = await getUserInfo(id);
 
         dispatch(getInfo(info));
@@ -55,7 +57,7 @@ const SiteLayout = ({ children }) => {
 
     useEffect(() => {
         if (!user.token) {
-            const token = getTokenFromStorage();
+            const token: string = getTokenFromStorage();
 
             if (token) {
                 dispatch(getToken(token));

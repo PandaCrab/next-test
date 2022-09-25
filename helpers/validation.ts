@@ -8,7 +8,7 @@ export const registrationSchema = yup.object().shape({
     email: yup.string().email('Invalid email address').required('Please enter email'),
     phone: yup.string().min(10).max(19).required('Please enter phone number'),
     password: yup.string().required('Please enter password'),
-    age: yup.number('Age can be only a number'),
+    age: yup.number(),
 });
 
 export const addressSchema = yup.object().shape({

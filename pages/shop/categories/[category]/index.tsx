@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { ProductCard } from '../../../../components';
 import { takeCategories } from '../../../api/api';
+import { ProductCard } from '../../../../components';
+
+import type { Stuff } from '../../../../types/types';
 
 import styles from '../../../../styles/CategoryPage.module.scss';
 
-const ClothesSubCategories = () => {
-    const [stuff, setStuff] = useState([]);
+const ClothesCategory = () => {
+    const [stuff, setStuff] = useState<Stuff[]>([]);
 
     const router = useRouter();
 
-    const takeProducts = async (category, subCategory) => {
-        const res = await takeCategories(category, subCategory);
+    const takeProducts = async (category, subcategory) => {
+        const res = await takeCategories(category, subcategory);
 
         setStuff(res);
     };
 
     useEffect(() => {
-        const { category, items } = router.query;
+        const { category } = router.query;
 
         if (router.isReady) {
-            takeProducts(category, items);
+            takeProducts(category, null);
         }
     }, [router]);
 
@@ -41,4 +43,4 @@ const ClothesSubCategories = () => {
     );
 };
 
-export default ClothesSubCategories;
+export default ClothesCategory;

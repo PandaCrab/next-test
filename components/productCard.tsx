@@ -11,13 +11,15 @@ import { inOrder, deleteFromOrder } from '../redux/ducks/order';
 import { getInfo } from '../redux/ducks/user';
 import { getUserLikes, getUserInfo } from '../pages/api/api';
 
+import type { Stuff, UserInfo } from '../types/types';
+
 import styles from '../styles/ProductCard.module.scss';
 
 const ProductCard = (props) => {
     const [product, setProduct] = useState(props.product);
 
-    const user = useSelector((state) => state.user.info);
-    const clientOrder = useSelector((state) => state.order.clientOrder);
+    const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
+    const clientOrder = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
 
     const dispatch = useDispatch();
     const router = useRouter();

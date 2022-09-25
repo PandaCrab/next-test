@@ -4,14 +4,16 @@ import { HiArrowNarrowLeft } from 'react-icons/hi';
 
 import Image from 'next/image';
 import { takeOneProduct } from '../api/api';
-
-import styles from '../../styles/ProductPage.module.scss';
 import { ProductComments } from '../../components';
 
+import type { Stuff } from '../../types/types';
+
+import styles from '../../styles/ProductPage.module.scss';
+
 const SingleProduct = () => {
-    const [productId, setProductId] = useState('');
-    const [product, setProduct] = useState();
-    const [tab, setTab] = useState('about');
+    const [productId, setProductId] = useState<string | string[]>('');
+    const [product, setProduct] = useState<Stuff>();
+    const [tab, setTab] = useState<string>('about');
 
     const router = useRouter();
 
@@ -34,7 +36,7 @@ const SingleProduct = () => {
     const availability = () => {
         if (product.quantity >= 50) {
             return 'Available';
-        } if (product.quantity <= 50 > 0) {
+        } if (product.quantity <= 50) {
             return 'Product is running out';
         }
         return 'Sold';
@@ -101,7 +103,7 @@ const SingleProduct = () => {
                     <ProductComments
                         product={product}
                         setProduct={setProduct}
-                        productId={productId}
+                        productId={productId.toString()}
                     />
                 )
             )}

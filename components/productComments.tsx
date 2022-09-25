@@ -7,17 +7,24 @@ import { useSelector } from 'react-redux';
 import { commentSchema } from '../helpers/validation';
 import { commentProduct, takeOneProduct } from '../pages/api/api';
 
+import type { Comments, UserInfo } from '../types/types';
+
 import styles from '../styles/ProductComments.module.scss';
 
+interface InvalidState {
+    message: string | null;
+    valid: boolean;
+};
+
 const ProductComments = ({ product, setProduct, productId }) => {
-    const [commentInput, setCommentInput] = useState('');
-    const [comments, setComments] = useState();
-    const [invalid, setInvalid] = useState({
+    const [commentInput, setCommentInput] = useState<string>('');
+    const [comments, setComments] = useState<Comments>();
+    const [invalid, setInvalid] = useState<InvalidState>({
         message: null,
         valid: false,
     });
 
-    const user = useSelector((state) => state.user.info);
+    const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
     const takeProduct = async () => {
         try {
             const res = await takeOneProduct(productId);
@@ -30,7 +37,7 @@ const ProductComments = ({ product, setProduct, productId }) => {
         }
     };
 
-    const dateFormater = (dateToFormat) => {
+    const dateFormater = (dateToFormat: Date) => {
         const time = new Date(dateToFormat).toLocaleTimeString();
         const date = new Date(dateToFormat).toLocaleDateString();
 
@@ -44,8 +51,8 @@ const ProductComments = ({ product, setProduct, productId }) => {
                 if (value) {
                     await commentProduct(productId, {
                         userId: user?._id || null,
-                        userAvatar: user?.avatar ? user.avatart : null,
-                        userName: user?.username || null,
+                        userAvatar: user?.photo ? user.photo : null,
+                        username: user?.username || null,
                         createdDate: new Date(),
                         message: commentInput,
                     });
@@ -78,7 +85,6 @@ const ProductComments = ({ product, setProduct, productId }) => {
                 <textarea
                     id="commentInput"
                     className={invalid.message ? `${styles.commentInput} ${styles.invalid}` : `${styles.commentInput}`}
-                    type="text"
                     placeholder={invalid.message ? invalid.message : 'Your comment goes here...'}
                     value={commentInput}
                     onChange={({ target }) => setCommentInput(target.value)}
@@ -103,7 +109,7 @@ const ProductComments = ({ product, setProduct, productId }) => {
                                         {comment.userAvatar ? (
                                             <Image
                                                 src={comment.userAvatar}
-                                                alt={comment.userName}
+                                                alt={comment.username}
                                                 width="100px"
                                                 height="100px"
                                             />
@@ -111,7 +117,7 @@ const ProductComments = ({ product, setProduct, productId }) => {
                                             <RiUser3Line />
                                         )}
                                     </div>
-                                    <div className={styles.userName}>{comment.userName || 'user'}</div>
+                                    <div className={styles.userName}>{comment.username || 'user'}</div>
                                 </div>
                                 <div className={styles.dateWrapper}>{dateFormater(comment.createdDate)}</div>
                             </div>

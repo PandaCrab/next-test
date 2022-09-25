@@ -7,16 +7,18 @@ import { useSelector } from 'react-redux';
 import LikedProducts from './likedProducts';
 import StuffInBucket from './stuffInBucket';
 
+import type { userObject } from '../types/types';
+
 import styles from '../styles/UserInfoSection.module.scss';
 
 const UserInfoSection = ({
     updateInfo, view, setView, invalid,
 }) => {
-    const [descriptionHide, setDescriptionHide] = useState(true);
+    const [descriptionHide, setDescriptionHide] = useState<boolean>(true);
 
-    const [phone, setPhone] = useState({ phone: '' });
+    const [phone, setPhone] = useState<{ phone: string }>({ phone: '' });
 
-    const user = useSelector((state) => state.user.info);
+    const user = useSelector((state: { user: userObject }) => state.user.info);
 
     return (
         <div className={styles.infoWrapper}>
