@@ -1,0 +1,324 @@
+@use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+$red: red;
+
+.addProductForm {
+    padding: 24px;
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    @include media.mobileS {
+        padding: 0;
+        width: 100%;
+    }
+
+    @include media.tablet {
+        width: 700px;
+    }
+
+    @include media.desktop {
+        width: 1400px;
+    }
+
+    .formWrapper {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .addProductInput,
+        .dropdownCategories {
+            margin-bottom: 10px;
+            padding: 12px 6px;
+            width: 350px;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+            position: relative;
+
+            @include media.mobileS {
+                padding: 6px 12px;
+                width: 300px;
+            }
+
+            @include media.laptop {
+                padding: 12px 6px;
+                width: 500px;
+            }
+
+            @include media.desktop {
+                width: 600px;
+                font-size: 18px;
+            }
+
+            &.description {
+                padding: 6px;
+                height: 150px;
+                resize: none;
+
+                @include media.mobileS {
+                    height: 100px;
+                }
+
+                @include media.laptop {
+                    height: 150px;
+                }
+            }
+
+            &.invalid {
+                border-color: $red;
+
+                &::placeholder {
+                    color: $red;
+                }
+            }
+
+            .dropdown {
+                width: 140px;
+                max-height: 200px;
+                background: $white;
+                border: 1px solid $lightgrayBorder;
+                border-radius: 0 0 5px 5px;
+                position: absolute;
+                top: 90%;
+                left: -1px;
+                z-index: 100;
+                overflow-y: scroll;
+
+                @include scrollbars(1px, $lightgrayBorder, none);
+
+                @include media.laptop {
+                    width: 240px;
+                }
+
+                @include media.desktop {
+                    width: 290px;
+                }
+
+                .dropdownItems {
+                    padding: 5px;
+
+                    &:hover {
+                        background-color: $backOnHover;
+                        color: $white;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .addProductInput,
+            .dropdownCategories {
+                width: 240px;
+
+                @include media.mobileS {
+                    width: 140px;
+                }
+
+                @include media.laptop {
+                    width: 240px;
+                }
+
+                @include media.desktop {
+                    width: 290px;
+                }
+            }
+        }
+
+        .previewBtn {
+            margin-right: 20px;
+            padding: 5px 10px;
+            text-align: center;
+            background: none;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+        }
+
+        .submitButton {
+            padding: 10px 5px;
+            width: 200px;
+            text-align: center;
+            background: none;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            @include media.mobileS {
+                margin-top: 20px;
+                padding: 5px 10px;
+                width: auto;
+            }
+
+            @include media.laptop {
+                padding: 10px 5px;
+                width: 200px;
+            }
+
+            &:hover {
+                box-shadow: 0 2px 4px $gray;
+            }
+
+            &:active {
+                box-shadow: none;
+            }
+        }
+    }
+
+    .previewCard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        @include media.mobileS {
+            width: 310px;
+            position: absolute;
+        }
+
+        @include media.tablet {
+            position: relative;
+            width: 350px;
+        }
+
+        @include media.laptop {
+            position: relative;
+            width: 350px;
+        }
+
+        @include media.desktop {
+            width: 600px;
+        }
+
+        .closeBtn {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 50%;
+        }
+
+        .productCard {
+            padding: 10px;
+            margin: 0 20px;
+            width: 350px;
+            height: 250px;
+            background: $white;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+            box-shadow: 0 0 10px $gray;
+            position: relative;
+
+            @include media.mobileS {
+                width: 300px;
+                position: absolute;
+                top: -200px;
+            }
+
+            @include media.tablet {
+                width: 350px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+                top: 0;
+            }
+
+            @include media.laptop {
+                width: 350px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+                top: 0;
+            }
+
+            @include media.desktop {
+                width: 500px;
+                height: auto;
+            }
+
+            .cardContentWrapper {
+                padding-bottom: 10px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+
+                .cardInfo {
+                    width: 200px;
+                    padding: 12px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+
+                    .stuffTitle {
+                        text-align: end;
+                        margin-bottom: 15px;
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            .cardButtons {
+                padding: 10px;
+                width: 88%;
+                height: 30px;
+                display: flex;
+                justify-content: flex-end;
+                border-top: 1px solid $lightgrayBorder;
+                bottom: 25px;
+
+                @include media.mobileS {
+                    padding: 5px;
+                }
+
+                @include media.laptop {
+                    width: 100%;
+                    height: auto;
+                    padding: 5px;
+                }
+
+                .cartButton {
+                    width: 35px;
+                    height: 35px;
+                    background: none;
+                    border: 1px solid $lightgrayBorder;
+                    border-radius: 50%;
+
+                    @include media.tablet {
+                        width: 25px;
+                        height: 25px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 14px;
+                    }
+
+                    @include media.tablet {
+                        width: 35px;
+                        height: 35px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+    }
+}

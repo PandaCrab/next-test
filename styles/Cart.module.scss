@@ -1,13 +1,39 @@
+@use 'mixins/MediaMixins' as media;
+
+$firebrick: firebrick;
+$white: white;
+
 .cartContainer {
     width: 30px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
     cursor: pointer;
-    right: 20px;
-    top: 10px;
+    position: relative;
+
+    @include media.desktop {
+        width: 40px;
+        height: 40px;
+    }
+
+    .cart {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+
+        @include media.laptop {
+            width: 30px;
+            height: 30px;
+        }
+
+        @include media.desktop {
+            width: 40px;
+            height: 40px;
+            font-size: 25px;
+        }
+    }
     
     .badge {
         display: flex;
@@ -18,9 +44,32 @@
         width: 15px;
         height: 15px;
         border-radius: 50%;
-        background-color: firebrick;
-        color: white;
+        background-color: $firebrick;
+        color: $white;
         top: 0;
         right: 0;
+
+        @include media.mobileS {
+            width: 12px;
+            height: 12px;
+            top: 4px;
+            right: 7px;
+        }
+
+        @include media.laptop {
+            width: 17px;
+            height: 17px;
+            font-size: 12px;
+            top: 0;
+            right: 4px;
+        }
+
+        @include media.desktop {
+            width: 20px;
+            height: 20px;
+            font-size: 14px;
+            top: 2px;
+            right: 6px;
+        }
     }
 }

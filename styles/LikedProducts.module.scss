@@ -1,0 +1,59 @@
+@use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
+
+$lightgrayBorder: #bbbbbb;
+$itemHeaderBack: #f8f8f8;
+
+.likes {
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    .itemsHeader {
+        padding: 5px;
+        background: $itemHeaderBack;
+        border: 1px solid $lightgrayBorder;
+        border-radius: 5px 5px 0 0;
+        text-align: center;
+    }
+
+    .itemsWrapper {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid $lightgrayBorder;
+        max-height: 600px;
+        overflow-y: scroll;
+
+        @include scrollbars(1px, $lightgrayBorder, none);
+
+        @include media.mobileS {
+            max-height: 250px;
+        }
+
+        @include media.laptop {
+            max-height: 500px;
+        }
+
+        .items{
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .imageWrapper {
+                width: 80%;
+                display: flex;
+                justify-content: center;
+
+                @include media.mobileS {
+                    width: 100px;
+                }
+                
+                @include media.laptop {
+                    width: 80%;
+                }
+            }
+        }
+    }
+}

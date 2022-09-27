@@ -1,0 +1,124 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+$lightgrayBorder: #bbbbbb;
+$checkboxBack: rgb(0, 255, 0);
+$red: red;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+
+    @include media.laptop {
+        font-size: 18px;
+    }
+
+    .checkboxesContainer {
+        margin-bottom: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+
+        .paymentTypeHeader {
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+
+            @include media.laptop {
+                margin-bottom: 15px;
+                font-size: 20px;
+            }
+        }
+
+        .checkboxWrapper {
+            display: flex;
+            align-items: center;
+
+            .checkbox {
+                margin-right: 5px;
+                width: 10px;
+                height: 10px;
+                border: 1px solid;
+                cursor: pointer;
+
+                @include media.laptop {
+                    margin-right: 15px;
+                    width: 12px;
+                    height: 12px;
+                }
+
+                &.checked {
+                    background-color: $checkboxBack;
+                }
+            }
+        }
+    }
+
+    .inputWrapper {
+        margin-bottom: 15px;
+        width: 100%;
+        position: relative;
+
+        .paymentInput {
+            margin-bottom: 2px;
+            padding: 3px 6px;
+            width: 100%;
+            border: 2px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            @include media.laptop {
+                margin-bottom: 3px;
+                padding: 6px 12px;
+                font-size: 18px;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &.invalid {
+                border-color: $red;
+
+                &::placeholder {
+                    color: $red;
+                }
+            }
+        }
+
+        .invalidHelper {
+            padding-left: 5px;
+            width: 100%;
+            font-size: 6px;
+            color: $red;
+            position: absolute;
+            bottom: 0;
+        }
+    }
+    .row {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+
+        .inputWrapper {
+            margin-right: 15px;
+            width: 30%;
+        }
+    }
+
+    .submitBtn {
+        margin: auto;
+        padding: 3px 6px;
+        display: flex;
+        background: none;
+        border: 1px solid;
+        border-radius: 5px;
+
+        @include media.laptop {
+            padding: 6px 12px;
+            font-size: 16px;
+        }
+    }
+}

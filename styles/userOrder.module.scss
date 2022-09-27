@@ -1,0 +1,201 @@
+@use 'mixins/MediaMixins' as media;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid $lightgrayBorder;
+    border-radius: 5px;
+
+    @include media.mobileS {
+        margin: 5px;
+    }
+
+    .backBtn {
+        margin-top: 5px;
+        margin-right: 5px;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        align-self: flex-end;
+        justify-content: center;
+        font-size: 14px;
+        border: 1px solid $lightgrayBorder;
+        border-radius: 50%;
+    }
+
+    .orderedTimeWrapper {
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        @include media.mobileS {
+            font-size: 14px;
+        }
+
+        @include media.laptop {
+            font-size: 16px;
+        }
+
+        @include media.desktop {
+            font-size: 24px;
+        }
+    }
+
+    .orderWrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid $lightgrayBorder;
+
+        .shippingInfo {
+            margin-right: 50px;
+            margin-left: 20px;
+            font-size: 24px;
+            line-height: 48px;
+
+            @include media.mobileS {
+                margin: 0 5px;
+                font-size: 14px;
+                line-height: 20px;
+            }
+
+            @include media.tablet {
+                margin: 0 20px;
+                font-size: 18px;
+                line-height: 32px;
+            }
+
+            @include media.laptop {
+                margin: 0 30px;
+                font-size: 24px;
+                line-height: 38px;
+            }
+        }
+
+        .productsList {
+            padding: 5px;
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-left: 1px solid $lightgrayBorder;
+            overflow-y: scroll;
+
+            @include media.mobileS {
+                width: auto;
+                max-height: 300px;
+            }
+
+            @include media.tablet {
+                width: 250px;
+                max-height: 400px;
+            }
+
+            @include media.laptop {
+                width: 300px;
+                max-height: 500px;
+            }
+
+            @include media.desktop {
+                width: 600px;
+                max-height: 600px;
+            }
+
+            .productCard {
+                margin: 0 0 20px 20px;
+                padding: 10px;
+                width: 250px;
+                height: 250px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border-radius: 1px solid $lightgrayBorder;
+                box-shadow: 2px 3px 10px $gray;
+
+                @include media.mobileS {
+                    margin: 0;
+                    margin-bottom: 10px;
+                    padding: 5px;
+                    width: 100px;
+                    height: 150px;
+                    font-size: 10px;
+                    box-shadow: 0 0 3px $gray;
+                }
+
+                @include media.tablet {
+                    padding: 10px;
+                    width: 200px;
+                    height: 300px;
+                }
+
+                @include media.laptop {
+                    padding: 10px;
+                    width: 250px;
+                    height: 300px;
+                }
+
+                @include media.desktop {
+                    width: 400px;
+                }
+
+                .imageWrapper {
+                    width: 150px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    @include media.mobileS {
+                        width: 50px;
+                    }
+
+                    @include media.tablet {
+                        width: 80px;
+                    }
+
+                    @include media.laptop {
+                        width: 150px;
+                    }
+
+                    @include media.desktop {
+                        width: 250px;
+                    }
+                }
+
+                .productInfo {
+                    padding: 12px;
+                    width: 200px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    @include media.mobileS {
+                        padding: 0;
+                        width: auto;
+                    }
+
+                    @include media.laptop {
+                        font-size: 16px;
+                    }
+
+                    @include media.desktop {
+                        font-size: 24px;
+                    }
+
+                    .productTitle {
+                        text-align: center;
+                        width: 100%;
+                        margin-bottom: 3px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

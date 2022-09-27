@@ -1,110 +1,296 @@
-import { gql } from '@apollo/client';
+import {
+    switchMap,
+    of,
+    catchError,
+    Observable
+} from 'rxjs';
+import { fromFetch } from 'rxjs/fetch'
 
-import type { data } from "../../types";
+import type {
+    Product,
+    UpdateProduct,
+    UserRatedProductId,
+    Order,
+    Credentials,
+    Info,
+    Registration,
+    CommentApi,
+} from '../../types/apiTypes';
+import { ObservableResult, Stuff } from '../../types/types';
 
-const url = 'http://localhost:3004';
-const apiKey = 'e2d9f960-bc78-11ec-a0da-bd0e50737306';
-const addressApi = `https://app.geocodeapi.io/api/v1/`;
+const url = 'http://localhost:4000';
 
 //Need write method to working correct
-const fetchFunc = (url: string, method: string, data?: data) => {
+const fetchFunc = (url: string, method: string, data?) => {
     if (method === 'GET') return fetch(url)
-    if (method === 'POST') fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(data)
-    })
-};
-
-//fetch POST of personal info for billing to data
-export const fetchPostData = (data: data) => fetchFunc(url+'/personInfo', "POST", data);
-
-//fetch products in backet
-export const fetchStuff = async() => {
-    try {
-        const response: any = await fetchFunc(url+'/products', 'GET');
-        const json = await response.json();
-        return json;
-    } catch(errors) {
-        return null;
-    };
-};
-
-export const TAKE_PRODUCTS = gql`
-    query basketProducts {
-        products {
-            id
-            name
-            price
-            imgUrl
-            color
-        }
+    if (method === 'POST') {
+        return fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
     }
-`;
-
-//fetch stuff from storage
-export const fetchProductsStorage = async() => {
-    try {
-        const response: any = await fetchFunc(url+'/productsStorage', 'GET');
-        const json = await response.json();
-        return json;
-    } catch(error) {
-        console.error(error)
-        return null;
-    };
 };
 
-export const TAKE_PRODUCTS_FROM_STORAGE = gql`
-    query allProductsFromStorage{
-        productsStorage {
-            id
-            name
-            price
-            quantity
-        }
+//Product section
+export const data$ = fromFetch(url + '/storage')
+    .pipe(
+        switchMap(response => {
+            if (response.ok) {
+                return response.json();
+            }
+        }),
+        catchError(error => {
+            return of({ error: true, message: `Error: ${error.message}` });
+        })
+    );
+
+export const takeSomeProducts = async (id: string) => {
+    try {
+        const products = await fetchFunc(url + '/storage', 'POST', id);
+
+        return products.json();
+    } catch (err) {
+        console.log(err);
     }
-`;
-
-//fetch by coordinates
-const coordinates: {lat: number, lon: number} = {
-    lat: 0,
-    lon: 0
-};
-export const getGeolocation = (geolocation: {lat: number, lon: number}) => {
-    coordinates.lat = geolocation.lat;
-    coordinates.lon = geolocation.lon;
 };
 
-export const fetchGeolocation: () => Promise<{}> = async() => {
+export const takeCategories = async (category: string, subcategory: string) => {
     try {
-        const response: any = await fetchFunc(
-            addressApi +
-            `reverse?apikey=${apiKey}&point.lat=${coordinates.lat}&point.lon=${coordinates.lon}&layers=address`,
-            'GET'
-        );
-        const json = await response.json();
-        return json.features[0].properties;
-    } catch(errors) {
-        return null;
-    };
+        if (category && subcategory) {
+            const response = await fetch(url + `/storage/categories/${category}/${subcategory}`);
+
+            return response.json();
+        }
+
+        if (!subcategory) {
+            const response = await fetch(url + `/storage/categories/${category}`);
+
+            return response.json();
+        }
+    } catch (err) {
+        console.log(err);
+    }
 };
 
-//fetch by input
-const endpoint: {value: string} = {value: ''};
-export const getEndpoint = (addressInput: string) => {
-    if (addressInput.length) { endpoint.value = addressInput }
-};
+export const postProduct = (data: Product) => fetchFunc( url + '/storage', 'POST', data);
 
-export const fetchAddress: () => Promise<{}> = async () => {
+export const deleteProduct = async (id: string) => {
     try {
-        const response: any = await fetchFunc(
-            addressApi+`autocomplete?apikey=${apiKey}&text=${endpoint.value.replace(/\s/g, '%20')}&size=5`,
-            'GET');
-        const json = await response.json();
-        return json.features;
-    } catch(errors) {
-        return null;
-    };
+        const res: Response = await fetch(url +`/storage`, {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        });
+
+        return res;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const rateProduct = async (id: string, rating: { rated: number}) => {
+    try {
+        const res = fetch(url + `/product/${id}/rating`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(rating)
+        });
+
+        return (await res).json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const commentProduct = async (id: string, comment: CommentApi) => {
+    try {
+        await fetch(url + `/product/${id}/addComments`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const updateProductInStorage = async (product: UpdateProduct) => {
+    try {
+        const res = await fetch(url + '/storage', {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        });
+
+        return res.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const takeOneProduct = async (id: string) => {
+    try {
+        const product = await fetchFunc(url + `/storage/${id}`, 'GET');
+        
+        return product.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+//oredrs section
+export const createOrder = async (order: Order) => {
+    try {
+        const catchRes = await fetchFunc(url + '/orders/create', 'POST', order);
+
+        return catchRes;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const getUserOrders = async (userId: string) => {
+    try {
+        const takeUserOrders = await fetchFunc(url + '/orders/userOrders', 'POST', userId); 
+
+        return takeUserOrders.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const getUserOrder = async (orderId: string, userId: string) => {
+    try {
+        const catchRes = await fetchFunc(url + `/orders/userOrders/${orderId}`, 'POST', userId);
+
+        return catchRes.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+//user section
+export const getUserInfo = async (id: string) => {
+    try {
+        const response = await fetchFunc(url + `/user/${id}`, 'GET');
+        
+        return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const updateUserInfo = async (id: string, info: Info) => {
+    try {
+        const response = await fetch(url + `/user/${id}`, {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(info)
+        });
+
+        return response.json();
+    } catch (err) {
+        console.log(err)
+    }
+};
+
+export const userRated = async (userId: string, userRatedProductId: UserRatedProductId) => {
+    const { id, rated } = userRatedProductId;
+    try {
+        const res = fetch(url + '/user/ratedProduct', {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({userId, ratedProduct: { id, rated }})
+        });
+
+        return (await res).json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const deleteUser = async (id: string, pass: { password: string }) => {
+    try {
+        const deleted = fetch(url + `/user/${id}`, {
+            mode: 'cors',
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(pass)
+        });
+
+        return (await deleted).json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const getUserLikes = async (userId: string, stuffId: string) => {
+    try {
+        const response = await fetch(url + '/user', {
+            mode: 'cors',
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ userId, stuffId })
+        });
+
+        return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+//auth and registration section
+export const loginUser = async (credentials: Credentials) => {
+    try {
+        const catchRes = await fetchFunc(url + '/auth', 'POST', credentials);
+        
+        return catchRes.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const registrateUser = async (info: Registration) => {
+    try {
+        const catchRes = await fetchFunc(url + '/registration', 'POST', info);
+        
+        return catchRes.json();
+    } catch (err) {
+        console.log(err);
+    }
 };

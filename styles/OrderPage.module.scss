@@ -1,3 +1,10 @@
+@use 'mixins/MediaMixins' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
+
+$lightgrayBorder: #bbbbbb;
+$black: black;
+$red: red;
+
 .orderContainer {
     margin: auto;
     width: 1360px;
@@ -7,7 +14,13 @@
     align-items: center;
     justify-content: space-around;
 
+    @include media.mobileS {
+        width: 100%;
+        min-height: 300px;
+    }
+
     .orderForm {
+        margin-bottom: 15px;
         padding: 20px;
         width: 500px;
         display: flex;
@@ -15,63 +28,116 @@
         justify-content: flex-start;
         text-align: start;
 
+        @include media.mobileS {
+            padding: 10px;
+            width: 100%;
+        }
+
+        @include media.laptop {
+            padding: 20px;
+            width: 70%;  
+            font-size: 18px;          
+        }
+
+        @include media.desktop {
+            padding: 25px;
+            width: 500px;
+        }
+
+        .row {
+            width: 100%;
+            display: flex; 
+            justify-content: space-between; 
+
+            .inputWrapper {
+                &:first-child {
+                    width: 60%;
+                }
+
+                &:last-child {
+                    width: 30%;
+                }
+            }
+        }
+
         .formLabel {
             width: 100%;
             margin-bottom: 4px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
             font-size: 16px;
             font-weight: bold;
+
+            @include media.mobileS {
+                padding-left: 10px;
+                font-size: 13px;
+            }
+
+            @include media.laptop {
+                padding-left: 15px;
+                font-size: 18px;
+            }
+
+            .autocompleteBtn {
+                padding: 2px;
+                font-weight: normal;
+                border: 1px solid $lightgrayBorder;
+                border-radius: 5px;
+
+                @include media.desktop {
+                    padding: 5px;
+                }
+            }
         }
 
         .formInput {
-            padding: 6px 12px;
             margin-bottom: 30px;
+            padding: 6px 12px;
             width: 100%;
-            height: 35px;
-            border: 2px solid #bbb;
-            border-radius: 8px;
+            border: 2px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            @include media.mobileS {
+                margin-bottom: 15px;
+                padding: 3px 6px;
+                font-size: 12px;
+            }
+
+            @include media.laptop {
+                margin-bottom: 20px;
+                padding: 6px 12px;
+                font-size: 16px;
+            }
+
+            &.invalid {
+                border-color: $red;
+
+                &::placeholder {
+                    color: $red;
+                }
+            }
         }
 
-        button {
+        .submitBtn {
             margin: auto;
             padding: 6px 12px;
-            width: 200px;
-            border: 1px solid #bbb;
-            border-radius: 8px;
-        }
-    }
+            width: auto;
+            background: none;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
 
-    .stuffWrapper {
-        width: 550px;
-        max-height: 600px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        overflow-y: scroll;
+            &:hover {
+                border-color: $black;
+                box-shadow: 0 0 3px;
+            }
 
-        .productCard {
-            width: 300px;
-            max-height: 250px;
-            margin: 0 0 20px 20px;
-            border-radius: 1px solid #bbb;
-            box-shadow: 2px 3px 10px gray;
-    
-            .cardContentWrapper {
-                display: flex;
-                border-bottom: 1px solid #bbb;
-    
-                .cardInfo {
-                    width: 200px;
-                    padding: 12px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-end;
-    
-                    .stuffTitle {
-                        text-align: end;
-                        margin-bottom: 15px;
-                        font-weight: 500;
-                    }
-                }
+            &:active {
+                box-shadow: 0 0 1px;
+            }
+
+            @include media.laptop {
+                font-size: 18px;
             }
         }
     }

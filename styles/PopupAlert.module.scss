@@ -1,0 +1,60 @@
+@use 'mixins/MediaMixins' as media;
+
+$white: white;
+$black: black;
+$successBack: rgb(38, 185, 38);
+$successBorder: rgb(28, 138, 28);
+$warningBack: yellow;
+$warningBorder: rgb(255, 166, 0);
+$errorBack: red;
+
+.alert {
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    border-radius: 5px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+
+    @include media.mobileS {
+        max-width: 300px;
+        max-height: 50px;
+        top: 50px;
+        right: 10px;
+    }
+
+    @include media.laptop {
+        max-width: 400px;
+        max-height: 100px;
+        top: 100px;
+    }
+
+    @include media.desktop {
+        width: auto;
+        height: auto;
+        max-width: auto;
+        max-height: auto;
+        font-size: 24px;
+        top: 120px;
+        right: 150px;
+    }
+
+    &.success {
+        background: $successBack;
+        border: 1px solid $successBorder;
+    }
+
+    &.warning {
+        color: $black;
+        background: $warningBack;
+        border: 1px solid $warningBorder;
+    }
+
+    &.error {
+        background: $errorBack;
+    }
+}

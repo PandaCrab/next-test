@@ -1,0 +1,112 @@
+@use 'mixins/MediaMixins' as media;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+
+.accountContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @include media.laptop {
+        width: 900px;
+    }
+
+    @include media.desktop {
+        width: 1400px;
+    }
+
+    .headerWrapper {
+        padding: 5px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 16px;
+        border-bottom: 1px solid $lightgrayBorder;
+
+        @include media.mobileS {
+            font-size: 12px;
+        }
+
+        @include media.laptop {
+            font-size: 18px;
+        }
+
+        @include media.desktop {
+            font-size: 24px;
+        }
+
+        .settingsWrapper {
+            margin-left: 10px; 
+            position: relative;
+
+            .settingsBtn {
+                padding: 0;
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+
+                @include media.mobileS {
+                    font-size: 12px;
+                }
+                
+                @include media.laptop {
+                    font-size: 24px;
+                }
+
+                @include media.desktop {
+                    font-size: 32px;
+                }
+            }
+
+            .settings {
+                padding: 12px;
+                width: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background: $white;
+                border: 1px solid $lightgrayBorder;
+                border-radius: 5px;
+                box-shadow: 0 3px 10px $gray;
+                position: absolute;
+                top: 35px;
+                right: 0;
+                z-index: 20;
+
+                @include media.mobileS {
+                    padding: 6px;
+                    width: 150px;
+                    font-size: 12px;
+                }
+
+                @include media.laptop {
+                    padding: 12px;
+                    width: 200px;
+                    font-size: 16px;
+                }
+
+                @include media.desktop {
+                    width: 300px;
+                    font-size: 24px;
+                    top: 45px;
+                }
+
+                .settingsItem {
+                    padding: 5px;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $backOnHover;
+                    } 
+                }
+            }
+        }
+    }
+}

@@ -1,13 +1,13 @@
-FROM node:alpine
+FROM node:14.17-alpine
 
-# Create app directory
-WORKDIR /app
+RUN mkdir -p /home/app/next-test/ && chown -R node:node /home/app
+WORKDIR /home/app
+COPY --chown=node:node . .
 
-# Installing dependencies
-COPY package.json /app
+USER node
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
+RUN yarn build
 
-COPY . /usr/src/app
-
-CMD "yarn" "run" "start"
+EXPOSE 3000
+CMD [ "yarn", "start" ]

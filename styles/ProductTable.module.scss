@@ -1,0 +1,401 @@
+@use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$containerBack: rgba(107, 107, 107, 0.3);
+$red: red;
+$blue: blue;
+
+.productsTable {
+    min-width: 725px;
+    max-width: 725px;
+    max-height: 500px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $lightgrayBorder;
+    position: relative;
+
+    @include media.mobileS {
+        min-width: 310px;
+        max-width: 310px;
+        min-height: 400px;
+        max-height: 400px;
+    }
+
+    @include media.tablet {
+        min-width: 695px;
+        max-width: 695px;
+        min-height: 500px;
+        max-height: 500px;
+    }
+    
+    @include media.laptop {
+        min-width: 725px;
+        max-width: 725px;
+        min-height: 500px;
+        max-height: 500px;
+    }
+
+    @include media.desktop {
+        min-width: 1400px;
+        max-width: 1400px;
+        min-height: 700px;
+        max-height: 700px;
+    }
+
+    .deletionContainer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $containerBack;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+
+        .agreeItemDeletion {
+            padding: 12px;
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: $white;
+            font-size: 16px;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            @include media.desktop {
+                font-size: 24px;
+            }                
+
+            .deletionBtn {
+                margin-top: 15px;
+                margin-right: 20px;
+                padding: 5px 10px;
+                background: none;
+                border: 1px solid $lightgrayBorder;
+                border-radius: 5px;
+
+                @include media.desktop {
+                    padding: 6px 12px;
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+
+    .updateContainer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $containerBack;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+
+        .formContainer {
+            padding: 12px;
+            width: 90%;
+            background: $white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            @include media.tablet {
+                width: 60%;
+            }
+
+            @include media.laptop {
+                width: 70%;
+            }
+
+            .imageFormWrapper {
+                padding: 12px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .updateForm {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    label {
+                        margin-bottom: 3px;
+                        width: 100%;
+                        font-size: bold;
+                    }
+
+                    .updateInput {
+                        margin-bottom: 5px;
+                        padding: 6px 12px;
+                        width: 300px;
+                        border: 1px solid $lightgrayBorder;
+                        border-radius: 5px;
+
+                        @include media.mobileS {
+                            padding: 3px 6px;
+                            width: 250px;
+                            font-size: 12px;
+                        }
+
+                        @include media.tablet {
+                            padding: 6px 12px;
+                            width: 350px;
+                            font-size: 14px;
+                        }
+
+                        @include media.laptop {
+                            padding: 6px 12px;
+                            width: 400px;
+                            font-size: 16px;
+                        }
+
+                        @include media.desktop {
+                            margin-bottom: 20px;
+                            width: 500px;
+                            font-size: 24px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .updateBtnWrapper {
+            width: 300px;
+            display: flex;
+            justify-content: space-around;
+
+            .saveBtn {
+                margin: auto;
+                padding: 4px 8px;
+                width: 100px;
+                background: none;
+                border: 1px solid $lightgrayBorder;
+                border-radius: 5px;
+
+                @include media.desktop {
+                    padding: 12px 6px;
+                    font-size: 24px;
+                }
+
+                &:hover {
+                    box-shadow: 0 0 3px;
+                }
+
+                &:active {
+                    box-shadow: 0 0 1px;
+                }
+            }
+        }
+    }
+
+    .productsWrapper {
+        margin: 5px 0;
+        padding: 12px;
+        min-height: 390px;
+        max-height: 390px;
+        position: absolute;
+        overflow-y: auto;
+
+        @include scrollbars(1px, $lightgrayBorder, none);
+
+        @include media.mobileS {
+            padding: 6px;
+            overflow-y: scroll;
+        }
+
+        @include media.desktop {
+            min-height: 690px;
+            max-height: 690px;
+        }
+
+        .productRow {
+            margin-bottom: 15px;
+            min-width: 680px;
+            max-width: 680px;
+            display: flex;
+            flex-direction: row;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            @include media.mobileS {
+                margin-bottom: 5px;
+                max-width: 296px;
+                min-width: 296px;
+                font-size: 10px;
+            }
+
+            @include media.tablet {
+                margin-bottom: 10px;
+                min-width: 680px;
+                max-width: 680px;
+                font-size: 14px;
+            }
+
+            @include media.laptop {
+                margin-bottom: 15px;
+                min-width: 710px;
+                max-width: 710px;
+                font-size: 16px;
+            }
+
+            @include media.desktop {
+                min-width: 1380px;
+                max-width: 1380px;
+                font-size: 20px;
+            }
+
+            &.header {
+                height: 50px;
+                display: flex;
+                align-items: center;
+
+                @include media.mobileS {
+                    height: 20px;
+                }
+
+                @include media.tablet {
+                    height: 50px;
+                }
+
+                @include media.laptop {
+                    height: 50px;
+                }
+            }
+
+            .imageWrapper {
+                width: 60px;
+
+                @include media.desktop {
+                    width: 100px
+                }
+            }
+
+            .rowItems {
+                padding: 3px;
+                width: 120px;
+                height: inherit;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-right: 1px solid $lightgrayBorder;
+
+                @include media.laptop {
+                    width: 140px;
+                }
+
+                @include media.desktop {
+                    width: 250px;
+                }
+
+                &.header {
+                    width: 54px;
+
+                    @include media.tablet {
+                        width: 120px;
+                    }
+
+                    @include media.laptop {
+                        width: 130px
+                    }
+
+                    @include media.desktop {
+                        width: 250px;
+                    }
+
+                    &:first-child {
+                        margin-left: 80px;
+
+                        @include media.mobileS {
+                            margin-left: 25px;
+                        }
+
+                        @include media.tablet {
+                            margin-left: 60px;
+                        }
+
+                        @include media.laptop {
+                            margin-left: 56px;
+                        }
+
+                        @include media.desktop {
+                            margin-left: 100px;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    border-right: none;
+                    display: flex;
+                    justify-content: space-evenly;
+                }
+            }
+
+            .rowBtn {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: none;
+                border: 1px solid;
+                border-radius: 50%;
+
+                @include media.mobileS {
+                    padding: 2px;
+                    width: auto;
+                    height: auto;
+                    font-size: 10px;
+                }
+
+                @include media.tablet {
+                    padding: 5px;
+                    font-size: 15px;
+                }
+
+                @include media.laptop {
+                    padding: 5px;
+                    font-size: 20px;
+                }
+
+                @include media.desktop {
+                    padding: 5px;
+                    font-size: 20px;
+                }
+
+                &:hover {
+                    box-shadow: 0 0 10px $gray;
+                }
+
+                &:active {
+                    box-shadow: 0 0 5px $gray;
+                }
+
+                &.delete {
+                    &:hover {
+                        color: $white;
+                        background: $red;
+                    }
+                }
+
+                &.update {
+                    &:hover {
+                        color: $white;
+                        background: $blue;
+                    }
+                }
+            }
+        }
+    }
+}

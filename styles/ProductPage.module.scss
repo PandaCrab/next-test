@@ -1,0 +1,125 @@
+@use 'mixins/MediaMixins' as media;
+
+$lightgrayBorder: #bbbbbb;
+$black: black;
+
+.productContainer {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include media.mobileS {
+        margin-top: 15px;
+        padding: 5px;
+        width: 100%;
+    }
+
+    @include media.laptop {
+        margin-top: 0;
+    }
+
+    @include media.desktop {
+        font-size: 24px;
+    }
+
+    .tabsWrapper {
+        margin-bottom: 10px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 12px;
+
+        @include media.laptop {
+            font-size: 16px;
+        }
+
+        .tab {
+            padding: 5px;
+            border: 1px solid;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    }
+
+    .backBtn {
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        background: none;
+        border: 1px solid $lightgrayBorder;
+        border-radius: 50%;
+        position: absolute;
+        top: 70px;
+        right: 30px;
+
+        @include media.mobileS {
+            font-size: 12px;
+            top: 50px;
+            right: 15px;
+        }
+
+        @include media.laptop {
+            font-size: 18px;
+            align-self: flex-end;
+            position: relative;
+            top: 0;
+            right: 0;
+        }
+    }
+
+    .infoWrapper {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        font-size: 18px;
+        line-height: 30px;
+        border: 1px solid $black;
+        border-radius: 5px;
+
+        @include media.mobileS {
+            padding: 10px;
+            width: 100%;
+            font-size: 12px;
+            line-height: normal;
+        }
+
+        @include media.laptop {
+            padding: 20px;
+            width: 700px;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+        @include media.desktop {
+            padding: 40px;
+            width: 1400px;
+            font-size: 24px;
+            line-height: 32px;
+        }
+
+        @include media.desktop {
+            .imageWrapper {
+                width: 500px;
+            }
+        }
+
+        .mainInfo {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .info {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+
+            }
+        }
+    }
+}

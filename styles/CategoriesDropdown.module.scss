@@ -1,0 +1,45 @@
+@use 'mixins/MediaMixins' as media;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+
+.categories {
+    padding: 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: $white;
+    border: 1px solid $lightgrayBorder;
+    border-radius: 5px;
+    position: absolute;
+    top: 50px;
+    z-index: 100;
+
+    .categoriesItems {
+        width: 100%;
+        margin-bottom: 5px;
+        cursor: pointer;
+
+        &:hover {
+            color: $backOnHover;
+        }
+    }
+
+    .mainCategories {
+        padding-right: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .subcategories {
+        padding-left: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-left: 1px solid $lightgrayBorder;
+    }
+}

@@ -1,0 +1,138 @@
+@use 'mixins/MediaMixins' as media;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+$backOnHover: #e8e8e8;
+$black: black;
+
+.adminPageContainer {
+    width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    @include media.mobileS {
+        width: 100%;
+    }
+
+    @include media.tablet {
+        width: 700px;
+    }
+
+    @include media.laptop {
+        margin-top: 40px
+    }
+
+    .logFormWrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .welcomWrapper {
+        margin-bottom: 45px;
+        width: 100%;
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        @include media.mobileS {
+            margin-bottom: 20px;
+            padding: 0 20px;
+            font-size: 14px;
+        }
+
+        @include media.laptop {
+            padding: 0 30px;
+            font-size: 24px;
+        }
+
+        .homeBtn {
+            padding: 4px 8px;
+            width: 70px;
+            background: none;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            @include media.mobileS {
+                padding: 3px 6px;
+                width: auto;
+                font-size: 12px;
+            }
+
+            @include media.laptop {
+                font-size: 16px;
+            }
+
+            &:hover {
+                color: $black;
+                border-color: $black;
+                box-shadow: 0 0 3px;
+            }
+
+            &:active {
+                box-shadow: 0 0 1px;
+            }
+        }
+    }
+
+    .adminPanelHeader {
+        margin-bottom: 20px;
+        padding: 12px;
+        padding-bottom: 0;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid $lightgrayBorder;
+
+        @include media.mobileS {
+            padding: 6px;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        @include media.tablet {
+            justify-content: space-around;
+            font-size: 14px;
+        }
+
+        @include media.laptop {
+            padding: 12px;
+            padding-bottom: 0px;
+            justify-content: space-around;
+            font-size: 18px;
+        }
+
+        @include media.desktop {
+            padding: 16px;
+            font-size: 24px;
+        }
+
+        .menuButton {
+            padding: 5px;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+            cursor: pointer;
+
+            @include media.laptop {
+                margin-bottom: -5px;
+                border-bottom: none;
+                border-radius: 5px 5px 0 0;
+            }
+
+            @include media.desktop {
+                margin-bottom: -8px;
+            }
+        }
+    }
+
+    
+}
