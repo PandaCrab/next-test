@@ -10,6 +10,7 @@ import SearchBar from './searchBar';
 import SiteLayout from './site-layout';
 import StarRating from './star-rating';
 import UserInfoSection from './userInfoSection';
+import Avatar from './Avatar';
 
 export {
     AddProductForm,
@@ -23,4 +24,5 @@ export {
     SiteLayout,
     StarRating,
     UserInfoSection,
+    Avatar,
 };
