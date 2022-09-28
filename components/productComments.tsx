@@ -106,9 +106,9 @@ const ProductComments = ({ product, setProduct, productId }) => {
                             <div className={styles.header}>
                                 <div className={styles.imageNameWrapper}>
                                     <div className={styles.imageWrapper}>
-                                        {comment.userAvatar ? (
+                                        {comment.photo ? (
                                             <Image
-                                                src={comment.userAvatar}
+                                                src={comment.photo}
                                                 alt={comment.username}
                                                 width="100px"
                                                 height="100px"

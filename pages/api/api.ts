@@ -219,6 +219,24 @@ export const updateUserInfo = async (id: string, info: Info) => {
     }
 };
 
+export const setUserAvatar = async (id: string, photo: { avatar: string }) => {
+    try {
+        const response = await fetch(url + `/user/${id}/setAvatar`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(photo),
+        });
+
+        return response.json();
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const userRated = async (userId: string, userRatedProductId: UserRatedProductId) => {
     const { id, rated } = userRatedProductId;
     try {

@@ -16,7 +16,7 @@ import type { Stuff, UserInfo } from '../types/types';
 import styles from '../styles/ProductCard.module.scss';
 
 const ProductCard = (props) => {
-    const [product, setProduct] = useState(props.product);
+    const [product, setProduct] = useState<Stuff>(props.product);
 
     const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
     const clientOrder = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);

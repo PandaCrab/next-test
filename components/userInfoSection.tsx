@@ -25,10 +25,8 @@ const UserInfoSection = ({
         <div className={styles.infoWrapper}>
             <div className={styles.userInfoWrapper}>
                 <div className={styles.userProfileHeader}>
-                    <div style={{ width: 400, height: 400 }}>
-                        <Avatar />
-                    </div>
-                    <div className={styles.userPhotoWrapper}>{user.photo ? user.photo : <RiUser3Line />}</div>
+                    <Avatar />
+                    {/* <div className={styles.userPhotoWrapper}>{user.photo ? user.photo : <RiUser3Line />}</div> */}
                     <div className={styles.usernameWrapper}>{user.username}</div>
                 </div>
                 <div className={styles.userPhoneWrapper}>
