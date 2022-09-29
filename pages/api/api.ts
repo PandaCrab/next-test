@@ -219,7 +219,7 @@ export const updateUserInfo = async (id: string, info: Info) => {
     }
 };
 
-export const setUserAvatar = async (id: string, photo: { avatar: string }) => {
+export const setUserAvatar = async (id: string, photo: { avatar: string | null }) => {
     try {
         const response = await fetch(url + `/user/${id}/setAvatar`, {
             method: 'PUT',

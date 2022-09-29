@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { RiUser3Line, RiCheckFill, RiCloseLine } from 'react-icons/ri';
+import { RiCheckFill, RiCloseLine } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 

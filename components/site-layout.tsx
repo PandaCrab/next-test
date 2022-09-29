@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
@@ -211,7 +212,18 @@ const SiteLayout = ({ children }) => {
                                 onClick={() => toggleDropdown()}
                                 className={styles.accountBtn}
                             >
-                                <RiUser3Line />
+                                {user.info?.photo ? (
+                                    <div className={styles.userAvatar}>
+                                        <Image 
+                                            src={user.info.photo}
+                                            alt="user-avatar"
+                                            width="50px"
+                                            height="50px"
+                                        />
+                                    </div>
+                                ) : (
+                                    <RiUser3Line />
+                                )}
                             </div>
                         ) : (
                             <div
