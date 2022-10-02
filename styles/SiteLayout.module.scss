@@ -210,8 +210,9 @@ $red: red;
 
             .accountBtn {
                 margin-left: 20px;
-                padding: 3px;
+                padding-top: 5px;
                 display: flex;
+                align-items: center;
                 justify-content: center;
                 font-size: 20px;
                 border: 1px solid $black;
@@ -225,7 +226,6 @@ $red: red;
                 }
 
                 @include media.laptop {
-                    padding: 2px;
                     width: 45px;
                     height: 45px;
                     font-size: 32px;

@@ -21,6 +21,7 @@ $errorBack: red;
     z-index: 1000;
 
     @include media.mobileS {
+        height: auto;
         max-width: 300px;
         max-height: 50px;
         top: 50px;
@@ -29,7 +30,6 @@ $errorBack: red;
 
     @include media.laptop {
         max-width: 400px;
-        max-height: 100px;
         top: 100px;
     }
 

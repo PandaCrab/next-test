@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import React, { useState, useEffect, createRef } from 'react';
-import { Cropper, ReactCropperElement } from 'react-cropper';
+import React, { useState, useEffect, createRef, useRef } from 'react';
+import { CircleStencil, Cropper, CropperRef } from 'react-advanced-cropper';
 import { RiUser3Line } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -13,7 +13,7 @@ import { catchError, catchSuccess, catchWarning } from '../redux/ducks/alerts';
 import type { UserInfo } from '../types/types';
 
 import styles from '../styles/Avatar.module.scss';
-import 'cropperjs/dist/cropper.css';
+import 'react-advanced-cropper/dist/style.css';
 
 const file2Base64 = (file: File): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
@@ -33,6 +33,37 @@ const Avatar = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const resizeImage = (base64Str, maxWidth = 400, maxHeight = 350): Promise<string> => {
+        return new Promise((resolve) => {
+            let img: HTMLImageElement = document.createElement('img');
+            img.src = base64Str;
+            img.onload = () => {    
+            let canvas = document.createElement('canvas');
+            const MAX_WIDTH = maxWidth;
+            const MAX_HEIGHT = maxHeight;
+            let width = img.width;
+            let height = img.height;
+        
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+                }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            let ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL());
+            }
+        });
+    };
+
     const updateAvatar = async (avatar: string | null) => {
         const res =  await setUserAvatar((router.query.userAccount).toString(), { avatar });
 
@@ -46,7 +77,7 @@ const Avatar = () => {
             }
 
             if (!avatar) {
-                dispatch(catchWarning('Avatar was deleted'));
+                dispatch(catchWarning('Avatar have been deleted'));
                 setPhoto(null);
             }
         }
@@ -58,26 +89,27 @@ const Avatar = () => {
         }
     }, []);
 
-    const cropperRef = createRef<ReactCropperElement>();
     const fileRef = createRef<HTMLInputElement>();
+    const cropperRef = useRef<CropperRef>();
 
-    const onFileInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const file = e.target?.files?.[0];
+    const onFileInputChange: React.ChangeEventHandler<HTMLInputElement> = (element) => {
+        const file = element.target?.files?.[0];
         if (file) {
             file2Base64(file).then((base64) => {
                 setUploaded(base64);
             });
         }
-    };
+    }
 
     const onSave = async () => {
-        const imageElement: any = cropperRef?.current;
-        const cropper: any = imageElement?.cropper;
+        const imageElement: CropperRef = cropperRef?.current;
 
-        setPhoto(cropper.getCroppedCanvas().toDataURL());
+        setPhoto(imageElement.getCanvas()?.toDataURL());
         setUploaded(null);
 
-        updateAvatar(cropper.getCroppedCanvas().toDataURL());
+        const result = await resizeImage(imageElement.getCanvas()?.toDataURL())
+
+        updateAvatar(result);
     };
 
     return (
@@ -87,7 +119,7 @@ const Avatar = () => {
                 hidden={true}
                 ref={fileRef}
                 onChange={(event) => onFileInputChange(event)}
-                accept="image/png,image/jpeg,image/jpg,image/gif"
+                accept="image/*"
             />
             <div>
                 {photo ? (
@@ -95,9 +127,10 @@ const Avatar = () => {
                         <div className={styles.imageWrapper}>
                             <Image
                                 src={photo}
+                                style={{ borderRadius: '50%' }}
                                 alt="user-avatar"
-                                width="200px"
-                                height="200px"
+                                width="150px"
+                                height="150px"
                             />
                         </div>
                         <button
@@ -125,13 +158,9 @@ const Avatar = () => {
             {uploaded && (
                 <div className={styles.cropperContainer}>
                     <Cropper
-                        src={uploaded}
-                        style={{ width: 250, height: 250, position: 'relative' }}
-                        autoCropArea={1}
-                        aspectRatio={1}
-                        viewMode={3}
-                        guides={false}
                         ref={cropperRef}
+                        src={uploaded}
+                        stencilComponent={CircleStencil}
                     />
                     <button onClick={() => onSave()} className={styles.saveBtn}>Save</button>
                 </div>

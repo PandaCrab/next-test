@@ -1028,6 +1028,13 @@ acorn@^8.7.1:
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.7.1.tgz"
   integrity sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==
 
+advanced-cropper@0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/advanced-cropper/-/advanced-cropper-0.12.1.tgz#3130069fc746b566c0e419a998d4f7a754959f4f"
+  integrity sha512-glb8rEvQoFKZWLcEGOJjh0oq/GqY9zmkdOeHa6NqhgVkigwnOmHJywtYU2+2tjNN9OCsSG5qeqp+koeNqiemcg==
+  dependencies:
+    tslib "^2.4.0"
+
 after@0.8.2:
   version "0.8.2"
   resolved "https://registry.npmjs.org/after/-/after-0.8.2.tgz"
@@ -1883,6 +1890,11 @@ ci-info@^2.0.0:
   resolved "https://registry.npmjs.org/ci-info/-/ci-info-2.0.0.tgz"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
+classnames@^2.2.6:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
+  integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
+
 clean-stack@^3.0.0, clean-stack@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/clean-stack/-/clean-stack-3.0.1.tgz"
@@ -2185,11 +2197,6 @@ create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
-
-cropperjs@^1.5.12:
-  version "1.5.12"
-  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.12.tgz#d9c0db2bfb8c0d769d51739e8f916bbc44e10f50"
-  integrity sha512-re7UdjE5UnwdrovyhNzZ6gathI4Rs3KGCBSc8HCIjUo5hO42CtzyblmWLj6QWVw7huHyDMfpKxhiO2II77nhDw==
 
 cross-spawn@^6.0.5:
   version "6.0.5"
@@ -5252,12 +5259,14 @@ rc@1.2.8, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-cropper@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/react-cropper/-/react-cropper-2.1.8.tgz#bf35a7de65769f8ad357e8ae884e791fe3fe9212"
-  integrity sha512-QEj6CE9et/gMRqpaKMgZQdBgtzLjjq+zj1pmHwtoWG6GqscDl4QpTwoEElWN2pieYxkwFaZa0lPiD2b9nwqLKQ==
+react-advanced-cropper@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/react-advanced-cropper/-/react-advanced-cropper-0.12.1.tgz#25c59869cd8aa8d6407f9efbeeea014c37b7bea0"
+  integrity sha512-XYIQuivZ+Zih9HVk+ke5T1XeARA7eCMe1QD3DZB1v+uoHzDO2/xzB4h0u1lQFsIcO2Q0ubchegy/4cOdzmzgag==
   dependencies:
-    cropperjs "^1.5.12"
+    advanced-cropper "0.12.1"
+    classnames "^2.2.6"
+    tslib "^2.4.0"
 
 react-dom@18.1.0:
   version "18.1.0"
