@@ -26,8 +26,8 @@ $descriptionBack: rgb(243, 243, 243);
     position: relative;
 
     .imageWrapper {
-        width: 80px;
-        height: 80px;
+        width: 120px;
+        height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -87,8 +87,8 @@ $descriptionBack: rgb(243, 243, 243);
             padding: 1px;
             font-size: 20px;
             border: 1px solid;
-            right: -10px;
-            bottom: 20px;
+            right: -3px;
+            bottom: 25px;
 
             @include media.laptop {
                 width: 25px;
@@ -100,9 +100,9 @@ $descriptionBack: rgb(243, 243, 243);
 
         &.change {
             padding: 2px;
-            font-size: 30px;
+            font-size: 40px;
             border: 1px solid;
-            right: 5px;
+            right: 18px;
             bottom: 0;
 
             @include media.laptop {

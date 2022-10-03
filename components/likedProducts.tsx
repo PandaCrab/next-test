@@ -11,7 +11,7 @@ import type { UserInfo, Stuff } from '../types/types';
 import styles from '../styles/LikedProducts.module.scss';
 
 const LikedProducts = ({ view, setView }) => {
-    const [likes, setLikes] = useState<Stuff[]>();
+    const [likes, setLikes] = useState<Stuff[] | null>();
 
     const router = useRouter();
 
@@ -29,7 +29,7 @@ const LikedProducts = ({ view, setView }) => {
         if (user?.likes?.length) {
             catchLikedProducts(user.likes);
         } else {
-            return null;
+            setLikes(null);
         }
     }, [user]);
 

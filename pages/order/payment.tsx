@@ -10,6 +10,7 @@ import { createOrder } from '../api/api';
 import type { ShippingInfo, Stuff, userObject } from '../../types/types';
 
 import styles from '../../styles/PaymentForm.module.scss';
+import { ErrorTooltip } from '../../components';
 
 interface PaymentState {
     cardholder: string;
@@ -186,7 +187,7 @@ const PaymentForm = () => {
                             onChange={(value) => changeHandler(value)}
                         />
                         {invalid.path?.cardholder && (
-                            <div className={styles.invalidHelper}>{invalid.path?.cardholder}</div>
+                            <ErrorTooltip message={invalid.path.cardholder} />
                         )}
                     </div>
                     <div className={styles.inputWrapper}>
@@ -198,6 +199,9 @@ const PaymentForm = () => {
                             value={payment.cardNum}
                             onChange={(value) => changeHandler(value)}
                         />
+                        {invalid.path?.cardNum && (
+                            <ErrorTooltip message={invalid.path.cardNum} />
+                        )}
                     </div>
                     <div className={styles.row}>
                         <div className={styles.inputWrapper}>
@@ -209,6 +213,9 @@ const PaymentForm = () => {
                                 value={payment.expiry}
                                 onChange={(value) => changeHandler(value)}
                             />
+                            {invalid.path?.expiery && (
+                                <ErrorTooltip message={invalid.path.expiery} />
+                            )}
                         </div>
                         <div className={styles.inputWrapper}>
                             <input
@@ -219,6 +226,9 @@ const PaymentForm = () => {
                                 value={payment.cvv}
                                 onChange={(value) => changeHandler(value)}
                             />
+                            {invalid.path?.cvv && (
+                                <ErrorTooltip message={invalid.path.cvv} />
+                            )}
                         </div>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ export const addressSchema = yup.object().shape({
         .required('Enter street for shipping'),
     city: yup.string().required('City field is required'),
     country: yup.string().required('Country field is required'),
-    zip: yup.string().required('ZIP field is required'),
+    zip: yup.string().required('ZIP required'),
 });
 
 export const phoneSchema = yup.object().shape({

@@ -7,13 +7,14 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 
-import { setUserAvatar } from '../pages/api/api';
+import { getUserInfo, setUserAvatar } from '../pages/api/api';
 import { catchError, catchSuccess, catchWarning } from '../redux/ducks/alerts';
 
 import type { UserInfo } from '../types/types';
 
 import styles from '../styles/Avatar.module.scss';
 import 'react-advanced-cropper/dist/style.css';
+import { getInfo } from '../redux/ducks/user';
 
 const file2Base64 = (file: File): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
@@ -28,12 +29,13 @@ const Avatar = () => {
     const [uploaded, setUploaded] = useState<string | null>(null);
     const [photo, setPhoto] = useState<string | null>(null);
 
-    const userAvatar = useSelector((state: { user: { info: UserInfo }}) => state.user.info.photo );
-
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const resizeImage = (base64Str, maxWidth = 400, maxHeight = 350): Promise<string> => {
+    const userAvatar = useSelector((state: { user: { info: UserInfo }}) => state.user.info.photo );
+    const userId = (router.query.userAccount).toString();
+
+    const resizeImage = (base64Str, maxWidth = 200, maxHeight = 150): Promise<string> => {
         return new Promise((resolve) => {
             let img: HTMLImageElement = document.createElement('img');
             img.src = base64Str;
@@ -65,7 +67,7 @@ const Avatar = () => {
     };
 
     const updateAvatar = async (avatar: string | null) => {
-        const res =  await setUserAvatar((router.query.userAccount).toString(), { avatar });
+        const res =  await setUserAvatar((userId).toString(), { avatar });
 
         if (res) {
             if (res.status === 400) {
@@ -73,7 +75,9 @@ const Avatar = () => {
             }
 
             if (avatar) {
+                const updatedInfo = await getUserInfo(userId);
                 dispatch(catchSuccess(res.message));
+                dispatch(getInfo(updatedInfo));
             }
 
             if (!avatar) {

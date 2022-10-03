@@ -51,7 +51,7 @@ const ProductComments = ({ product, setProduct, productId }) => {
                 if (value) {
                     await commentProduct(productId, {
                         userId: user?._id || null,
-                        userAvatar: user?.photo ? user.photo : null,
+                        photo: user?.photo ? user.photo : null,
                         username: user?.username || null,
                         createdDate: new Date(),
                         message: commentInput,
@@ -110,6 +110,7 @@ const ProductComments = ({ product, setProduct, productId }) => {
                                             <Image
                                                 src={comment.photo}
                                                 alt={comment.username}
+                                                style={{ borderRadius: '50%' }}
                                                 width="100px"
                                                 height="100px"
                                             />

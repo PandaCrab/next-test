@@ -1,6 +1,8 @@
 @use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
 
 $gray: gray;
+$lightgrayBorder: #bbbbbb;
 
 .stuffWrapper {
     width: 400px;
@@ -9,6 +11,8 @@ $gray: gray;
     flex-direction: column;
     align-items: center;
     overflow-y: scroll;
+
+    @include scrollbars(1px, none, $lightgrayBorder);
 
     @include media.mobileS {
         display: none;

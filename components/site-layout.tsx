@@ -15,10 +15,18 @@ import { getToken, getInfo, logout } from '../redux/ducks/user';
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
+import { prepareServerlessUrl } from 'next/dist/server/base-server';
+
+interface OpenState {
+    account: boolean;
+    menu: boolean;
+}
 
 const SiteLayout = ({ children }) => {
-    const [isOpen, setOpen] = useState<boolean>(false);
-    const [menuDropdown, setMenuDropdown] = useState<boolean>(false);
+    const [isOpen, setOpen] = useState<OpenState>({
+        account: false,
+        menu: false
+    });
     const [admin, setAdmin] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
@@ -26,7 +34,9 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef();
+    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | undefined = useRef();
     const router = useRouter();
+
 
     const dispatch = useDispatch();
     const user = useSelector((state: { user: userObject }) => state.user);
@@ -88,7 +98,10 @@ const SiteLayout = ({ children }) => {
             setPassword('');
             setErrorMessage('');
 
-            setOpen(false);
+            setOpen({
+                ...isOpen,
+                account: false
+            });
         } else {
             setErrorMessage(token.message);
             setPassword('');
@@ -102,19 +115,32 @@ const SiteLayout = ({ children }) => {
     };
 
     const toggleDropdown = () => {
-        setOpen(!isOpen);
+        setOpen((prev) =>({
+            menu: !prev.menu,
+            account: !prev.account
+        }));
     };
 
     const clickOutside = (event) => {
         if (!profileRef.current.contains(event.target)) {
-            setOpen(false);
+            setOpen({
+                ...isOpen,
+                account: false
+            });
+        }
+
+        if (!menuDropdownRef.current?.contains(event.target)) {
+            setOpen({
+                ...isOpen,
+                menu: false
+            });
         }
     };
 
     useEffect(() => {
         setPassword('');
 
-        if (isOpen) {
+        if (isOpen.account || isOpen.menu) {
             document.addEventListener('click', clickOutside);
         }
 
@@ -130,16 +156,23 @@ const SiteLayout = ({ children }) => {
             <div className={styles.header}>
                 <div className={styles.menuWrapper}>
                     <div
-                        onClick={() => setMenuDropdown(!menuDropdown)}
+                        onClick={() => setOpen((prev) => ({
+                            ...prev,
+                            menu: true
+                        }))}
+                        ref={menuDropdownRef}
                         className={styles.menuBtn}
                     >
                         <RiMenuFill />
                     </div>
-                    {menuDropdown && (
+                    {isOpen.menu && (
                         <div className={styles.menuDropdown}>
                             <Link href="/">
                                 <a
-                                    onClick={() => setMenuDropdown(false)}
+                                    onClick={() => setOpen({
+                                        ...isOpen,
+                                        menu: false
+                                    })}
                                     className={styles.menuItems}
                                 >
                                     Home
@@ -147,7 +180,10 @@ const SiteLayout = ({ children }) => {
                             </Link>
                             <Link href="/shop">
                                 <a
-                                    onClick={() => setMenuDropdown(false)}
+                                    onClick={() => setOpen({
+                                        ...isOpen,
+                                        menu: false
+                                    })}
                                     className={styles.menuItems}
                                 >
                                     Shop
@@ -156,7 +192,10 @@ const SiteLayout = ({ children }) => {
                             {admin && (
                                 <Link href="/admin">
                                     <a
-                                        onClick={() => setMenuDropdown(false)}
+                                        onClick={() => setOpen({
+                                            ...isOpen,
+                                            menu: false
+                                        })}
                                         className={styles.menuItems}
                                     >
                                         Admin
@@ -165,7 +204,10 @@ const SiteLayout = ({ children }) => {
                             )}
                             <Link href="/shop/categories">
                                 <a
-                                    onClick={() => setMenuDropdown(false)}
+                                    onClick={() => setOpen({
+                                        ...isOpen,
+                                        menu: false
+                                    })}
                                     className={styles.menuItems}
                                 >
                                     Categories
@@ -213,16 +255,19 @@ const SiteLayout = ({ children }) => {
                                 className={styles.accountBtn}
                             >
                                 {user.info?.photo ? (
-                                    <div className={styles.userAvatar}>
+                                    <div className={`${styles.imageWrapper} ${styles.withAvatar}`}>
                                         <Image 
                                             src={user.info.photo}
                                             alt="user-avatar"
+                                            style={{ borderRadius: '50%' }}
                                             width="50px"
                                             height="50px"
                                         />
                                     </div>
                                 ) : (
-                                    <RiUser3Line />
+                                    <div className={styles.imageWrapper}>
+                                        <RiUser3Line />
+                                    </div>
                                 )}
                             </div>
                         ) : (
@@ -236,7 +281,7 @@ const SiteLayout = ({ children }) => {
                         {user.token ? (
                             <>
                                 <div
-                                    style={{ display: isOpen ? 'flex' : 'none' }}
+                                    style={{ display: isOpen.account ? 'flex' : 'none' }}
                                     className={styles.dropdown}
                                 >
                                     <div className={styles.greeting}>
@@ -245,7 +290,10 @@ const SiteLayout = ({ children }) => {
                                     <div
                                         onClick={() => {
                                             router.push('/myOrders/');
-                                            setOpen(false);
+                                            setOpen({
+                                                ...isOpen,
+                                                account: false
+                                            });
                                         }}
                                         className={styles.dropdownItems}
                                     >
@@ -254,7 +302,10 @@ const SiteLayout = ({ children }) => {
                                     <div
                                         onClick={() => {
                                             router.push(`/account/${user.info._id}`);
-                                            setOpen(false);
+                                            setOpen({
+                                                ...isOpen,
+                                                account: false
+                                            });
                                         }}
                                         className={styles.dropdownItems}
                                     >
@@ -299,7 +350,10 @@ const SiteLayout = ({ children }) => {
                                         <div className={styles.dropdownBtnWrapper}>
                                             <button
                                                 onClick={() => {
-                                                    setOpen(false);
+                                                    setOpen({
+                                                        ...isOpen,
+                                                        account: false
+                                                    });
                                                     router.push('/registration');
                                                 }}
                                                 className={styles.logBtn}

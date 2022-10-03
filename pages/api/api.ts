@@ -16,9 +16,8 @@ import type {
     Registration,
     CommentApi,
 } from '../../types/apiTypes';
-import { ObservableResult, Stuff } from '../../types/types';
 
-const url = 'http://localhost:4000';
+const url = 'http://192.168.31.172:4000';
 
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?) => {

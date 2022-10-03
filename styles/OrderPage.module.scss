@@ -60,61 +60,66 @@ $red: red;
             }
         }
 
-        .formLabel {
-            width: 100%;
-            margin-bottom: 4px;
+        .inputWrapper {
+            margin-bottom: 15px;
             display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            font-size: 16px;
-            font-weight: bold;
-
-            @include media.mobileS {
-                padding-left: 10px;
-                font-size: 13px;
-            }
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
 
             @include media.laptop {
-                padding-left: 15px;
-                font-size: 18px;
+
             }
 
-            .autocompleteBtn {
-                padding: 2px;
-                font-weight: normal;
-                border: 1px solid $lightgrayBorder;
-                border-radius: 5px;
+            .formLabel {
+                width: 100%;
+                margin-bottom: 4px;
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                font-size: 16px;
+                font-weight: bold;
 
-                @include media.desktop {
-                    padding: 5px;
+                @include media.mobileS {
+                    padding-left: 10px;
+                    font-size: 13px;
+                }
+
+                @include media.laptop {
+                    padding-left: 15px;
+                    font-size: 18px;
+                }
+
+                .autocompleteBtn {
+                    padding: 2px;
+                    font-weight: normal;
+                    border: 1px solid $lightgrayBorder;
+                    border-radius: 5px;
+
+                    @include media.desktop {
+                        padding: 5px;
+                    }
                 }
             }
-        }
 
-        .formInput {
-            margin-bottom: 30px;
-            padding: 6px 12px;
-            width: 100%;
-            border: 2px solid $lightgrayBorder;
-            border-radius: 5px;
-
-            @include media.mobileS {
-                margin-bottom: 15px;
-                padding: 3px 6px;
-                font-size: 12px;
-            }
-
-            @include media.laptop {
-                margin-bottom: 20px;
+            .formInput {
                 padding: 6px 12px;
-                font-size: 16px;
-            }
+                width: 100%;
+                border: 2px solid $lightgrayBorder;
+                border-radius: 5px;
 
-            &.invalid {
-                border-color: $red;
+                @include media.mobileS {
+                    padding: 3px 6px;
+                    font-size: 12px;
+                }
 
-                &::placeholder {
-                    color: $red;
+                @include media.laptop {
+                    padding: 6px 12px;
+                    font-size: 16px;
+                }
+
+                &.invalid {
+                    border-color: $red;
                 }
             }
         }
