@@ -5,6 +5,7 @@ $checkboxBack: rgb(0, 255, 0);
 $red: red;
 
 .container {
+    padding: 5px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -34,20 +35,21 @@ $red: red;
         }
 
         .checkboxWrapper {
+            margin-bottom: 5px;
             display: flex;
             align-items: center;
 
             .checkbox {
                 margin-right: 5px;
-                width: 10px;
-                height: 10px;
+                width: 15px;
+                height: 15px;
                 border: 1px solid;
                 cursor: pointer;
 
                 @include media.laptop {
                     margin-right: 15px;
-                    width: 12px;
-                    height: 12px;
+                    width: 20px;
+                    height: 20px;
                 }
 
                 &.checked {
@@ -58,15 +60,15 @@ $red: red;
     }
 
     .inputWrapper {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         width: 100%;
         position: relative;
 
         .paymentInput {
-            margin-bottom: 2px;
-            padding: 3px 6px;
+            padding: 4px 8px;
             width: 100%;
-            border: 2px solid $lightgrayBorder;
+            font-size: 16px;
+            border: 1px solid $lightgrayBorder;
             border-radius: 5px;
 
             @include media.laptop {
@@ -81,10 +83,6 @@ $red: red;
 
             &.invalid {
                 border-color: $red;
-
-                &::placeholder {
-                    color: $red;
-                }
             }
         }
 

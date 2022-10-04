@@ -84,8 +84,6 @@ const OrderForm = () => {
 
     const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
 
-console.log(invalidUserInfo)
-
     const handleChange = (target) => {
         const { name, value } = target;
         if (Object.keys(shipping).includes(name)) {
@@ -171,7 +169,7 @@ console.log(invalidUserInfo)
                     <label className={styles.formLabel}>Full Name</label>
                     <input
                         className={
-                            invalidUserInfo.path.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                            invalidUserInfo.path?.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="name"
                         value={shipping.name}
@@ -185,7 +183,7 @@ console.log(invalidUserInfo)
                     <label className={styles.formLabel}>Contact phone</label>
                     <input
                         className={
-                            invalidUserInfo.path.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                            invalidUserInfo.path?.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="phone"
                         value={shipping.phone}
@@ -209,7 +207,7 @@ console.log(invalidUserInfo)
                     </label>
                     <input
                         className={
-                            invalidAddress.path.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                            invalidAddress.path?.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="street"
                         value={address.street}
@@ -233,7 +231,7 @@ console.log(invalidUserInfo)
                     <label className={styles.formLabel}>City</label>
                     <input
                         className={
-                            invalidAddress.path.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                            invalidAddress.path?.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="city"
                         value={address.city}
@@ -244,42 +242,40 @@ console.log(invalidUserInfo)
                         <ErrorTooltip message={invalidAddress.path.city} />
                     )}
                 </div>
-                <div className={styles.inputWrapper}>
-                    <div className={styles.row}>
-                        <div className={styles.inputWrapper}>
-                            <label className={styles.formLabel}>Country</label>
-                            <input
-                                className={
-                                    invalidAddress.path.country
-                                        ? `${styles.formInput} ${styles.invalid}`
-                                        : `${styles.formInput}`
-                                }
-                                name="country"
-                                value={address.country}
-                                onChange={({ target }) => handleChange(target)
-                                }
-                            />
-                            {invalidAddress.path.country && (
-                                <ErrorTooltip message={invalidAddress.path.country} />
-                            )}
-                        </div>
-                        <div className={styles.inputWrapper}>
-                            <label className={styles.formLabel}>ZIP</label>
-                            <input
-                                className={
-                                    invalidAddress.path.zip
-                                        ? `${styles.formInput} ${styles.invalid}`
-                                        : `${styles.formInput}`
-                                }
-                                name="zip"
-                                value={address.zip}
-                                onChange={({ target }) => handleChange(target)
-                                }
-                            />
-                            {invalidAddress.path.zip && (
-                                <ErrorTooltip message={invalidAddress.path.zip} />
-                            )}
-                        </div>
+                <div className={styles.row}>
+                    <div className={styles.inputWrapper}>
+                        <label className={styles.formLabel}>Country</label>
+                        <input
+                            className={
+                                invalidAddress.path?.country
+                                    ? `${styles.formInput} ${styles.invalid}`
+                                    : `${styles.formInput}`
+                            }
+                            name="country"
+                            value={address.country}
+                            onChange={({ target }) => handleChange(target)
+                            }
+                        />
+                        {invalidAddress.path.country && (
+                            <ErrorTooltip message={invalidAddress.path.country} />
+                        )}
+                    </div>
+                    <div className={styles.inputWrapper}>
+                        <label className={styles.formLabel}>ZIP</label>
+                        <input
+                            className={
+                                invalidAddress.path?.zip
+                                    ? `${styles.formInput} ${styles.invalid}`
+                                    : `${styles.formInput}`
+                            }
+                            name="zip"
+                            value={address.zip}
+                            onChange={({ target }) => handleChange(target)
+                            }
+                        />
+                        {invalidAddress.path.zip && (
+                            <ErrorTooltip message={invalidAddress.path.zip} />
+                        )}
                     </div>
                 </div>
                 <button

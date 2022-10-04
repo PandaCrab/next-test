@@ -180,54 +180,62 @@ const PaymentForm = () => {
                     <div className={styles.inputWrapper}>
                         <input
                             id="cardholder"
-                            className={styles.paymentInput}
+                            className={
+                                invalid.path?.cardholder ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                            }
                             name="cardholder"
                             placeholder="Enter cardholder name"
                             value={payment.cardholder}
                             onChange={(value) => changeHandler(value)}
                         />
                         {invalid.path?.cardholder && (
-                            <ErrorTooltip message={invalid.path.cardholder} />
+                            <ErrorTooltip message={invalid.path?.cardholder} />
                         )}
                     </div>
                     <div className={styles.inputWrapper}>
                         <input
                             id="cardNum"
-                            className={styles.paymentInput}
+                            className={
+                                invalid.path?.cardNum ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                            }
                             name="cardNum"
                             placeholder="Enter card number"
-                            value={payment.cardNum}
+                            value={payment.cardNum === 0 ? '' : payment.cardNum}
                             onChange={(value) => changeHandler(value)}
                         />
                         {invalid.path?.cardNum && (
-                            <ErrorTooltip message={invalid.path.cardNum} />
+                            <ErrorTooltip message={invalid.path?.cardNum} />
                         )}
                     </div>
                     <div className={styles.row}>
                         <div className={styles.inputWrapper}>
                             <input
                                 id="expiry"
-                                className={styles.paymentInput}
+                                className={
+                                    invalid.path?.expiry ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                                }
                                 name="expiry"
                                 placeholder="MM/YY"
                                 value={payment.expiry}
                                 onChange={(value) => changeHandler(value)}
                             />
-                            {invalid.path?.expiery && (
-                                <ErrorTooltip message={invalid.path.expiery} />
+                            {invalid.path?.expiry && (
+                                <ErrorTooltip message={invalid.path?.expiry} />
                             )}
                         </div>
                         <div className={styles.inputWrapper}>
                             <input
                                 id="cvv"
-                                className={styles.paymentInput}
+                                className={
+                                    invalid.path?.cvv ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                                }
                                 name="cvv"
                                 placeholder="Enter cvv code"
-                                value={payment.cvv}
+                                value={payment.cvv === 0 ? '' : payment.cvv}
                                 onChange={(value) => changeHandler(value)}
                             />
                             {invalid.path?.cvv && (
-                                <ErrorTooltip message={invalid.path.cvv} />
+                                <ErrorTooltip message={invalid.path?.cvv} />
                             )}
                         </div>
                     </div>
@@ -241,7 +249,7 @@ const PaymentForm = () => {
             </button>
         </div>
     ) : (
-        <div>You need add some stuff and create order step by step. Go and try again</div>
+        <div>You haven't for what pay</div>
     );
 };
 

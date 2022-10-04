@@ -18,8 +18,8 @@ import styles from '../styles/SiteLayout.module.scss';
 import { prepareServerlessUrl } from 'next/dist/server/base-server';
 
 interface OpenState {
-    account: boolean;
-    menu: boolean;
+    account?: boolean;
+    menu?: boolean;
 }
 
 const SiteLayout = ({ children }) => {
@@ -34,7 +34,7 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef();
-    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | undefined = useRef();
+    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | null = useRef();
     const router = useRouter();
 
 
@@ -114,22 +114,18 @@ const SiteLayout = ({ children }) => {
         return nameArr[0];
     };
 
-    const toggleDropdown = () => {
-        setOpen((prev) =>({
-            menu: !prev.menu,
-            account: !prev.account
-        }));
-    };
-
     const clickOutside = (event) => {
-        if (!profileRef.current.contains(event.target)) {
+        if (!profileRef.current?.contains(event.target)) {
+            console.log('+')
             setOpen({
                 ...isOpen,
                 account: false
             });
         }
+        
+        if (menuDropdownRef.current && !menuDropdownRef.current?.contains(event.target)) {
+            console.log('-');
 
-        if (!menuDropdownRef.current?.contains(event.target)) {
             setOpen({
                 ...isOpen,
                 menu: false
@@ -158,7 +154,7 @@ const SiteLayout = ({ children }) => {
                     <div
                         onClick={() => setOpen((prev) => ({
                             ...prev,
-                            menu: true
+                            menu: !prev.menu
                         }))}
                         ref={menuDropdownRef}
                         className={styles.menuBtn}
@@ -251,7 +247,10 @@ const SiteLayout = ({ children }) => {
                     >
                         {user.token ? (
                             <div
-                                onClick={() => toggleDropdown()}
+                                onClick={() => setOpen((prev) => ({
+                                    ...prev,
+                                    account: !prev.account
+                                }))}
                                 className={styles.accountBtn}
                             >
                                 {user.info?.photo ? (
@@ -272,7 +271,10 @@ const SiteLayout = ({ children }) => {
                             </div>
                         ) : (
                             <div
-                                onClick={() => toggleDropdown()}
+                                onClick={() => setOpen((prev) => ({
+                                    ...prev,
+                                    account: false
+                                }))}
                                 className={styles.logBtn}
                             >
                                 Log In
