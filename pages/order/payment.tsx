@@ -134,6 +134,14 @@ const PaymentForm = () => {
     const changeHandler = ({ target }) => {
         const { value, name }: OnChangeValues = target;
 
+        setInvalid({
+            ...invalid,
+            path: {
+                ...invalid.path,
+                [name]: ''
+            }
+        });
+
         setPayment({
             ...payment,
             [name]: value,

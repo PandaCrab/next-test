@@ -11,5 +11,6 @@ $red: red;
 
     @include media.laptop {
         font-size: 14px;
+        bottom: -17px;
     }
 }

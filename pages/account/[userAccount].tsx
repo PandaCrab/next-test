@@ -31,14 +31,14 @@ interface InvalidState {
         city?: string;
         country?: string;
         zip?:string;
-    };
+    } | null;
     isValid: boolean;
 };
 
 const AccountPage = () => {
     const [loged, setLoged] = useState<boolean>(false);
     const [invalid, setInvalid] = useState<InvalidState>({
-        path: {},
+        path: null,
         isValid: false,
     });
     const [view, setView] = useState<ViewState>({
@@ -239,6 +239,7 @@ const AccountPage = () => {
                         view={view}
                         setView={setView}
                         invalid={invalid}
+                        setInvalid={setInvalid}
                     />
                 )}
                 <UserInfoSection

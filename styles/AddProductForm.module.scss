@@ -34,49 +34,49 @@ $red: red;
         flex-direction: column;
         align-items: center;
 
-        .addProductInput,
-        .dropdownCategories {
-            margin-bottom: 10px;
-            padding: 12px 6px;
-            width: 350px;
-            border: 1px solid $lightgrayBorder;
-            border-radius: 5px;
+        .inputWrapper {
+            margin-bottom: 20px;
             position: relative;
 
-            @include media.mobileS {
-                padding: 6px 12px;
-                width: 300px;
-            }
-
-            @include media.laptop {
+            .addProductInput,
+            .dropdownCategories {
                 padding: 12px 6px;
-                width: 500px;
-            }
-
-            @include media.desktop {
-                width: 600px;
-                font-size: 18px;
-            }
-
-            &.description {
-                padding: 6px;
-                height: 150px;
-                resize: none;
+                width: 350px;
+                border: 1px solid $lightgrayBorder;
+                border-radius: 5px;
+                position: relative;
 
                 @include media.mobileS {
-                    height: 100px;
+                    padding: 6px 12px;
+                    width: 300px;
                 }
 
                 @include media.laptop {
-                    height: 150px;
+                    padding: 12px 6px;
+                    width: 500px;
                 }
-            }
 
-            &.invalid {
-                border-color: $red;
+                @include media.desktop {
+                    width: 600px;
+                    font-size: 18px;
+                }
 
-                &::placeholder {
-                    color: $red;
+                &.description {
+                    padding: 6px;
+                    height: 150px;
+                    resize: none;
+
+                    @include media.mobileS {
+                        height: 100px;
+                    }
+
+                    @include media.laptop {
+                        height: 150px;
+                    }
+                }
+
+                &.invalid {
+                    border-color: $red;
                 }
             }
 

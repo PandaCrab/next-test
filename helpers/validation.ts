@@ -91,7 +91,7 @@ export const addProductSchema = yup.object().shape({
     subcategory: yup.string(),
     width: yup.string().required('Set image width'),
     height: yup.string().required('Set image height'),
-    description: yup.string(),
+    description: yup.string().max(300, 'Maximun 300 symbols'),
 });
 
 export const commentSchema = yup.string().max(300, 'Max length is 300').required('Please fill the comment area');
