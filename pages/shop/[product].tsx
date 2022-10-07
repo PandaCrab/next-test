@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Image from 'next/image';
 import { takeOneProduct } from '../api/api';
 import { ProductComments } from '../../components';
+import { inOrder } from '../../redux/ducks/order';
 
 import type { Stuff } from '../../types/types';
 
 import styles from '../../styles/ProductPage.module.scss';
+import { catchSuccess } from '../../redux/ducks/alerts';
 
 const SingleProduct = () => {
     const [productId, setProductId] = useState<string | string[]>('');
@@ -16,6 +19,9 @@ const SingleProduct = () => {
     const [tab, setTab] = useState<string>('about');
 
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const clientOrder = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
 
     const takeProduct = async (id) => {
         try {
@@ -29,6 +35,29 @@ const SingleProduct = () => {
         }
     };
 
+    const pushToOrder = (stuff) => {
+        const idInOrder = clientOrder.length;
+        const {
+            _id, name, price, imgUrl, color, quantity, width, height,
+        } = stuff;
+
+        dispatch(
+            inOrder({
+                id: idInOrder,
+                _id,
+                name,
+                price,
+                imgUrl,
+                color,
+                quantity,
+                width,
+                height,
+            }),
+        );
+
+        dispatch(catchSuccess('Product has been added into your bucket'));
+    };
+
     useEffect(() => {
         setProductId(router.query.product);
     }, [router]);
@@ -36,7 +65,7 @@ const SingleProduct = () => {
     const availability = () => {
         if (product.quantity >= 50) {
             return 'Available';
-        } if (product.quantity <= 50) {
+        } if (product.quantity <= 50 && product.quantity !== 0) {
             return 'Product is running out';
         }
         return 'Sold';
@@ -96,6 +125,12 @@ const SingleProduct = () => {
                             </div>
                         </div>
                         <div className={styles.description}>{product?.description}</div>
+                        <button 
+                            onClick={() => pushToOrder(product)}
+                            className="btns"
+                        >
+                            Buy
+                        </button>
                     </div>
                 )
             ) : (

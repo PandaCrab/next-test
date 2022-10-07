@@ -8,7 +8,7 @@ $descriptionBack: rgb(243, 243, 243);
 
 .infoWrapper {
     padding: 12px;
-    width: 100%;
+    width: 310px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -23,6 +23,7 @@ $descriptionBack: rgb(243, 243, 243);
     }
 
     @include media.laptop {
+        width: 100%;
         flex-direction: row;
         font-size: 16px;
     }
@@ -193,7 +194,7 @@ $descriptionBack: rgb(243, 243, 243);
                 @include media.mobileS {
                     margin-left: 5px;
                     position: relative;
-                    left: -225px;
+                    left: -150px;
                     bottom: -10px;
                 }
 

@@ -7,29 +7,13 @@ import { useDispatch } from 'react-redux';
 import { catchSuccess } from '../redux/ducks/alerts';
 import { postProduct } from '../pages/api/api';
 import { addProductSchema } from '../helpers/validation';
+import { ErrorTooltip } from '../components';
 import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
 import useWindowSize from '../hooks/windowSize';
 
 import type { Stuff } from '../types/types';
 
 import styles from '../styles/AddProductForm.module.scss';
-import { valueFromAST } from 'graphql';
-
-interface InvalidProductState {
-    path?: {
-        name: string;
-        price: string;
-        imgUrl: string;
-        color: string;
-        quantity: string;
-        category: string;
-        sybcategory: string;
-        width: string;
-        height: string;
-        description: string;
-    };
-    isValid: boolean;
-};
 
 const AddProductForm = () => {
     const [productPriview, setPreview] = useState<boolean>(false);
@@ -48,7 +32,7 @@ const AddProductForm = () => {
         height: 0,
         description: '',
     });
-    const [invalidProductInfo, setProductInfo] = useState<InvalidProductState>({
+    const [invalidInfo, setInvalidInfo] = useState({
         path: null,
         isValid: false,
     });
@@ -59,6 +43,14 @@ const AddProductForm = () => {
 
     const handleChange = (target: { name: string, value: string | number }) => {
         const { name, value } = target;
+
+        setInvalidInfo({
+            ...invalidInfo,
+            path: {
+                ...invalidInfo.path,
+                [name]: ''
+            }
+        });
 
         setProduct({
             ...addProduct,
@@ -94,7 +86,7 @@ const AddProductForm = () => {
                 }
             })
             .catch((error) => {
-                const validationError = null;
+                const validationError = {};
 
                 error.inner.forEach((err) => {
                     if (err.path) {
@@ -102,7 +94,7 @@ const AddProductForm = () => {
                     }
                 });
 
-                setProductInfo({
+                setInvalidInfo({
                     path: validationError,
                     isValid: false,
                 });
@@ -120,121 +112,171 @@ const AddProductForm = () => {
     return (
         <div className={styles.addProductForm}>
             <div className={styles.formWrapper}>
-                <input
-                    id="name"
-                    className={
-                        invalidProductInfo.path?.name
-                            ? `${styles.addProductInput} ${styles.invalid}`
-                            : `${styles.addProductInput}`
-                    }
-                    name="name"
-                    placeholder={invalidProductInfo.path?.name ? invalidProductInfo.path?.name : 'Name of product'}
-                    value={addProduct.name}
-                    onChange={({ target }) => handleChange(target)}
-                />
-                <input
-                    id="price"
-                    className={
-                        invalidProductInfo.path?.price
-                            ? `${styles.addProductInput} ${styles.invalid}`
-                            : `${styles.addProductInput}`
-                    }
-                    name="price"
-                    placeholder={invalidProductInfo.path?.price ? invalidProductInfo.path?.price : 'Enter product price'}
-                    value={addProduct.price === 0 ? '' : addProduct.price}
-                    onChange={({ target }) => handleChange(target)}
-                />
-                <input
-                    id="imgUrl"
-                    className={
-                        invalidProductInfo.path?.imgUrl
-                            ? `${styles.addProductInput} ${styles.invalid}`
-                            : `${styles.addProductInput}`
-                    }
-                    name="imgUrl"
-                    placeholder={invalidProductInfo.path?.imgUrl ? invalidProductInfo.path?.imgUrl : 'Image path?'}
-                    value={addProduct.imgUrl}
-                    onChange={({ target }) => handleChange(target)}
-                />
-                <input
-                    id="color"
-                    className={
-                        invalidProductInfo.path?.color
-                            ? `${styles.addProductInput} ${styles.invalid}`
-                            : `${styles.addProductInput}`
-                    }
-                    name="color"
-                    placeholder="Enter product color (optional)"
-                    value={addProduct.color}
-                    onChange={({ target }) => handleChange(target)}
-                />
-                <input
-                    id="quantity"
-                    className={
-                        invalidProductInfo.path?.quantity
-                            ? `${styles.addProductInput} ${styles.invalid}`
-                            : `${styles.addProductInput}`
-                    }
-                    name="quantity"
-                    placeholder={
-                        invalidProductInfo?.path?.quantity
-                            ? invalidProductInfo.path?.quantity
-                            : 'Enter quantity of available products'
-                    }
-                    value={addProduct.quantity === 0 ? '' : addProduct.quantity}
-                    onChange={({ target }) => handleChange(target)}
-                />
+                <div className={styles.inputWrapper}>
+                    <input
+                        id="name"
+                        className={
+                            invalidInfo.path?.name
+                                ? `${styles.addProductInput} ${styles.invalid}`
+                                : `${styles.addProductInput}`
+                        }
+                        name="name"
+                        placeholder="Name of product"
+                        value={addProduct.name}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidInfo.path?.name && (
+                        <ErrorTooltip message={invalidInfo.path?.name} />
+                    )}
+                </div>
+                <div className={styles.inputWrapper}>
+                    <input
+                        id="price"
+                        className={
+                            invalidInfo.path?.price
+                                ? `${styles.addProductInput} ${styles.invalid}`
+                                : `${styles.addProductInput}`
+                        }
+                        name="price"
+                        placeholder="Enter product price"
+                        value={addProduct.price === 0 ? '' : addProduct.price}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidInfo.path?.price && (
+                        <ErrorTooltip message={invalidInfo.path?.price} />
+                    )}
+                </div>
+                <div className={styles.inputWrapper}>
+                    <input
+                        id="imgUrl"
+                        className={
+                            invalidInfo.path?.imgUrl
+                                ? `${styles.addProductInput} ${styles.invalid}`
+                                : `${styles.addProductInput}`
+                        }
+                        name="imgUrl"
+                        placeholder="Image path?"
+                        value={addProduct.imgUrl}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidInfo.path?.imgUrl && (
+                        <ErrorTooltip message={invalidInfo.path?.imgUrl} />
+                    )}
+                </div>
+                <div className={styles.inputWrapper}>
+                    <input
+                        id="color"
+                        className={
+                            invalidInfo.path?.color
+                                ? `${styles.addProductInput} ${styles.invalid}`
+                                : `${styles.addProductInput}`
+                        }
+                        name="color"
+                        placeholder="Enter product color (optional)"
+                        value={addProduct.color}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidInfo.path?.color && (
+                        <ErrorTooltip message={invalidInfo.path?.color} />
+                    )}
+                </div>
+                <div className={styles.inputWrapper}>
+                    <input
+                        id="quantity"
+                        className={
+                            invalidInfo.path?.quantity
+                                ? `${styles.addProductInput} ${styles.invalid}`
+                                : `${styles.addProductInput}`
+                        }
+                        name="quantity"
+                        placeholder="Enter quantity of available products"
+                        value={addProduct.quantity === 0 ? '' : addProduct.quantity}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidInfo.path?.quantity && (
+                        <ErrorTooltip message={invalidInfo.path?.quantity} />
+                    )}
+                </div>
                 <div className={styles.row}>
-                    <div className={styles.dropdownCategories}>
-                        <div
-                            onClick={() => setCategories((prev) => ({
-                                ...prev,
-                                category: true,
-                            }))
-                            }
-                        >
-                            {addProduct.category ? addProduct.category : 'category'}
-                        </div>
-                        {dropdownCategories.category && (
-                            <div className={styles.dropdown}>
-                                {categories.map((category, index) => (
-                                    <div
-                                        key={index}
-                                        className={styles.dropdownItems}
-                                        onClick={() => {
-                                            setProduct({
-                                                ...addProduct,
-                                                category,
-                                                subcategory: ''
-                                            });
-                                            setCategories({
-                                                category: false,
-                                                subcategory: false,
-                                            });
-                                        }}
-                                    >
-                                        {category}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                    {addProduct.category && (
-                        <div className={styles.dropdownCategories}>
+                    <div className={styles.inputWrapper}>
+                        <div className={
+                            invalidInfo.path?.categories 
+                                ? `${styles.dropdownCategories} ${styles.invalid}`
+                                : `${styles.dropdownCategories}`
+                        }>
                             <div
                                 onClick={() => setCategories((prev) => ({
                                     ...prev,
-                                    subcategory: true,
+                                    category: true,
                                 }))
                                 }
                             >
-                                {addProduct.subcategory ? addProduct.subcategory : 'subcategory'}
+                                {addProduct.category ? addProduct.category : 'category'}
                             </div>
-                            {dropdownCategories.subcategory
-                                ? (
-                                    <div className={styles.dropdown}>
-                                        {addProduct.category === 'devices'
-                                            ? devicesSubcategories.map((subcategory, index) => (
+                            {dropdownCategories.category && (
+                                <div className={styles.dropdown}>
+                                    {categories.map((category, index) => (
+                                        <div
+                                            key={index}
+                                            className={styles.dropdownItems}
+                                            onClick={() => {
+                                                setProduct({
+                                                    ...addProduct,
+                                                    category,
+                                                    subcategory: ''
+                                                });
+                                                setCategories({
+                                                    category: false,
+                                                    subcategory: false,
+                                                });
+                                            }}
+                                        >
+                                            {category}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        {invalidInfo.path?.category && (
+                            <ErrorTooltip message={invalidInfo.path?.category} />
+                        )}
+                    </div>
+                    <div className={styles.inputWrapper}>
+                        {addProduct.category && (
+                            <div className={styles.dropdownCategories}>
+                                <div
+                                    onClick={() => setCategories((prev) => ({
+                                        ...prev,
+                                        subcategory: true,
+                                    }))
+                                    }
+                                >
+                                    {addProduct.subcategory ? addProduct.subcategory : 'subcategory'}
+                                </div>
+                                {dropdownCategories.subcategory
+                                    ? (
+                                        <div className={styles.dropdown}>
+                                            {addProduct.category === 'devices'
+                                                ? devicesSubcategories.map((subcategory, index) => (
+                                                    <div
+                                                        className={styles.dropdownItems}
+                                                        key={index}
+                                                        onClick={() => {
+                                                            setProduct({
+                                                                ...addProduct,
+                                                                subcategory
+                                                            });
+                                                            setCategories((prev) => ({
+                                                                ...prev,
+                                                                subcategory: false,
+                                                            }));
+                                                        }}
+                                                    >
+                                                        {subcategory}
+                                                    </div>
+                                                ))
+                                                : addProduct.category === 'clothes'
+                                            && clothesSubcategories.map((subcategory, index) => (
                                                 <div
                                                     className={styles.dropdownItems}
                                                     key={index}
@@ -245,86 +287,75 @@ const AddProductForm = () => {
                                                         });
                                                         setCategories((prev) => ({
                                                             ...prev,
-                                                            subcategory: false,
+                                                            sybcategory: false,
                                                         }));
                                                     }}
                                                 >
                                                     {subcategory}
                                                 </div>
-                                            ))
-                                            : addProduct.category === 'clothes'
-                                        && clothesSubcategories.map((subcategory, index) => (
-                                            <div
-                                                className={styles.dropdownItems}
-                                                key={index}
-                                                onClick={() => {
-                                                    setProduct({
-                                                        ...addProduct,
-                                                        subcategory
-                                                    });
-                                                    setCategories((prev) => ({
-                                                        ...prev,
-                                                        sybcategory: false,
-                                                    }));
-                                                }}
-                                            >
-                                                {subcategory}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )
-                                : null}
-                        </div>
-                    )}
+                                            ))}
+                                        </div>
+                                    )
+                                    : null}
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className={styles.row}>
-                    <input
-                        id="width"
-                        className={
-                            invalidProductInfo.path?.width
-                                ? `${styles.addProductInput} ${styles.invalid}`
-                                : `${styles.addProductInput}`
-                        }
-                        name="width"
-                        placeholder={
-                            invalidProductInfo.path?.width
-                                ? invalidProductInfo.path?.width
-                                : 'Enter width of product image'
-                        }
-                        value={addProduct.width === 0 ? '' : addProduct.width}
-                        onChange={({ target }) => handleChange(target)}
-                    />
-                    <input
-                        id="height"
-                        className={
-                            invalidProductInfo.path?.height
-                                ? `${styles.addProductInput} ${styles.invalid}`
-                                : `${styles.addProductInput}`
-                        }
-                        name="height"
-                        placeholder={
-                            invalidProductInfo.path?.height
-                                ? invalidProductInfo.path?.height
-                                : 'Enter height of product image'
-                        }
-                        value={addProduct.height === 0 ? '' : addProduct.height}
-                        onChange={({ target }) => handleChange(target)}
-                    />
+                    <div className={styles.inputWrapper}>
+                        <input
+                            id="width"
+                            className={
+                                invalidInfo.path?.width
+                                    ? `${styles.addProductInput} ${styles.invalid}`
+                                    : `${styles.addProductInput}`
+                            }
+                            name="width"
+                            placeholder="Enter width of product image"
+                            value={addProduct.width === 0 ? '' : addProduct.width}
+                            onChange={({ target }) => handleChange(target)}
+                        />
+                        {invalidInfo.path?.width && (
+                            <ErrorTooltip message={invalidInfo.path?.width} />
+                        )}
+                    </div>
+                    <div className={styles.inputWrapper}>
+                        <input
+                            id="height"
+                            className={
+                                invalidInfo.path?.height
+                                    ? `${styles.addProductInput} ${styles.invalid}`
+                                    : `${styles.addProductInput}`
+                            }
+                            name="height"
+                            placeholder="Enter height of product image"
+                            value={addProduct.height === 0 ? '' : addProduct.height}
+                            onChange={({ target }) => handleChange(target)}
+                        />
+                        {invalidInfo.path?.height && (
+                            <ErrorTooltip message={invalidInfo.path?.height} />
+                        )}
+                    </div>
                 </div>
-                <textarea
-                    id="description"
-                    className={
-                        invalidProductInfo.path?.description
-                            ? `${styles.addProductInput} ${styles.description} ${styles.invalid}`
-                            : `${styles.addProductInput} ${styles.description}`
-                    }
-                    name="description"
-                    rows={20}
-                    cols={200}
-                    placeholder="Add description (optional)"
-                    value={addProduct.description}
-                    onChange={({ target }) => handleChange(target)}
-                />
+                <div className={styles.inputWrapper}>
+                    <textarea
+                        id="description"
+                        className={
+                            invalidInfo.path?.description
+                                ? `${styles.addProductInput} ${styles.description} ${styles.invalid}`
+                                : `${styles.addProductInput} ${styles.description}`
+                        }
+                        name="description"
+                        rows={20}
+                        cols={200}
+                        placeholder="Add description (optional)"
+                        value={addProduct.description}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidInfo.path?.description && (
+                        <ErrorTooltip message={invalidInfo.path?.description} />
+                    )}
+                </div>
                 <div className={styles.btnsWrapper}>
                     {size.width < 767 && (
                         <button className={styles.previewBtn} onClick={() => setPreview(!productPriview)}>

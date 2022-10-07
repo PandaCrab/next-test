@@ -48,7 +48,7 @@ export type Order = {
 
 export type CommentApi = {
     userId: string | null;
-    userAvatar: any | null;
+    photo: any | null;
     username: string;
     createdDate: Date;
     message: string;

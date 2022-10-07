@@ -16,9 +16,8 @@ import type {
     Registration,
     CommentApi,
 } from '../../types/apiTypes';
-import { ObservableResult, Stuff } from '../../types/types';
 
-const url = 'http://localhost:4000';
+const url = 'http://192.168.31.172:4000';
 
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?) => {
@@ -216,6 +215,24 @@ export const updateUserInfo = async (id: string, info: Info) => {
         return response.json();
     } catch (err) {
         console.log(err)
+    }
+};
+
+export const setUserAvatar = async (id: string, photo: { avatar: string | null }) => {
+    try {
+        const response = await fetch(url + `/user/${id}/setAvatar`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(photo),
+        });
+
+        return response.json();
+    } catch (err) {
+        console.log(err);
     }
 };
 

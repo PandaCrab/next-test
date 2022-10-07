@@ -83,7 +83,7 @@ export type OrderInfo = {
 
 export type Comments = {
     userId: string | null;
-    userAvatar: any | null;
+    photo: string | null;
     username: string;
     createdDate: Date;
     message: string;
@@ -99,7 +99,7 @@ export type userObject = {
         phone: string;
         admin?: boolean;
         age?: number;
-        photo?: any;
+        photo?: string;
         rated?: object;
         likes?: Array<string>;
         shippingAddress?: {
@@ -118,7 +118,7 @@ export type UserInfo = {
     phone: string;
     admin?: boolean;
     age?: number;
-    photo?: any | null;
+    photo?: string | null;
     rated?: {
         productId: string;
         rated: number;

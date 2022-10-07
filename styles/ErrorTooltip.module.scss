@@ -1,0 +1,16 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+$red: red;
+
+.container {
+    width: 100%;
+    font-size: 12px;
+    color: $red;
+    position: absolute;
+    bottom: -15px;
+
+    @include media.laptop {
+        font-size: 14px;
+        bottom: -17px;
+    }
+}

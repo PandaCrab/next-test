@@ -1,0 +1,135 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$red: red;
+$white: white;
+$descriptionBack: rgb(243, 243, 243);
+
+.cropper-view-box {
+    box-shadow: 0 0 0 1px #39f;
+    border-radius: 50%;
+    outline: 0;
+}
+.cropper-face {
+    background-color:inherit !important;
+}
+.cropper-view-box {
+    outline:inherit !important;
+}
+
+.container {
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    .imageWrapper {
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid;
+        border-radius: 50%;
+        overflow: hidden;
+        z-index: 100;
+
+        @include media.laptop {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    .defaultAvatar {
+        padding: 2px;
+        width: 90px;
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 82px;
+        border: 2px solid;
+        border-radius: 50%;
+
+        @include media.laptop {
+            width: 150px;
+            height: 150px;
+            font-size: 140px;
+        }
+    }
+
+    .photoBtn {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        border: 2px solid;
+        border-radius: 30%;
+        background-color: $white;
+        position: absolute;
+        right: 0;
+        bottom: 10px;
+
+        @include media.laptop {
+            width: 25px;
+            height: 25px;
+            font-size: 25px;
+            right: 5px;
+            bottom: 15px;
+        }
+
+        &.delete {
+            padding: 1px;
+            font-size: 20px;
+            border: 1px solid;
+            right: -3px;
+            bottom: 25px;
+
+            @include media.laptop {
+                width: 25px;
+                height: 25px;
+                right: -7px;
+                bottom: 40px;
+            }
+        }
+
+        &.change {
+            padding: 2px;
+            font-size: 40px;
+            border: 1px solid;
+            right: 18px;
+            bottom: 0;
+
+            @include media.laptop {
+                width: 25px;
+                height: 25px;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+    }
+
+    .cropperContainer {
+        width: 300px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: $white;
+        border: 1px solid $lightgrayBorder;
+        position: absolute;
+        left: -5px;
+        right: 5px;
+        z-index: 1000;
+
+        .saveBtn {
+            margin-top: 15px;
+        }
+    }
+}

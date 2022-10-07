@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { RiUser3Line, RiCheckFill, RiCloseLine } from 'react-icons/ri';
+import { RiCheckFill, RiCloseLine } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 
 import LikedProducts from './likedProducts';
 import StuffInBucket from './stuffInBucket';
+import Avatar from './Avatar';
 
 import type { userObject } from '../types/types';
 
@@ -24,7 +25,8 @@ const UserInfoSection = ({
         <div className={styles.infoWrapper}>
             <div className={styles.userInfoWrapper}>
                 <div className={styles.userProfileHeader}>
-                    <div className={styles.userPhotoWrapper}>{user.photo ? user.photo : <RiUser3Line />}</div>
+                    <Avatar />
+                    {/* <div className={styles.userPhotoWrapper}>{user.photo ? user.photo : <RiUser3Line />}</div> */}
                     <div className={styles.usernameWrapper}>{user.username}</div>
                 </div>
                 <div className={styles.userPhoneWrapper}>

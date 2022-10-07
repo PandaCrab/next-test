@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { OrderList } from '../../components';
+import { ErrorTooltip, OrderList } from '../../components';
 import { fillShipping, getOrderId } from '../../redux/ducks/order';
 import { addressSchema, userInfoSchema } from '../../helpers/validation';
 
@@ -86,10 +86,35 @@ const OrderForm = () => {
 
     const handleChange = (target) => {
         const { name, value } = target;
-        setShipping({
-            ...shipping,
-            [name]: value,
-        });
+        if (Object.keys(shipping).includes(name)) {
+            setInvalidUserInfo({
+                ...invalidUserInfo,
+                path: {
+                    ...invalidUserInfo.path,
+                    [name]: '',
+                }
+            });
+
+            setShipping({
+                ...shipping,
+                [name]: value,
+            });
+        }
+
+        if (Object.keys(address).includes(name)) {
+            setInvalidAddress({
+                ...invalidAddress,
+                path: {
+                    ...invalidAddress.path,
+                    [name]: ''
+                }
+            });
+
+            setAddress({
+                ...address,
+                [name]: value
+            });
+        }
     };
 
     const addShippingAddress = () => {
@@ -140,106 +165,117 @@ const OrderForm = () => {
     return (
         <div className={styles.orderContainer}>
             <div className={styles.orderForm}>
-                <label className={styles.formLabel}>Full Name</label>
-                <input
-                    className={
-                        invalidUserInfo.path.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="name"
-                    value={shipping.name}
-                    onChange={({ target }) => handleChange(target)}
-                />
-
-                <label className={styles.formLabel}>Contact phone</label>
-                <input
-                    className={
-                        invalidUserInfo.path.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="phone"
-                    value={shipping.phone}
-                    onChange={({ target }) => handleChange(target)}
-                />
-
-                <label className={styles.formLabel}>
-                    <div>Street</div>
-                    {userAddress && Object.keys(userAddress).length && (
-                        <div
-                            className={styles.autocompleteBtn}
-                            onClick={() => addShippingAddress()}
-                        >
-                            Autocomplete
-                        </div>
+                <div className={styles.inputWrapper}>
+                    <label className={styles.formLabel}>Full Name</label>
+                    <input
+                        className={
+                            invalidUserInfo.path?.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                        }
+                        name="name"
+                        value={shipping.name}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidUserInfo.path.name && (
+                        <ErrorTooltip message={invalidUserInfo.path.name} />
                     )}
-                </label>
-                <input
-                    className={
-                        invalidAddress.path.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="street"
-                    value={address.street}
-                    onChange={({ target }) => setAddress({
-                        ...address,
-                        street: target.value,
-                    })
-                    }
-                />
-
-                <label className={styles.formLabel}>optional</label>
-                <input
-                    className={styles.formInput}
-                    name="optional"
-                    value={shipping.optional}
-                    onChange={({ target }) => handleChange(target)}
-                />
-
-                <label className={styles.formLabel}>City</label>
-                <input
-                    className={
-                        invalidAddress.path.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                    }
-                    name="city"
-                    value={address.city}
-                    onChange={({ target }) => setAddress({
-                        ...address,
-                        city: target.value,
-                    })
-                    }
-                />
-
+                </div>
+                <div className={styles.inputWrapper}>
+                    <label className={styles.formLabel}>Contact phone</label>
+                    <input
+                        className={
+                            invalidUserInfo.path?.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                        }
+                        name="phone"
+                        value={shipping.phone}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                    {invalidUserInfo.path.phone && (
+                        <ErrorTooltip message={invalidUserInfo.path.phone} />
+                    )}
+                </div>
+                <div className={styles.inputWrapper}>
+                    <label className={styles.formLabel}>
+                        <div>Street</div>
+                        {userAddress && Object.keys(userAddress).length && (
+                            <div
+                                className={styles.autocompleteBtn}
+                                onClick={() => addShippingAddress()}
+                            >
+                                Autocomplete
+                            </div>
+                        )}
+                    </label>
+                    <input
+                        className={
+                            invalidAddress.path?.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                        }
+                        name="street"
+                        value={address.street}
+                        onChange={({ target }) => handleChange(target)
+                        }
+                    />
+                    {invalidAddress.path.street && (
+                        <ErrorTooltip message={invalidAddress.path.street} />
+                    )}
+                </div>
+                <div className={styles.inputWrapper}>
+                    <label className={styles.formLabel}>optional</label>
+                    <input
+                        className={styles.formInput}
+                        name="optional"
+                        value={shipping.optional}
+                        onChange={({ target }) => handleChange(target)}
+                    />
+                </div>
+                <div className={styles.inputWrapper}>
+                    <label className={styles.formLabel}>City</label>
+                    <input
+                        className={
+                            invalidAddress.path?.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
+                        }
+                        name="city"
+                        value={address.city}
+                        onChange={({ target }) => handleChange(target)
+                        }
+                    />
+                    {invalidAddress.path.city && (
+                        <ErrorTooltip message={invalidAddress.path.city} />
+                    )}
+                </div>
                 <div className={styles.row}>
                     <div className={styles.inputWrapper}>
                         <label className={styles.formLabel}>Country</label>
                         <input
                             className={
-                                invalidAddress.path.country
+                                invalidAddress.path?.country
                                     ? `${styles.formInput} ${styles.invalid}`
                                     : `${styles.formInput}`
                             }
                             name="country"
                             value={address.country}
-                            onChange={({ target }) => setAddress({
-                                ...address,
-                                country: target.value,
-                            })
+                            onChange={({ target }) => handleChange(target)
                             }
                         />
+                        {invalidAddress.path.country && (
+                            <ErrorTooltip message={invalidAddress.path.country} />
+                        )}
                     </div>
                     <div className={styles.inputWrapper}>
                         <label className={styles.formLabel}>ZIP</label>
                         <input
                             className={
-                                invalidAddress.path.zip
+                                invalidAddress.path?.zip
                                     ? `${styles.formInput} ${styles.invalid}`
                                     : `${styles.formInput}`
                             }
                             name="zip"
                             value={address.zip}
-                            onChange={({ target }) => setAddress({
-                                ...address,
-                                zip: target.value,
-                            })
+                            onChange={({ target }) => handleChange(target)
                             }
                         />
+                        {invalidAddress.path.zip && (
+                            <ErrorTooltip message={invalidAddress.path.zip} />
+                        )}
                     </div>
                 </div>
                 <button
