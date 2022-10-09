@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { BsCart } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
@@ -15,9 +15,19 @@ import type { Stuff } from '../types/types';
 
 import styles from '../styles/AddProductForm.module.scss';
 
+interface InvalidState {
+    path: Stuff;
+    isValid: boolean;
+};
+
+interface Dropdown {
+    category?: boolean;
+    subcategory?: boolean;
+};
+
 const AddProductForm = () => {
     const [productPriview, setPreview] = useState<boolean>(false);
-    const [dropdownCategories, setCategories] = useState({
+    const [dropdownCategories, setCategories] = useState<Dropdown | false>({
         category: false,
         subcategory: false,
     });
@@ -32,7 +42,7 @@ const AddProductForm = () => {
         height: 0,
         description: '',
     });
-    const [invalidInfo, setInvalidInfo] = useState({
+    const [invalidInfo, setInvalidInfo] = useState<InvalidState>({
         path: null,
         isValid: false,
     });
@@ -40,6 +50,7 @@ const AddProductForm = () => {
     const dispatch = useDispatch();
 
     const size = useWindowSize();
+    const dropdownRef: MutableRefObject<HTMLDivElement> = useRef();
 
     const handleChange = (target: { name: string, value: string | number }) => {
         const { name, value } = target;
@@ -100,6 +111,22 @@ const AddProductForm = () => {
                 });
             });
     };
+
+    const onClickOutside = (event) => {
+        if (!dropdownRef.current.contains(event.target)) {
+            setCategories(false);
+        }
+    };
+
+    useEffect(() => {
+        if (dropdownCategories && (dropdownCategories.category || dropdownCategories.subcategory)) {
+            document.addEventListener('click', onClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', onClickOutside);
+        }
+    }, [dropdownCategories]);
 
     useEffect(() => {
         if (size.width < 767) {
@@ -200,20 +227,19 @@ const AddProductForm = () => {
                 <div className={styles.row}>
                     <div className={styles.inputWrapper}>
                         <div className={
-                            invalidInfo.path?.categories 
+                            invalidInfo.path?.category
                                 ? `${styles.dropdownCategories} ${styles.invalid}`
                                 : `${styles.dropdownCategories}`
-                        }>
+                            } 
+                            ref={dropdownRef}
+                        >
                             <div
-                                onClick={() => setCategories((prev) => ({
-                                    ...prev,
-                                    category: true,
-                                }))
+                                onClick={() => setCategories({ category: true })
                                 }
                             >
                                 {addProduct.category ? addProduct.category : 'category'}
                             </div>
-                            {dropdownCategories.category && (
+                            {dropdownCategories && dropdownCategories.category && (
                                 <div className={styles.dropdown}>
                                     {categories.map((category, index) => (
                                         <div
@@ -243,7 +269,7 @@ const AddProductForm = () => {
                     </div>
                     <div className={styles.inputWrapper}>
                         {addProduct.category && (
-                            <div className={styles.dropdownCategories}>
+                            <div className={styles.dropdownCategories} ref={dropdownRef}>
                                 <div
                                     onClick={() => setCategories((prev) => ({
                                         ...prev,
@@ -253,8 +279,7 @@ const AddProductForm = () => {
                                 >
                                     {addProduct.subcategory ? addProduct.subcategory : 'subcategory'}
                                 </div>
-                                {dropdownCategories.subcategory
-                                    ? (
+                                {dropdownCategories && dropdownCategories.subcategory ? (
                                         <div className={styles.dropdown}>
                                             {addProduct.category === 'devices'
                                                 ? devicesSubcategories.map((subcategory, index) => (

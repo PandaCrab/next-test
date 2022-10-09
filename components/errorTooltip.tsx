@@ -12,7 +12,7 @@ const ErrorTooltip = ({ message }) => {
 }
 
 ErrorTooltip.propTypes = {
-    message: PropTypes.string,
+    message: PropTypes.string || PropTypes.number,
 };
 
 export default ErrorTooltip;
