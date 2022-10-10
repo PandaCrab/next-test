@@ -15,7 +15,6 @@ import { getToken, getInfo, logout } from '../redux/ducks/user';
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
-import { prepareServerlessUrl } from 'next/dist/server/base-server';
 
 interface OpenState {
     account?: boolean;
@@ -33,8 +32,8 @@ const SiteLayout = ({ children }) => {
     const [password, setPassword] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
-    const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef();
-    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | null = useRef();
+    const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
+    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
     const router = useRouter();
 
 
@@ -115,48 +114,53 @@ const SiteLayout = ({ children }) => {
     };
 
     const clickOutside = (event) => {
-        if (!profileRef.current?.contains(event.target)) {
-            console.log('+')
-            setOpen({
-                ...isOpen,
-                account: false
-            });
-        }
-        
-        if (menuDropdownRef.current && !menuDropdownRef.current?.contains(event.target)) {
-            console.log('-');
+        const target = event.target
 
-            setOpen({
-                ...isOpen,
-                menu: false
-            });
+        if (profileRef.current && !profileRef.current.contains(target)) {
+            if (isOpen.account) {
+                setOpen({
+                    ...isOpen,
+                    account: false
+                });
+            }
+        }
+
+        if (menuDropdownRef.current && !menuDropdownRef.current.contains(target)) {
+            if (isOpen.menu) {
+                setOpen({
+                    ...isOpen,
+                    menu: false
+                });
+            }
         }
     };
+
 
     useEffect(() => {
         setPassword('');
 
         if (isOpen.account || isOpen.menu) {
-            document.addEventListener('click', clickOutside);
+            document.addEventListener('mousedown', clickOutside);
         }
 
         return () => {
-            document.removeEventListener('click', clickOutside);
+            document.removeEventListener('mousedown', clickOutside);
         };
     }, [isOpen]);
 
     return (
         <div className="layout">
             <PopupAlert />
-            <div />
             <div className={styles.header}>
-                <div className={styles.menuWrapper}>
+                <div 
+                    className={styles.menuWrapper}
+                    ref={menuDropdownRef}
+                >
                     <div
                         onClick={() => setOpen((prev) => ({
                             ...prev,
                             menu: !prev.menu
                         }))}
-                        ref={menuDropdownRef}
                         className={styles.menuBtn}
                     >
                         <RiMenuFill />
@@ -271,108 +275,116 @@ const SiteLayout = ({ children }) => {
                             </div>
                         ) : (
                             <div
-                                onClick={() => setOpen((prev) => ({
-                                    ...prev,
+                                onClick={() => setOpen({
+                                    ...isOpen,
                                     account: false
-                                }))}
+                                })}
                                 className={styles.logBtn}
                             >
                                 Log In
                             </div>
                         )}
-                        {user.token ? (
-                            <>
-                                <div
-                                    style={{ display: isOpen.account ? 'flex' : 'none' }}
-                                    className={styles.dropdown}
-                                >
-                                    <div className={styles.greeting}>
-                                        Welcom <b>{user.info?.username && displayFirstName(user.info?.username)}</b>
-                                    </div>
-                                    <div
-                                        onClick={() => {
-                                            router.push('/myOrders/');
-                                            setOpen({
-                                                ...isOpen,
-                                                account: false
-                                            });
-                                        }}
-                                        className={styles.dropdownItems}
-                                    >
-                                        Order history
-                                    </div>
-                                    <div
-                                        onClick={() => {
-                                            router.push(`/account/${user.info._id}`);
-                                            setOpen({
-                                                ...isOpen,
-                                                account: false
-                                            });
-                                        }}
-                                        className={styles.dropdownItems}
-                                    >
-                                        My account
-                                    </div>
-                                    <div className={styles.dropdownItems}>Item</div>
-                                    <button
-                                        onClick={() => onLogout()}
-                                        className={styles.logBtn}
-                                    >
-                                        Log Out
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div
-                                    style={{ display: isOpen ? 'flex' : 'none' }}
-                                    className={styles.dropdown}
-                                >
-                                    <div className={styles.formTitle}>Welcome</div>
-                                    <div className={styles.loginForm}>
-                                        <input
-                                            className={styles.logInput}
-                                            id="username"
-                                            name="username"
-                                            type="text"
-                                            placeholder="Enter your name"
-                                            value={username}
-                                            onChange={({ target }) => setUsername(target.value)}
-                                        />
-                                        <input
-                                            className={styles.logInput}
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            placeholder="Enter your password"
-                                            value={password}
-                                            onChange={({ target }) => setPassword(target.value)}
-                                        />
-                                        {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
-                                        <div className={styles.dropdownBtnWrapper}>
-                                            <button
+                        {isOpen.account && (
+                            <div>
+                                {user.token ? (
+                                    <>
+                                        <div
+                                            className={styles.dropdown}
+                                        >
+                                            <div className={styles.greeting}>
+                                                Welcom <b>
+                                                    {user.info?.username && displayFirstName(user.info?.username)}
+                                                </b>
+                                            </div>
+                                            <div
                                                 onClick={() => {
+                                                    router.push('/myOrders/');
                                                     setOpen({
                                                         ...isOpen,
                                                         account: false
                                                     });
-                                                    router.push('/registration');
                                                 }}
-                                                className={styles.logBtn}
+                                                className={styles.dropdownItems}
                                             >
-                                                Sign In
-                                            </button>
+                                                Order history
+                                            </div>
+                                            <div
+                                                onClick={() => {
+                                                    router.push(`/account/${user.info._id}`);
+                                                    setOpen({
+                                                        ...isOpen,
+                                                        account: false
+                                                    });
+                                                }}
+                                                className={styles.dropdownItems}
+                                            >
+                                                My account
+                                            </div>
+                                            <div className={styles.dropdownItems}>Item</div>
                                             <button
-                                                disabled={username.length && false}
-                                                onClick={() => onLogin()}
+                                                onClick={() => onLogout()}
                                                 className={styles.logBtn}
                                             >
-                                                Log In
+                                                Log Out
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
-                            </>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div
+                                            className={styles.dropdown}
+                                        >
+                                            <div className={styles.formTitle}>Welcome</div>
+                                            <div className={styles.loginForm}>
+                                                <input
+                                                    className={styles.logInput}
+                                                    id="username"
+                                                    name="username"
+                                                    type="text"
+                                                    placeholder="Enter your name"
+                                                    value={username}
+                                                    onChange={({ target }) => setUsername(target.value)}
+                                                />
+                                                <input
+                                                    className={styles.logInput}
+                                                    id="password"
+                                                    name="password"
+                                                    type="password"
+                                                    placeholder="Enter your password"
+                                                    value={password}
+                                                    onChange={({ target }) => setPassword(target.value)}
+                                                />
+                                                {errorMessage && (
+                                                    <div className={styles.errorMessage}>
+                                                        {errorMessage}
+                                                    </div>
+                                                )}
+                                                <div className={styles.dropdownBtnWrapper}>
+                                                    <button
+                                                        onClick={() => {
+                                                            setOpen({
+                                                                ...isOpen,
+                                                                account: false
+                                                            });
+                                                            router.push('/registration');
+                                                        }}
+                                                        className={styles.logBtn}
+                                                    >
+                                                        Sign In
+                                                    </button>
+                                                    <button
+                                                        disabled={username.length && false}
+                                                        onClick={() => onLogin()}
+                                                        className={styles.logBtn}
+                                                    >
+                                                        Log In
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
                         )}
                     </div>
                 </div>
