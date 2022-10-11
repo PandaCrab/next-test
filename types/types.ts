@@ -37,15 +37,15 @@ export type ShippingInfo = {
 
 export type Stuff = {
     _id?: string;
-    name: string;
-    price: number;
-    imgUrl: string;
+    name?: string;
+    price?: number;
+    imgUrl?: string;
     color?: string;
-    quantity: number;
-    width: number;
-    height: number;
+    quantity?: number;
+    width?: number;
+    height?: number;
     description?: string;
-    category: string;
+    category?: string;
     subcategory?: string;
     comments?: string[];
     stars?: {

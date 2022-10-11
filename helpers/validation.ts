@@ -83,14 +83,14 @@ export const userInfoSchema = yup.object().shape({
 
 export const addProductSchema = yup.object().shape({
     name: yup.string().required('Enter name of product'),
-    price: yup.string().required('Enter product price'),
+    price: yup.number().moreThan(0, 'Enter product price').required('Enter product price'),
     imgUrl: yup.string().url('Invalid url address').required('Past image url path'),
     color: yup.string(),
-    quantity: yup.string().required('Enter quantity of product'),
+    quantity: yup.number().moreThan(0, 'Enter quantity').required('Enter quantity of product'),
     category: yup.string().required('Please choose category'),
     subcategory: yup.string(),
-    width: yup.string().required('Set image width'),
-    height: yup.string().required('Set image height'),
+    width: yup.number().moreThan(0, 'Enter width').required('Set image width'),
+    height: yup.number().moreThan(0, 'Enter height').required('Set image height'),
     description: yup.string().max(300, 'Maximun 300 symbols'),
 });
 
