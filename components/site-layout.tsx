@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { RiUser3Line, RiMenuFill } from 'react-icons/ri';
+import { RiUser3Line, RiMenuFill, RiCloseLine } from 'react-icons/ri';
 
 import PopupAlert from './popup';
 import Cart from './cart';
 import CategoriesDropdown from './categotiesDropdown';
+import ErrorTooltip from './errorTooltip';
 import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 
@@ -159,14 +160,25 @@ const SiteLayout = ({ children }) => {
                     <div
                         onClick={() => setOpen((prev) => ({
                             ...prev,
-                            menu: !prev.menu
+                            menu: true
                         }))}
                         className={styles.menuBtn}
                     >
                         <RiMenuFill />
                     </div>
                     {isOpen.menu && (
-                        <div className={styles.menuDropdown}>
+                        <div 
+                            className={styles.menuDropdown}
+                        >
+                            <div 
+                                className={styles.closeBtn}
+                                onAnimationEnd={() => !isOpen.menu && setOpen({
+                                    ...isOpen,
+                                    menu: false
+                                })}
+                            >
+                                <RiCloseLine />
+                            </div>
                             <Link href="/">
                                 <a
                                     onClick={() => setOpen({
@@ -275,10 +287,10 @@ const SiteLayout = ({ children }) => {
                             </div>
                         ) : (
                             <div
-                                onClick={() => setOpen({
-                                    ...isOpen,
-                                    account: false
-                                })}
+                                onClick={() => setOpen((prev) => ({
+                                    ...prev,
+                                    account: !prev.account
+                                }))}
                                 className={styles.logBtn}
                             >
                                 Log In
@@ -288,9 +300,7 @@ const SiteLayout = ({ children }) => {
                             <div>
                                 {user.token ? (
                                     <>
-                                        <div
-                                            className={styles.dropdown}
-                                        >
+                                        <div className={styles.dropdown}>
                                             <div className={styles.greeting}>
                                                 Welcom <b>
                                                     {user.info?.username && displayFirstName(user.info?.username)}
@@ -331,9 +341,7 @@ const SiteLayout = ({ children }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <div
-                                            className={styles.dropdown}
-                                        >
+                                        <div className={styles.dropdown}>
                                             <div className={styles.formTitle}>Welcome</div>
                                             <div className={styles.loginForm}>
                                                 <input
@@ -355,9 +363,7 @@ const SiteLayout = ({ children }) => {
                                                     onChange={({ target }) => setPassword(target.value)}
                                                 />
                                                 {errorMessage && (
-                                                    <div className={styles.errorMessage}>
-                                                        {errorMessage}
-                                                    </div>
+                                                    <ErrorTooltip message={errorMessage} />
                                                 )}
                                                 <div className={styles.dropdownBtnWrapper}>
                                                     <button

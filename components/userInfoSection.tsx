@@ -34,14 +34,14 @@ const UserInfoSection = ({
                         <>
                             <input
                                 className={
-                                    invalid.path.phone
+                                    invalid.path?.phone
                                         ? `${styles.phoneInput} ${styles.invalid}`
                                         : `${styles.phoneInput}`
                                 }
                                 name="phone"
                                 value={phone.phone}
                                 onChange={({ target }) => setPhone({ phone: target.value })}
-                                placeholder={invalid.path.phone ? invalid.path.phone : 'Enter your phone'}
+                                placeholder={invalid.path?.phone ? invalid.path?.phone : 'Enter your phone'}
                             />
                             <div
                                 onClick={() => updateInfo(phone, setPhone)}

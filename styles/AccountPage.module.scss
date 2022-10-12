@@ -75,14 +75,28 @@ $backOnHover: #e8e8e8;
                 border-radius: 5px;
                 box-shadow: 0 3px 10px $gray;
                 position: absolute;
-                top: 35px;
+                top: 25px;
                 right: 0;
                 z-index: 20;
+                overflow: hidden;
+                animation: settings-dropdown .1s linear;
+
+                @keyframes settings-dropdown {
+                    0% {opacity: 0; top: 0}
+                    100% {opacity: 1; top: 35px}
+                }
 
                 @include media.mobileS {
                     padding: 6px;
                     width: 150px;
                     font-size: 12px;
+
+                    @keyframes settings-dropdown {
+                        0% {width: 0; height: 0; opacity: 0;}
+                        50% {width: 50px; height: 0; opacity: .5;}
+                        75% {width: 100px; height: 40px; opacity: .7;}
+                        100% {width: 150px; opacity: 1;}
+                    }
                 }
 
                 @include media.laptop {
