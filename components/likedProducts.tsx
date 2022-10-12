@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -17,6 +17,8 @@ const LikedProducts = ({ view, setView }) => {
 
     const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
 
+    const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
+
     const catchLikedProducts = async (ids) => {
         const likedProducts = await takeSomeProducts(ids);
 
@@ -25,6 +27,39 @@ const LikedProducts = ({ view, setView }) => {
         }
     };
 
+    const animationEndHandler = ({ animationName }) => {
+        if (animationName === 'open-dropdown') {
+            setView({
+                ...view,
+                likes: true
+            });
+        }
+
+        if (animationName === 'close-dropdown') {
+            setView({
+                ...view,
+                likes: false
+            });
+        }
+    };
+
+    const clickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            setView({
+                ...view,
+                likes: false
+            });
+        }
+    }
+
+    useEffect(() => {
+        if (view.likes) {
+            document.addEventListener('mousedown', clickOutside);
+        }
+
+        return () => document.removeEventListener('mousedown', clickOutside);
+    }, [view]);
+
     useEffect(() => {
         if (user?.likes?.length) {
             catchLikedProducts(user.likes);
@@ -32,22 +67,25 @@ const LikedProducts = ({ view, setView }) => {
             setLikes(null);
         }
     }, [user]);
-
+    
     return (
-        <div className={styles.likes}>
+        <div className={styles.likes} ref={ref}>
             <div
-                onClick={() => setView({
-                    ...view,
-                    likes: !view.likes,
-                })
+                onClick={() => setView((prev) => ({
+                    ...prev,
+                    likes: !prev.likes,
+                }))
                 }
                 className={styles.itemsHeader}
             >
                 Your liked stuff
             </div>
             <div
-                style={{ display: view.likes ? 'flex' : 'none' }}
-                className={styles.itemsWrapper}
+                className={
+                    view.likes ? `${styles.itemsWrapper} ${styles.openDropdown}`
+                    : `${styles.itemsWrapper} ${styles.closeDropdown}`
+                }
+                onAnimationEnd={(event) => animationEndHandler(event)}
             >
                 {likes ? (
                     likes.map((product) => (

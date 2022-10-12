@@ -14,6 +14,8 @@ $itemHeaderBack: #f8f8f8;
         border: 1px solid $lightgrayBorder;
         border-radius: 5px 5px 0 0;
         text-align: center;
+        position: relative;
+        z-index: 10;
     }
 
     .itemsWrapper {
@@ -23,7 +25,27 @@ $itemHeaderBack: #f8f8f8;
         align-items: center;
         border: 1px solid $lightgrayBorder;
         max-height: 600px;
+        position: relative;
         overflow-y: scroll;
+        z-index: 1;
+
+        &.openDropdown {
+            animation: open-dropdown .2s linear forwards;
+        }
+
+        &.closeDropdown {
+            animation: close-dropdown .2s linear forwards;
+        }
+
+        @keyframes open-dropdown {
+            0% {height: 0px; overflow: hidden;}
+            100% {height: 500px; overflow: scroll;}
+        }
+
+        @keyframes close-dropdown {
+            0% {height: 500px;}
+            100% {height: 0; padding: 0; top: -5px;}
+        }
 
         @include scrollbars(1px, $lightgrayBorder, none);
 
@@ -51,7 +73,7 @@ $itemHeaderBack: #f8f8f8;
                 }
                 
                 @include media.laptop {
-                    width: 80%;
+                    width: 60%;
                 }
             }
         }

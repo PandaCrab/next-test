@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
@@ -15,6 +15,41 @@ const StuffinBucket = ({ view, setView }) => {
 
     const order = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
 
+    const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null)
+
+    const animationEndHandler = ({ animationName }) => {
+        if (animationName === 'open-dropdown') {
+            setView({
+                ...view,
+                inBucket: true
+            });
+        }
+
+        if (animationName === 'close-dropdown') {
+            setView({
+                ...view,
+                inBucket: false
+            });
+        }
+    };
+
+    const clickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            setView({
+                ...view,
+                inBucket: false
+            });
+        }
+    }
+
+    useEffect(() => {
+        if (view.inBucket) {
+            document.addEventListener('mousedown', clickOutside);
+        }
+
+        return () => document.removeEventListener('mousedown', clickOutside);
+    }, [view]);
+
     useEffect(() => {
         if (order?.length) {
             setOrders(order);
@@ -22,7 +57,7 @@ const StuffinBucket = ({ view, setView }) => {
     }, [order]);
 
     return (
-        <div className={styles.inBucket}>
+        <div className={styles.inBucket} ref={ref}>
             <div
                 onClick={() => setView({
                     ...view,
@@ -34,10 +69,11 @@ const StuffinBucket = ({ view, setView }) => {
                 Stuff in bucket
             </div>
             <div
-                style={{
-                    display: view.inBucket ? 'flex' : 'none',
-                }}
-                className={styles.itemsWrapper}
+                className={
+                    view.inBucket ? `${styles.itemsWrapper} ${styles.openDropdown}`
+                    : `${styles.itemsWrapper} ${styles.closeDropdown}`
+                }
+                onAnimationEnd={(event) => animationEndHandler(event)}
             >
                 {ordersInBucket ? (
                     ordersInBucket.map((product) => (

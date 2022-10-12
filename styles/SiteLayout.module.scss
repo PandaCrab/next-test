@@ -88,7 +88,7 @@ $red: red;
 
         .menuDropdown {
             padding-top: 30px;
-            width: 200px;
+            width: 250px;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -100,13 +100,25 @@ $red: red;
             position: absolute;
             left: -15px;
             overflow: hidden;
-            animation-name: menu-dropdown;
-            animation-duration: .2s;
-            animation-timing-function: linear;
+            z-index: 1000;
+            transition: all .4s linear;
 
-            @keyframes menu-dropdown {
+            &.openMenu {
+                animation: open-menu .4s linear forwards;
+            }
+
+            &.closeMenu {
+                animation: close-menu .4s linear forwards;
+            }
+
+            @keyframes open-menu {
                 0% {width: 0}
-                100% {width: 210px}
+                100% {width: 250px}
+            }
+
+            @keyframes close-menu {
+                0% {width: 250px}
+                100% {width: 0}
             }
 
             &>a {
@@ -133,7 +145,6 @@ $red: red;
 
                 &:active {
                     box-shadow: 0 0 3px $gray;
-                    animation: menu-dropdown .2s linear reverse;
                 }
             }
         }

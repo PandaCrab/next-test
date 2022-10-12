@@ -16,6 +16,7 @@ import { getToken, getInfo, logout } from '../redux/ducks/user';
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
+import LeftMenu from './leftMenu';
 
 interface OpenState {
     account?: boolean;
@@ -153,81 +154,7 @@ const SiteLayout = ({ children }) => {
         <div className="layout">
             <PopupAlert />
             <div className={styles.header}>
-                <div 
-                    className={styles.menuWrapper}
-                    ref={menuDropdownRef}
-                >
-                    <div
-                        onClick={() => setOpen((prev) => ({
-                            ...prev,
-                            menu: true
-                        }))}
-                        className={styles.menuBtn}
-                    >
-                        <RiMenuFill />
-                    </div>
-                    {isOpen.menu && (
-                        <div 
-                            className={styles.menuDropdown}
-                        >
-                            <div 
-                                className={styles.closeBtn}
-                                onAnimationEnd={() => !isOpen.menu && setOpen({
-                                    ...isOpen,
-                                    menu: false
-                                })}
-                            >
-                                <RiCloseLine />
-                            </div>
-                            <Link href="/">
-                                <a
-                                    onClick={() => setOpen({
-                                        ...isOpen,
-                                        menu: false
-                                    })}
-                                    className={styles.menuItems}
-                                >
-                                    Home
-                                </a>
-                            </Link>
-                            <Link href="/shop">
-                                <a
-                                    onClick={() => setOpen({
-                                        ...isOpen,
-                                        menu: false
-                                    })}
-                                    className={styles.menuItems}
-                                >
-                                    Shop
-                                </a>
-                            </Link>
-                            {admin && (
-                                <Link href="/admin">
-                                    <a
-                                        onClick={() => setOpen({
-                                            ...isOpen,
-                                            menu: false
-                                        })}
-                                        className={styles.menuItems}
-                                    >
-                                        Admin
-                                    </a>
-                                </Link>
-                            )}
-                            <Link href="/shop/categories">
-                                <a
-                                    onClick={() => setOpen({
-                                        ...isOpen,
-                                        menu: false
-                                    })}
-                                    className={styles.menuItems}
-                                >
-                                    Categories
-                                </a>
-                            </Link>
-                        </div>
-                    )}
-                </div>
+                <LeftMenu admin={admin} />
                 <div className={styles.logoWrapper}>
                     <div className={styles.logoNameWrapper}>
                         <div className={styles.logo} />

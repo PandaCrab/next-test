@@ -26,7 +26,6 @@ const UserInfoSection = ({
             <div className={styles.userInfoWrapper}>
                 <div className={styles.userProfileHeader}>
                     <Avatar />
-                    {/* <div className={styles.userPhotoWrapper}>{user.photo ? user.photo : <RiUser3Line />}</div> */}
                     <div className={styles.usernameWrapper}>{user.username}</div>
                 </div>
                 <div className={styles.userPhoneWrapper}>
