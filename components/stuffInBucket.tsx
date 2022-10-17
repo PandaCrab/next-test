@@ -10,12 +10,27 @@ import styles from '../styles/StuffInBucket.module.scss';
 
 const StuffinBucket = ({ view, setView }) => {
     const [ordersInBucket, setOrders] = useState<Stuff[]>();
+    const [animation, setAnimation] = useState<boolean>(false);
 
     const router = useRouter();
 
     const order = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
 
-    const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null)
+    const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
+
+    const dropdownStyles = animation ? (view.inBucket ?
+        `${styles.itemsWrapper} ${styles.openDropdown}`
+        : `${styles.itemsWrapper} ${styles.closeDropdown}`
+        ) : `${styles.itemsWrapper}`;
+
+    const toggleDropdown = () => {
+        setAnimation(true);
+
+        setView((prev) => ({
+            ...prev,
+            inBucket: !prev.inBucket
+        }));
+    };
 
     const animationEndHandler = ({ animationName }) => {
         if (animationName === 'open-dropdown') {
@@ -23,6 +38,7 @@ const StuffinBucket = ({ view, setView }) => {
                 ...view,
                 inBucket: true
             });
+            setAnimation(true);
         }
 
         if (animationName === 'close-dropdown') {
@@ -30,6 +46,7 @@ const StuffinBucket = ({ view, setView }) => {
                 ...view,
                 inBucket: false
             });
+            setAnimation(false);
         }
     };
 
@@ -59,20 +76,13 @@ const StuffinBucket = ({ view, setView }) => {
     return (
         <div className={styles.inBucket} ref={ref}>
             <div
-                onClick={() => setView({
-                    ...view,
-                    inBucket: !view.inBucket,
-                })
-                }
+                onClick={() => toggleDropdown()}
                 className={styles.itemsHeader}
             >
                 Stuff in bucket
             </div>
             <div
-                className={
-                    view.inBucket ? `${styles.itemsWrapper} ${styles.openDropdown}`
-                    : `${styles.itemsWrapper} ${styles.closeDropdown}`
-                }
+                className={dropdownStyles}
                 onAnimationEnd={(event) => animationEndHandler(event)}
             >
                 {ordersInBucket ? (
@@ -97,7 +107,7 @@ const StuffinBucket = ({ view, setView }) => {
                         </div>
                     ))
                 ) : (
-                    <div>Your shopping cart is empty</div>
+                    <div>Your bucket is empty</div>
                 )}
             </div>
         </div>

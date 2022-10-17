@@ -19,13 +19,15 @@ $itemsHeaderBack: #f8f8f8;
     }
 
     .itemsWrapper {
-        padding: 10px;
+        padding: 0;
+        height: 0;
+        max-height: 600px;
         display: flex;
         flex-direction: column;
         align-items: center;
         border: 1px solid $lightgrayBorder;
-        max-height: 600px;
         position: relative;
+        top: -15px;
         overflow-y: scroll;
 
         &.openDropdown {
@@ -38,12 +40,20 @@ $itemsHeaderBack: #f8f8f8;
 
         @keyframes open-dropdown {
             0% {height: 0; overflow: hidden}
-            100% {height: 500px; overflow: scroll}
+            100% {height: 500px; padding: 10px; top: 0; overflow: scroll}
         }
 
         @keyframes close-dropdown {
-            0% {height: 500px;}
-            100% {height: 0; padding: 0; top: -15px;}
+            0% {
+                padding: 10px;
+                height: 500px;
+                top: 0;
+            }
+            100% {
+                padding: 0;
+                height: 0;
+                top: -15px;
+            }
         }
 
         @include scrollbars(1px, $lightgrayBorder, none);

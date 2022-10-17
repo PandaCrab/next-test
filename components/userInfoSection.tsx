@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import LikedProducts from './likedProducts';
 import StuffInBucket from './stuffInBucket';
 import Avatar from './Avatar';
+import ErrorTooltip from './errorTooltip';
 
 import type { userObject } from '../types/types';
 
@@ -17,7 +18,7 @@ const UserInfoSection = ({
 }) => {
     const [descriptionHide, setDescriptionHide] = useState<boolean>(true);
 
-    const [phone, setPhone] = useState<{ phone: string }>({ phone: '' });
+    const [phone, setPhone] = useState<string>('');
 
     const user = useSelector((state: { user: userObject }) => state.user.info);
 
@@ -31,19 +32,24 @@ const UserInfoSection = ({
                 <div className={styles.userPhoneWrapper}>
                     {view.phoneChanging ? (
                         <>
-                            <input
-                                className={
-                                    invalid.path?.phone
-                                        ? `${styles.phoneInput} ${styles.invalid}`
-                                        : `${styles.phoneInput}`
-                                }
-                                name="phone"
-                                value={phone.phone}
-                                onChange={({ target }) => setPhone({ phone: target.value })}
-                                placeholder={invalid.path?.phone ? invalid.path?.phone : 'Enter your phone'}
-                            />
+                            <div className={styles.inputWrapper}>
+                                <input
+                                    className={
+                                        invalid.path?.phone
+                                            ? `${styles.phoneInput} ${styles.invalid}`
+                                            : `${styles.phoneInput}`
+                                    }
+                                    name="phone"
+                                    value={phone}
+                                    onChange={({ target }) => setPhone(target.value)}
+                                    placeholder="Enter your phone"
+                                />
+                                {invalid.path?.phone && (
+                                    <ErrorTooltip message={invalid.path?.phone} />
+                                )}
+                            </div>
                             <div
-                                onClick={() => updateInfo(phone, setPhone)}
+                                onClick={() => updateInfo({ phone }, setPhone)}
                                 className={styles.changeBtn}
                             >
                                 <RiCheckFill />
@@ -81,7 +87,7 @@ const UserInfoSection = ({
                             <div>
                                 <div className={styles.userAddressInfo}>
                                     {`${user.shippingAddress.street}, ${user.shippingAddress.city}, 
-                                        ${user.shippingAddress.country}, ${user.shippingAddress.zip}`}
+                                    ${user.shippingAddress.country}, ${user.shippingAddress.zip}`}
                                 </div>
                             </div>
                             <div>

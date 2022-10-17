@@ -12,12 +12,18 @@ import styles from '../styles/LikedProducts.module.scss';
 
 const LikedProducts = ({ view, setView }) => {
     const [likes, setLikes] = useState<Stuff[] | null>();
+    const [animation, setAnimation] = useState<boolean>(false);
 
     const router = useRouter();
 
     const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
 
     const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
+
+    const dropdownStyles = animation ? (view.likes 
+        ? `${styles.itemsWrapper} ${styles.openDropdown}`
+        : `${styles.itemsWrapper} ${styles.closeDropdown}`
+        ) : `${styles.itemsWrapper}`;
 
     const catchLikedProducts = async (ids) => {
         const likedProducts = await takeSomeProducts(ids);
@@ -27,12 +33,22 @@ const LikedProducts = ({ view, setView }) => {
         }
     };
 
+    const toggleDropdown = () => {
+        setAnimation(true);
+
+        setView((prev) => ({
+            ...prev,
+            likes: !prev.likes
+        }));
+    };
+
     const animationEndHandler = ({ animationName }) => {
         if (animationName === 'open-dropdown') {
             setView({
                 ...view,
                 likes: true
             });
+            setAnimation(true);
         }
 
         if (animationName === 'close-dropdown') {
@@ -40,6 +56,7 @@ const LikedProducts = ({ view, setView }) => {
                 ...view,
                 likes: false
             });
+            setAnimation(false);
         }
     };
 
@@ -71,20 +88,13 @@ const LikedProducts = ({ view, setView }) => {
     return (
         <div className={styles.likes} ref={ref}>
             <div
-                onClick={() => setView((prev) => ({
-                    ...prev,
-                    likes: !prev.likes,
-                }))
-                }
+                onClick={() => toggleDropdown()}
                 className={styles.itemsHeader}
             >
                 Your liked stuff
             </div>
             <div
-                className={
-                    view.likes ? `${styles.itemsWrapper} ${styles.openDropdown}`
-                    : `${styles.itemsWrapper} ${styles.closeDropdown}`
-                }
+                className={dropdownStyles}
                 onAnimationEnd={(event) => animationEndHandler(event)}
             >
                 {likes ? (

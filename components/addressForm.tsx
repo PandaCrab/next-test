@@ -59,7 +59,7 @@ const AddressForm = ({
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.street
+                            invalid.path?.street
                                 ? `${styles.addressFormInput} ${styles.invalid}`
                                 : `${styles.addressFormInput}`
                         }
@@ -75,7 +75,7 @@ const AddressForm = ({
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.city
+                            invalid.path?.city
                                 ? `${styles.addressFormInput} ${styles.invalid}`
                                 : `${styles.addressFormInput}`
                         }
@@ -91,7 +91,7 @@ const AddressForm = ({
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.country
+                            invalid.path?.country
                                 ? `${styles.addressFormInput} ${styles.invalid}`
                                 : `${styles.addressFormInput}`
                         }
@@ -107,7 +107,7 @@ const AddressForm = ({
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.zip ? `${styles.addressFormInput} ${styles.invalid}` : `${styles.addressFormInput}`
+                            invalid.path?.zip ? `${styles.addressFormInput} ${styles.invalid}` : `${styles.addressFormInput}`
                         }
                         name="zip"
                         value={addressForm.zip}

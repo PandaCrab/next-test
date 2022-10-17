@@ -22,6 +22,7 @@ $white: white;
 
     .menuDropdown {
         padding-top: 30px;
+        width: 0;
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -29,9 +30,9 @@ $white: white;
         background: $white;
         border: 1px solid $lightgrayBorder;
         border-radius: 5px;
-        box-shadow: 0 2px 5px $gray;
         position: absolute;
-        left: -15px;
+        left: -20px;
+        box-shadow: none;
         overflow: hidden;
         z-index: 1000;
 
@@ -48,13 +49,21 @@ $white: white;
         }
 
         @keyframes open-menu {
-            0% {width: 0}
-            100% {width: 250px}
+            0% {width: 0;}
+            100% {
+                width: 260px;
+                box-shadow: 0 2px 5px $gray;
+                left: -15px;
+            }
         }
 
         @keyframes close-menu {
-            0% {width: 250px}
-            100% {width: 0; left: -20px; box-shadow: none}
+            0% {width: 260px;}
+            100% {
+                width: 0;
+                box-shadow: none;
+                left: -20px;
+            }
         }
 
         &>a {

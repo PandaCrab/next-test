@@ -70,9 +70,9 @@ const AccountPage = () => {
         }
 
         if (info) {
-            if (info.phone) {
+            if (Object.keys(info).includes('phone')) {
                 await phoneSchema
-                    .validate(info)
+                    .validate(info, { abortEarly: false })
                     .then(async (value) => {
                         if (value) {
                             const res = await updateUserInfo(id.toString(), info);

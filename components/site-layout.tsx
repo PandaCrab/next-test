@@ -18,16 +18,8 @@ import type { userObject } from '../types/types';
 import styles from '../styles/SiteLayout.module.scss';
 import LeftMenu from './leftMenu';
 
-interface OpenState {
-    account?: boolean;
-    menu?: boolean;
-}
-
 const SiteLayout = ({ children }) => {
-    const [isOpen, setOpen] = useState<OpenState>({
-        account: false,
-        menu: false
-    });
+    const [isOpen, setOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
@@ -35,7 +27,6 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
-    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
     const router = useRouter();
 
 
@@ -99,10 +90,7 @@ const SiteLayout = ({ children }) => {
             setPassword('');
             setErrorMessage('');
 
-            setOpen({
-                ...isOpen,
-                account: false
-            });
+            setOpen(false);
         } else {
             setErrorMessage(token.message);
             setPassword('');
@@ -119,21 +107,7 @@ const SiteLayout = ({ children }) => {
         const target = event.target
 
         if (profileRef.current && !profileRef.current.contains(target)) {
-            if (isOpen.account) {
-                setOpen({
-                    ...isOpen,
-                    account: false
-                });
-            }
-        }
-
-        if (menuDropdownRef.current && !menuDropdownRef.current.contains(target)) {
-            if (isOpen.menu) {
-                setOpen({
-                    ...isOpen,
-                    menu: false
-                });
-            }
+                setOpen(false);
         }
     };
 
@@ -141,7 +115,7 @@ const SiteLayout = ({ children }) => {
     useEffect(() => {
         setPassword('');
 
-        if (isOpen.account || isOpen.menu) {
+        if (isOpen) {
             document.addEventListener('mousedown', clickOutside);
         }
 
@@ -190,10 +164,7 @@ const SiteLayout = ({ children }) => {
                     >
                         {user.token ? (
                             <div
-                                onClick={() => setOpen((prev) => ({
-                                    ...prev,
-                                    account: !prev.account
-                                }))}
+                                onClick={() => setOpen(!isOpen)}
                                 className={styles.accountBtn}
                             >
                                 {user.info?.photo ? (
@@ -214,16 +185,13 @@ const SiteLayout = ({ children }) => {
                             </div>
                         ) : (
                             <div
-                                onClick={() => setOpen((prev) => ({
-                                    ...prev,
-                                    account: !prev.account
-                                }))}
+                                onClick={() => setOpen(!isOpen)}
                                 className={styles.logBtn}
                             >
                                 Log In
                             </div>
                         )}
-                        {isOpen.account && (
+                        {isOpen && (
                             <div>
                                 {user.token ? (
                                     <>
@@ -236,10 +204,7 @@ const SiteLayout = ({ children }) => {
                                             <div
                                                 onClick={() => {
                                                     router.push('/myOrders/');
-                                                    setOpen({
-                                                        ...isOpen,
-                                                        account: false
-                                                    });
+                                                    setOpen(false);
                                                 }}
                                                 className={styles.dropdownItems}
                                             >
@@ -248,10 +213,7 @@ const SiteLayout = ({ children }) => {
                                             <div
                                                 onClick={() => {
                                                     router.push(`/account/${user.info._id}`);
-                                                    setOpen({
-                                                        ...isOpen,
-                                                        account: false
-                                                    });
+                                                    setOpen(false);
                                                 }}
                                                 className={styles.dropdownItems}
                                             >
@@ -295,10 +257,7 @@ const SiteLayout = ({ children }) => {
                                                 <div className={styles.dropdownBtnWrapper}>
                                                     <button
                                                         onClick={() => {
-                                                            setOpen({
-                                                                ...isOpen,
-                                                                account: false
-                                                            });
+                                                            setOpen(false);
                                                             router.push('/registration');
                                                         }}
                                                         className={styles.logBtn}

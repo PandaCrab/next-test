@@ -18,21 +18,31 @@ const LeftMenu = (props) => {
         }
     };
 
-    const setClassName = animation && isOpen ? 
+    const setClassName = animation ? isOpen ? 
         `${styles.menuDropdown} ${styles.openMenu}` 
-        : `${styles.menuDropdown} ${styles.closeMenu}`;
+        : `${styles.menuDropdown} ${styles.closeMenu}` : `${styles.menuDropdown}`
 
     const animationEndHandler = ({ animationName }) => {
         if (animationName === 'open-menu') {
             setOpen(true);
+            setAnimation(true);
         }
 
         if (animationName === 'close-menu') {
             setOpen(false);
+            setAnimation(false);
         }
     };
 
-    
+    const toggleMenu = () => {
+        setAnimation(true);
+
+        setOpen(!isOpen);
+
+        if (isOpen) {
+            setAnimation(false);
+        }
+    }
 
     useEffect(() => {
         if (isOpen) {
@@ -50,7 +60,7 @@ const LeftMenu = (props) => {
             ref={menuDropdownRef}
         >
             <div
-                onClick={() => setOpen(!isOpen)}
+                onClick={() => toggleMenu()}
                 className={styles.menuBtn}
             >
                 <RiMenuFill />

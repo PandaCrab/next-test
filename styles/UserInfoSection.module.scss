@@ -93,7 +93,7 @@ $descriptionBack: rgb(243, 243, 243);
         .userPhoneWrapper {
             margin-bottom: 20px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             font-size: 28px;
             font-weight: bold;
 
@@ -109,31 +109,32 @@ $descriptionBack: rgb(243, 243, 243);
                 font-size: 32px;
             }
 
-            .phoneInput {
-                padding: 5px 10px;
-                font-size: 18px;
-                border-radius: 5px;
+            .inputWrapper {
+                margin-bottom: 18px;
+                position: relative;
 
-                @include media.mobileS {
-                    padding: 3px 5px;
-                    font-size: 12px;
-                }
-
-                @include media.laptop {
+                .phoneInput {
                     padding: 6px 12px;
-                    font-size: 16px;
-                }
+                    width: 220px;
+                    font-size: 18px;
+                    border: 1px solid;
+                    border-radius: 5px;
 
-                @include media.desktop {
-                    width: 400px;
-                    font-size: 32px;
-                }
+                    @include media.mobileS {
+                        font-size: 14px;
+                    }
 
-                &.invalid {
-                    border-color: $red;
+                    @include media.laptop {
+                        font-size: 16px;
+                    }
 
-                    &::placeholder {
-                        color: $red;
+                    @include media.desktop {
+                        width: 400px;
+                        font-size: 32px;
+                    }
+
+                    &.invalid {
+                        border-color: $red;
                     }
                 }
             }
