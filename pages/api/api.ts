@@ -4,6 +4,7 @@ import {
     catchError
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch'
+import { Stuff } from '../../types/types';
 
 import type {
     Product,
@@ -47,7 +48,7 @@ export const data$ = fromFetch(url + '/storage')
         })
     );
 
-export const takeSomeProducts = async (id: string) => {
+export const takeSomeProducts = async (id: string): Promise<Stuff[]> => {
     try {
         const products = await fetchFunc(url + '/storage', 'POST', id);
 

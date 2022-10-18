@@ -21,7 +21,6 @@ $itemHeaderBack: #f8f8f8;
     .itemsWrapper {
         padding: 0;
         height: 0;
-        max-height: 600px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -52,7 +51,7 @@ $itemHeaderBack: #f8f8f8;
         @keyframes close-dropdown {
             0% {
                 padding: 10px;
-                height: 500px;
+                height: 400px;
                 top: 0;
             }
             100% {
@@ -69,14 +68,16 @@ $itemHeaderBack: #f8f8f8;
         }
 
         @include media.laptop {
-            max-height: 500px;
+            max-height: 400px;
         }
 
         .items{
             margin-bottom: 10px;
+            width: 80%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-bottom: 1px solid $lightgrayBorder;
 
             .imageWrapper {
                 width: 80%;

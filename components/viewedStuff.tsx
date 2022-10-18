@@ -6,29 +6,36 @@ import { useSelector } from 'react-redux';
 
 import type { Stuff } from '../types/types';
 
-import styles from '../styles/StuffInBucket.module.scss';
+import styles from '../styles/viewedStuff.module.scss';
+import { takeSomeProducts } from '../pages/api/api';
 
-const StuffinBucket = ({ view, setView }) => {
-    const [ordersInBucket, setOrders] = useState<Stuff[]>();
+const ViewedStuff = ({ view, setView }) => {
+    const [stuff, setStuff] = useState<Stuff[]>();
     const [animation, setAnimation] = useState<boolean>(false);
 
     const router = useRouter();
 
-    const order = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
-
     const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
-    const dropdownStyles = animation ? (view.inBucket ?
+    const dropdownStyles = animation ? (view.viewedStuff ?
         `${styles.itemsWrapper} ${styles.openDropdown}`
         : `${styles.itemsWrapper} ${styles.closeDropdown}`
         ) : `${styles.itemsWrapper}`;
+
+    const catchViewedStuff = async (ids) => {
+        const viewedStuff = await takeSomeProducts(ids);
+
+        if (viewedStuff) {
+            setStuff(viewedStuff)
+        }
+    }
 
     const toggleDropdown = () => {
         setAnimation(true);
 
         setView((prev) => ({
             ...prev,
-            inBucket: !prev.inBucket
+            viewedStuff: !prev.viewedStuff
         }));
     };
 
@@ -36,7 +43,7 @@ const StuffinBucket = ({ view, setView }) => {
         if (animationName === 'open-dropdown') {
             setView({
                 ...view,
-                inBucket: true
+                viewedStuff: true
             });
             setAnimation(true);
         }
@@ -44,7 +51,7 @@ const StuffinBucket = ({ view, setView }) => {
         if (animationName === 'close-dropdown') {
             setView({
                 ...view,
-                inBucket: false
+                viewedStuff: false
             });
             setAnimation(false);
         }
@@ -54,27 +61,21 @@ const StuffinBucket = ({ view, setView }) => {
         if (ref.current && !ref.current.contains(event.target)) {
             setView({
                 ...view,
-                inBucket: false
+                viewedStuff: false
             });
         }
     }
 
     useEffect(() => {
-        if (view.inBucket) {
+        if (view.viewedStuff) {
             document.addEventListener('mousedown', clickOutside);
         }
 
         return () => document.removeEventListener('mousedown', clickOutside);
     }, [view]);
 
-    useEffect(() => {
-        if (order?.length) {
-            setOrders(order);
-        }
-    }, [order]);
-
     return (
-        <div className={styles.inBucket} ref={ref}>
+        <div className={styles.viewedStuff} ref={ref}>
             <div
                 onClick={() => toggleDropdown()}
                 className={styles.itemsHeader}
@@ -85,8 +86,8 @@ const StuffinBucket = ({ view, setView }) => {
                 className={dropdownStyles}
                 onAnimationEnd={(event) => animationEndHandler(event)}
             >
-                {ordersInBucket ? (
-                    ordersInBucket.map((product) => (
+                {stuff ? (
+                    stuff.map((product) => (
                         <div
                             key={product._id}
                             className={styles.items}
@@ -114,9 +115,9 @@ const StuffinBucket = ({ view, setView }) => {
     );
 };
 
-StuffinBucket.propTypes = {
+ViewedStuff.propTypes = {
     view: PropTypes.object,
     setView: PropTypes.func,
 };
 
-export default StuffinBucket;
+export default ViewedStuff;

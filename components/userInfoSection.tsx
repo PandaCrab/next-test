@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RiCheckFill, RiCloseLine } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 
 import LikedProducts from './likedProducts';
-import StuffInBucket from './stuffInBucket';
+import ViewedStuff from './viewedStuff';
 import Avatar from './Avatar';
 import ErrorTooltip from './errorTooltip';
 
@@ -14,13 +14,57 @@ import type { userObject } from '../types/types';
 import styles from '../styles/UserInfoSection.module.scss';
 
 const UserInfoSection = ({
-    updateInfo, view, setView, invalid,
+    updateInfo, view, setView, invalid, setInvalid
 }) => {
     const [descriptionHide, setDescriptionHide] = useState<boolean>(true);
-
     const [phone, setPhone] = useState<string>('');
 
     const user = useSelector((state: { user: userObject }) => state.user.info);
+
+    const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
+
+    const phoneChangeHandler = ({ target }) => {
+        setPhone(target.value);
+
+        setInvalid({
+            ...invalid,
+            path: {
+                ...invalid.path,
+                phone: ''
+            }
+        });
+    };
+
+    const closePhoneChanging = () => {
+        setView({
+            ...view,
+            phoneChanging: false
+        });
+
+        setPhone('');
+
+        setInvalid({
+            ...invalid,
+            path: {
+                ...invalid.path,
+                phone: ''
+            }
+        });
+    };
+
+    const clickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            closePhoneChanging();
+        }
+    };
+
+    useEffect(() => {
+        if (view.phoneChanging) {
+            document.addEventListener('mousedown', clickOutside);
+        }
+
+        return () => document.removeEventListener('mousedown', clickOutside);
+    }, [view]);
 
     return (
         <div className={styles.infoWrapper}>
@@ -29,7 +73,7 @@ const UserInfoSection = ({
                     <Avatar />
                     <div className={styles.usernameWrapper}>{user.username}</div>
                 </div>
-                <div className={styles.userPhoneWrapper}>
+                <div className={styles.userPhoneWrapper} ref={ref}>
                     {view.phoneChanging ? (
                         <>
                             <div className={styles.inputWrapper}>
@@ -41,7 +85,7 @@ const UserInfoSection = ({
                                     }
                                     name="phone"
                                     value={phone}
-                                    onChange={({ target }) => setPhone(target.value)}
+                                    onChange={(event) => phoneChangeHandler(event)}
                                     placeholder="Enter your phone"
                                 />
                                 {invalid.path?.phone && (
@@ -55,11 +99,7 @@ const UserInfoSection = ({
                                 <RiCheckFill />
                             </div>
                             <div
-                                onClick={() => setView({
-                                    ...view,
-                                    phoneChanging: false,
-                                })
-                                }
+                                onClick={() => closePhoneChanging()}
                                 className={styles.changeBtn}
                             >
                                 <RiCloseLine />
@@ -86,8 +126,10 @@ const UserInfoSection = ({
                         <>
                             <div>
                                 <div className={styles.userAddressInfo}>
-                                    {`${user.shippingAddress.street}, ${user.shippingAddress.city}, 
-                                    ${user.shippingAddress.country}, ${user.shippingAddress.zip}`}
+                                    {`${user.shippingAddress.street}, `}
+                                    {`${user.shippingAddress.city}`}<br/>
+                                    {`${user.shippingAddress.country}, `}
+                                    {`${user.shippingAddress.zip}`}
                                 </div>
                             </div>
                             <div>
@@ -148,7 +190,7 @@ const UserInfoSection = ({
                 </div>
             </div>
             <div className={styles.subInfoWrapper}>
-                <StuffInBucket
+                <ViewedStuff
                     view={view}
                     setView={setView}
                 />
@@ -166,6 +208,7 @@ UserInfoSection.propTypes = {
     setView: PropTypes.func,
     updateInfo: PropTypes.func,
     invalid: PropTypes.object,
+    setInvalid: PropTypes.func,
 };
 
 export default UserInfoSection;

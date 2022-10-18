@@ -15,7 +15,7 @@ import type { UserInfo } from '../../types/types';
 import styles from '../../styles/AccountPage.module.scss';
 
 interface ViewState {
-    inBucket: boolean;
+    viewedStuff: boolean;
     likes: boolean;
     addressForm: boolean;
     phoneChanging: boolean;
@@ -42,7 +42,7 @@ const AccountPage = () => {
         isValid: false,
     });
     const [view, setView] = useState<ViewState>({
-        inBucket: false,
+        viewedStuff: false,
         likes: false,
         addressForm: false,
         phoneChanging: false,
@@ -111,7 +111,7 @@ const AccountPage = () => {
 
             if (info.shippingAddress) {
                 await addressSchema
-                    .validate(info, { abortEarly: false })
+                    .validate(info.shippingAddress, { abortEarly: false })
                     .then(async (value) => {
                         if (value) {
                             const res = await updateUserInfo(id.toString(), info);
@@ -247,6 +247,7 @@ const AccountPage = () => {
                     view={view}
                     setView={setView}
                     invalid={invalid}
+                    setInvalid={setInvalid}
                 />
             </div>
         )

@@ -79,7 +79,7 @@ $backOnHover: #e8e8e8;
                 right: 0;
                 z-index: 20;
                 overflow: hidden;
-                animation: settings-dropdown .1s linear;
+                animation: settings-dropdown .2s linear forwards;
 
                 @keyframes settings-dropdown {
                     0% {opacity: 0; top: 0}
@@ -93,9 +93,7 @@ $backOnHover: #e8e8e8;
 
                     @keyframes settings-dropdown {
                         0% {width: 0; height: 0; opacity: 0;}
-                        50% {width: 50px; height: 0; opacity: .5;}
-                        75% {width: 100px; height: 40px; opacity: .7;}
-                        100% {width: 150px; opacity: 1;}
+                        100% {width: 150px; height: 40px; opacity: 1;}
                     }
                 }
 
@@ -109,6 +107,11 @@ $backOnHover: #e8e8e8;
                     width: 300px;
                     font-size: 24px;
                     top: 45px;
+
+                    @keyframes settings-dropdown {
+                        0% {width: 0; height: 0; opacity: 0;}
+                        100% {width: 300px; height: 70px; opacity: 1;}
+                    }
                 }
 
                 .settingsItem {
