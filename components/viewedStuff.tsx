@@ -10,7 +10,7 @@ import styles from '../styles/viewedStuff.module.scss';
 import { takeSomeProducts } from '../pages/api/api';
 
 const ViewedStuff = ({ view, setView }) => {
-    const [stuff, setStuff] = useState<Stuff[]>();
+    const [stuff, setStuff] = useState<Stuff[] | null>(null);
     const [animation, setAnimation] = useState<boolean>(false);
 
     const router = useRouter();
@@ -67,6 +67,14 @@ const ViewedStuff = ({ view, setView }) => {
     }
 
     useEffect(() => {
+        const stuffIds = JSON.parse(sessionStorage.getItem('viewed'));
+
+        if (stuffIds && stuffIds.length) {
+            catchViewedStuff(stuffIds);
+        }
+    }, []);
+
+    useEffect(() => {
         if (view.viewedStuff) {
             document.addEventListener('mousedown', clickOutside);
         }
@@ -80,7 +88,7 @@ const ViewedStuff = ({ view, setView }) => {
                 onClick={() => toggleDropdown()}
                 className={styles.itemsHeader}
             >
-                Stuff in bucket
+                Viewed products
             </div>
             <div
                 className={dropdownStyles}
@@ -108,7 +116,7 @@ const ViewedStuff = ({ view, setView }) => {
                         </div>
                     ))
                 ) : (
-                    <div>Your bucket is empty</div>
+                    <div>You didn't view any product</div>
                 )}
             </div>
         </div>

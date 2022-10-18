@@ -12,6 +12,7 @@ import type { Stuff } from '../../types/types';
 
 import styles from '../../styles/ProductPage.module.scss';
 import { catchSuccess } from '../../redux/ducks/alerts';
+import { setViewedStuff } from '../../helpers/setToSessionStorage';
 
 const SingleProduct = () => {
     const [productId, setProductId] = useState<string | string[]>('');
@@ -70,6 +71,12 @@ const SingleProduct = () => {
         }
         return 'Sold';
     };
+
+    useEffect(() => {
+        if (productId) {
+            setViewedStuff(productId);
+        }
+    }, [productId]);
 
     useEffect(() => {
         if (productId) {

@@ -12,6 +12,7 @@ import StarRating from './star-rating';
 import UserInfoSection from './userInfoSection';
 import Avatar from './Avatar';
 import ErrorTooltip from './errorTooltip';
+import Loader from './loader';
 
 export {
     AddProductForm,
@@ -27,4 +28,5 @@ export {
     UserInfoSection,
     Avatar,
     ErrorTooltip,
+    Loader,
 };

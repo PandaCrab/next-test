@@ -233,15 +233,13 @@ const AccountPage = () => {
                         setView={setView}
                     />
                 )}
-                {view.addressForm && (
-                    <AddressForm
-                        updateInfo={updateInfo}
-                        view={view}
-                        setView={setView}
-                        invalid={invalid}
-                        setInvalid={setInvalid}
-                    />
-                )}
+                <AddressForm
+                    updateInfo={updateInfo}
+                    view={view}
+                    setView={setView}
+                    invalid={invalid}
+                    setInvalid={setInvalid}
+                />
                 <UserInfoSection
                     updateInfo={updateInfo}
                     view={view}

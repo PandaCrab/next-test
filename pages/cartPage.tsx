@@ -11,12 +11,12 @@ import styles from '../styles/CartPage.module.scss';
 
 const CartPage = () => {
     const router = useRouter();
-    const cart: Array<object> = useSelector((state: {order: { clientOrder: Array<object> }}) => state.order.clientOrder);
+    const cart = useSelector((state: {order: { clientOrder: Array<object> }}) => state.order.clientOrder);
 
     return (
         <div className={styles.cartContainer}>
             <div className={styles.productWrapper}>
-                {cart.length && cart.map((stuff: Stuff, index: number) => (
+                {cart && cart.map((stuff: Stuff, index: number) => (
                     <ProductCard
                         key={index}
                         product={stuff}

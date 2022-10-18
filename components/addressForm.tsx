@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import PropTypes from 'prop-types';
 
@@ -11,6 +11,7 @@ import styles from '../styles/AddressForm.module.scss';
 const AddressForm = ({
     updateInfo, view, setView, invalid, setInvalid
 }) => {
+    const [animation, setAnimation] = useState<boolean>(false);
     const [addressForm, setAddressForm] = useState<AddressInfo>({
         street: '',
         city: '',
@@ -18,7 +19,14 @@ const AddressForm = ({
         zip: '',
     });
 
-    const closeHendler = () => {
+    const ref: React.MutableRefObject<HTMLDivElement> = useRef(null);
+
+    const formClassName = animation ? (view.addressForm ? 
+        `${styles.addressFormWrapper} ${styles.openForm}` 
+        : `${styles.addressFormWrapper} ${styles.closeForm}`
+        ) : `${styles.addressFormWrapper}`
+
+    const closeHandler = () => {
         setView({
             ...view,
             addressForm: false
@@ -28,6 +36,24 @@ const AddressForm = ({
             ...invalid,
             path: null
         });
+    };
+
+    const animationEndHandler = ({ animationName }) => {
+        if (animationName === 'open-form') {
+            setView({
+                ...view,
+                addressForm: true
+            });
+            setAnimation (true);
+        }
+
+        if (animationName === 'close-form') {
+            setView({
+                ...view,
+                addressForm: false
+            });
+            setAnimation(false);
+        }
     };
 
     const addressInputChange = (target: { name: string, value: string }) => {
@@ -47,10 +73,34 @@ const AddressForm = ({
         });
     };
 
+    const clickOutside = (event) => {
+        if (ref.current && !ref.current?.contains(event.target)) {
+            closeHandler();
+        }
+    };
+
+    useEffect(() => {
+        if (view.addressForm) {
+            document.addEventListener('mousedown', clickOutside);
+        }
+
+        return () => document.removeEventListener('mousedown', clickOutside);
+    }, [view]);
+
+    useEffect(() => {
+        if (view.addressForm) {
+            setAnimation(true);
+        }
+    }, [view.addressForm]);
+
     return (
-        <div className={styles.addressFormWrapper}>
+        <div 
+            className={formClassName} 
+            ref={ref}
+            onAnimationEnd={(event) => animationEndHandler(event)}
+        >
             <button
-                onClick={() => closeHendler()}
+                onClick={() => closeHandler()}
                 className={styles.closeBtn}
             >
                 <RiCloseLine />

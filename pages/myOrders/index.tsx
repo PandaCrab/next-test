@@ -48,36 +48,35 @@ const UserOrdersPage = () => {
             {orders ? (
                 <div className={styles.ordersWrapper}>
                     <div style={{ marginBottom: 20 }}>Welcome, that your orders:</div>
-                    {orders
-                        && orders.map((order) => (
-                            <div
-                                className={styles.orderWrapper}
-                                key={order._id}
-                                onClick={() => router.push(`/myOrders/${order.orderId}`)}
-                            >
-                                <div className={styles.statusSection}>
-                                    <div>
-                                        <b>Status:</b> {order.status || 'Unknown'}
-                                    </div>
-                                    <div>
-                                        <b>Order:</b> №{order.orderId}
-                                    </div>
-                                    <div>
-                                        <b>Shipping address:</b> <br />
-                                        {` 
-                                    ${order.shippingInfo.street}, 
-                                    ${order.shippingInfo.city}, 
-                                    ${order.shippingInfo.country}`}
-                                    </div>
+                    {orders && orders.map((order) => (
+                        <div
+                            className={styles.orderWrapper}
+                            key={order._id}
+                            onClick={() => router.push(`/myOrders/${order.orderId}`)}
+                        >
+                            <div className={styles.statusSection}>
+                                <div>
+                                    <b>Status:</b> {order.status || 'Unknown'}
                                 </div>
-                                <ul className={styles.orderItems}>
-                                    Items in order:{' '}
-                                    {order.orderInfo.products.map((items) => (
-                                        <li key={items._id}>{`-${items.name}`}</li>
-                                    ))}
-                                </ul>
+                                <div>
+                                    <b>Order:</b> №{order.orderId}
+                                </div>
+                                <div>
+                                    <b>Shipping address:</b> <br />
+                                    {` 
+                                ${order.shippingInfo.street}, 
+                                ${order.shippingInfo.city}, 
+                                ${order.shippingInfo.country}`}
+                                </div>
                             </div>
-                        ))}
+                            <ul className={styles.orderItems}>
+                                Items in order:{' '}
+                                {order.orderInfo.products.map((items) => (
+                                    <li key={items._id}>{`-${items.name}`}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div>Seems, you didn`t ordered anything</div>
