@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { ErrorTooltip } from '../components';
 
-import type { AddressInfo } from '../types/types';
+import type { AddressInfo, userObject } from '../types/types';
 
 import styles from '../styles/AddressForm.module.scss';
 
@@ -19,6 +20,8 @@ const AddressForm = ({
         zip: '',
     });
 
+    const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
+
     const ref: React.MutableRefObject<HTMLDivElement> = useRef(null);
 
     const formClassName = animation ? (view.addressForm ? 
@@ -30,6 +33,13 @@ const AddressForm = ({
         setView({
             ...view,
             addressForm: false
+        });
+
+        setAddressForm({
+            street: '',
+            city: '',
+            country: '',
+            zip: ''
         });
 
         setInvalid({
@@ -78,6 +88,12 @@ const AddressForm = ({
             closeHandler();
         }
     };
+
+    useEffect(() => {
+        if (userAddress && Object.keys(userAddress).length) {
+            setAddressForm(userAddress);
+        }
+    }, [view.addressForm]);
 
     useEffect(() => {
         if (view.addressForm) {

@@ -4,7 +4,8 @@
 $lightgrayBorder: #bbbbbb;
 $gray: gray;
 $red: red;
-$descriptionBack: rgb(243, 243, 243);
+$white: white;
+$descriptionBack: rgb(126, 126, 126);
 
 .infoWrapper {
     padding: 12px;
@@ -181,11 +182,11 @@ $descriptionBack: rgb(243, 243, 243);
                 font-size: 12px;
                 border: 1px solid;
                 border-radius: 50%;
+                position: relative;
                 cursor: default;
 
                 @include media.mobileS {
                     margin-left: 5px;
-                    position: relative;
                     left: -150px;
                     bottom: -10px;
                 }
@@ -208,6 +209,7 @@ $descriptionBack: rgb(243, 243, 243);
                 padding: 12px;
                 width: 400px;
                 background-color: $descriptionBack;
+                color: $white;
                 text-align: center;
                 border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
@@ -216,6 +218,24 @@ $descriptionBack: rgb(243, 243, 243);
                 top: -120px;
                 right: 0;
 
+                &::after {
+                    content: " ";
+                    position: absolute;
+                    top: 100%;
+                    left: 33%;
+                    border-width: 10px;
+                    border-style: solid;
+                    border-color: $descriptionBack transparent transparent transparent;
+
+                    @include media.tablet {
+                        left: 90%;
+                    }
+
+                    @include media.laptop {
+                        left: 90%;
+                    }
+                }
+
                 @include media.mobileS {
                     padding: 6px;
                     width: 250px;
@@ -223,11 +243,17 @@ $descriptionBack: rgb(243, 243, 243);
                     top: -70px;
                 }
 
+                @include media.tablet {
+                    top: -80px;
+                    right: -10px;
+                }
+
                 @include media.laptop {
                     padding: 12px;
                     width: 450px;
                     font-size: 16px;
-                    top: -90px;
+                    top: -100px;
+                    right: -25px;
                 }
             }
         }

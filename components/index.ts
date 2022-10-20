@@ -13,6 +13,7 @@ import UserInfoSection from './userInfoSection';
 import Avatar from './Avatar';
 import ErrorTooltip from './errorTooltip';
 import Loader from './loader';
+import CountrySelect from './countrySelect';
 
 export {
     AddProductForm,
@@ -29,4 +30,5 @@ export {
     Avatar,
     ErrorTooltip,
     Loader,
+    CountrySelect,
 };

@@ -196,14 +196,13 @@ const OrderForm = () => {
                 <div className={styles.inputWrapper}>
                     <label className={styles.formLabel}>
                         <div>Street</div>
-                        {userAddress && Object.keys(userAddress).length && (
-                            <div
-                                className={styles.autocompleteBtn}
-                                onClick={() => addShippingAddress()}
-                            >
-                                Autocomplete
-                            </div>
-                        )}
+                        <button
+                            className={styles.autocompleteBtn}
+                            disabled={userAddress && !Object.keys(userAddress).length}
+                            onClick={() => addShippingAddress()}
+                        >
+                            Autocomplete
+                        </button>
                     </label>
                     <input
                         className={

@@ -4,6 +4,7 @@
 $lightgrayBorder: #bbbbbb;
 $black: black;
 $red: red;
+$gray: gray;
 
 .orderContainer {
     margin: auto;
@@ -79,9 +80,30 @@ $red: red;
 
                 .autocompleteBtn {
                     padding: 2px;
+                    width: 100px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: none;
                     font-weight: normal;
                     border: 1px solid $lightgrayBorder;
                     border-radius: 5px;
+
+                    &:hover {
+                        border-color: $black;
+                        box-shadow: 0 2px 5px $gray;
+                    }
+
+                    &:active {
+                        border-color: $black;
+                        box-shadow: 0 1px 2px $gray;
+                    }
+
+                    &:disabled {
+                        border-color: $lightgrayBorder;
+                        color: $lightgrayBorder;
+                        box-shadow: none;
+                    }
 
                     @include media.desktop {
                         padding: 5px;
@@ -94,16 +116,6 @@ $red: red;
                 width: 100%;
                 border: 2px solid $lightgrayBorder;
                 border-radius: 5px;
-
-                @include media.mobileS {
-                    padding: 3px 6px;
-                    font-size: 12px;
-                }
-
-                @include media.laptop {
-                    padding: 6px 12px;
-                    font-size: 16px;
-                }
 
                 &.invalid {
                     border-color: $red;
