@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 
-import { ErrorTooltip } from '../components';
+import { CountrySelect, ErrorTooltip } from '../components';
+import { useClickOutside } from '../hooks';
 
 import type { AddressInfo, userObject } from '../types/types';
 
@@ -22,7 +23,7 @@ const AddressForm = ({
 
     const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
 
-    const ref: React.MutableRefObject<HTMLDivElement> = useRef(null);
+    const formRef: React.MutableRefObject<HTMLDivElement> = useRef(null);
 
     const formClassName = animation ? (view.addressForm ? 
         `${styles.addressFormWrapper} ${styles.openForm}` 
@@ -83,25 +84,13 @@ const AddressForm = ({
         });
     };
 
-    const clickOutside = (event) => {
-        if (ref.current && !ref.current?.contains(event.target)) {
-            closeHandler();
-        }
-    };
-
     useEffect(() => {
         if (userAddress && Object.keys(userAddress).length) {
             setAddressForm(userAddress);
         }
     }, [view.addressForm]);
 
-    useEffect(() => {
-        if (view.addressForm) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => document.removeEventListener('mousedown', clickOutside);
-    }, [view]);
+    useClickOutside(formRef, view.addressForm, closeHandler);
 
     useEffect(() => {
         if (view.addressForm) {
@@ -112,7 +101,7 @@ const AddressForm = ({
     return (
         <div 
             className={formClassName} 
-            ref={ref}
+            ref={formRef}
             onAnimationEnd={(event) => animationEndHandler(event)}
         >
             <button
@@ -154,7 +143,7 @@ const AddressForm = ({
                         <ErrorTooltip message={invalid.path?.city} />
                     )}
                 </div>
-                <div className={styles.inputWrapper}>
+                {/* <<div className={styles.inputWrapper}>
                     <input
                         className={
                             invalid.path?.country
@@ -169,6 +158,12 @@ const AddressForm = ({
                     {invalid.path?.country && (
                         <ErrorTooltip message={invalid.path?.country} />
                     )}
+                </div>> */}
+                <div className={styles.inputWrapper}>
+                    <CountrySelect
+                        value={addressForm.country}
+                        setValue={(item) => addressInputChange(item)}
+                    />
                 </div>
                 <div className={styles.inputWrapper}>
                     <input

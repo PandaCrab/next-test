@@ -1,0 +1,70 @@
+@use 'mixins/MediaMixins.scss' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
+
+$lightgrayBorder: #bbbbbb;
+$white: white;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: inherit;
+    position: relative;
+
+    .inputWrapper {
+        position: relative;
+
+        .input {
+            padding: 6px 12px;
+            width: 100%;
+
+        }
+
+        .arrow {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            right: 5px;
+            top: 7px;
+            transition: transform .2s ease-out;
+
+            &.up {
+                transform: rotate(0deg);
+            }
+
+            &.down {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .optionsList {
+        padding: 0;
+        max-height: 100px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: $white;
+        list-style: none;
+        overflow-y: scroll; 
+        position: absolute;
+        top: 100%;
+        z-index: 100;
+        transition: height .4s linear;
+
+        &.open {
+            height: 100px;
+        }
+
+        &.closed {
+            height: 0;
+        }
+
+        @include scrollbars(1px, none, $lightgrayBorder);
+
+        li {
+            padding: 5px;
+        }
+    }
+}

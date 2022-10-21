@@ -9,7 +9,7 @@ import { postProduct } from '../pages/api/api';
 import { addProductSchema } from '../helpers/validation';
 import { ErrorTooltip } from '../components';
 import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
-import useWindowSize from '../hooks/windowSize';
+import { useWindowSize } from '../hooks';
 
 import type { Stuff } from '../types/types';
 
