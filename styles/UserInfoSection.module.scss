@@ -191,17 +191,13 @@ $descriptionBack: rgb(126, 126, 126);
                     bottom: -10px;
                 }
 
-                @include media.mobileM {
-                    margin-left: 3px;
-                    left: 0;
-                    bottom: 0;
-                }
-
                 @include media.laptop {
                     margin-left: 10px;
                     width: 20px;
                     height: 20px;
                     font-size: 16px;
+                    left: 0;
+                    top: 0;
                 }
             }
 

@@ -1,26 +1,19 @@
 import Link from 'next/link';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import { RiCloseLine, RiMenuFill } from 'react-icons/ri';
+import { useClickOutside } from '../hooks';
 
 import styles from '../styles/LeftMenu.module.scss';
 
 const LeftMenu = (props) => {
     const [isOpen, setOpen] = useState<boolean>(false);
-    const [animation, setAnimation] = useState(false);
+    const [animation, setAnimation] = useState<boolean>(false);
 
     const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
-    const clickOutside = (event) => {
-        const target = event.target
+    useClickOutside(menuDropdownRef, isOpen, () => setOpen(false));
 
-        if (menuDropdownRef.current && !menuDropdownRef.current.contains(target)) {
-            setOpen(false);
-        }
-    };
-
-    const setClassName = animation ? isOpen ? 
-        `${styles.menuDropdown} ${styles.openMenu}` 
-        : `${styles.menuDropdown} ${styles.closeMenu}` : `${styles.menuDropdown}`
+    const setClassName = `${styles.menuDropdown} ${animation && (isOpen ? styles.openMenu :  styles.closeMenu)}`;
 
     const animationEndHandler = ({ animationName }) => {
         if (animationName === 'open-menu') {
@@ -42,17 +35,7 @@ const LeftMenu = (props) => {
         if (isOpen) {
             setAnimation(false);
         }
-    }
-
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', clickOutside);
-        };
-    }, [isOpen]);
+    };
 
     return (
         <div 
@@ -111,7 +94,7 @@ const LeftMenu = (props) => {
                 </Link>
             </div>
         </div>
-    )
+    );
 };
 
 export default LeftMenu;

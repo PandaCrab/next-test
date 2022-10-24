@@ -157,3 +157,9 @@ export type ObservableResult = Stuff[] | {
     error: boolean;
     message: string
 };
+
+export type RefElements = React.MutableRefObject<HTMLDivElement | HTMLInputElement | null>;
+
+export type State = object | boolean;
+
+export type CloseFunction = () => void;

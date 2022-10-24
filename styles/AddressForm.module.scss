@@ -1,5 +1,6 @@
 @use 'mixins/MediaMixins.scss' as media;
 
+$lightgrayBorder: #bbbbbb;
 $gray: gray;
 $white: white;
 $red: red;
@@ -72,32 +73,25 @@ $red: red;
         align-items: center;
 
         .inputWrapper {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
+            width: 100%;
             position: relative;
 
             .addressFormInput {
                 padding: 6px 12px;
                 width: 350px;
-                font-size: 18px;
-                border: 1px solid;
+                border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
 
                 @include media.mobileS {
                     padding: 4px 8px;
                     width: 250px;
-                    font-size: 16px;
                 }
 
                 @include media.laptop {
                     padding: 6px 12px;
                     width: 350px;
                     font-size: 18px;
-                }
-
-                @include media.desktop {
-                    padding: 12px 6px;
-                    width: 650px;
-                    font-size: 24px;
                 }
 
                 &.invalid {

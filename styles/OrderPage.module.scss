@@ -38,7 +38,9 @@ $gray: gray;
             margin-bottom: 20px;
             width: 100%;
             display: flex; 
-            justify-content: space-between; 
+            justify-content: space-between;
+            align-items: flex-end;
+
 
             .inputWrapper {
                 &:first-child {
@@ -119,6 +121,11 @@ $gray: gray;
 
                 &.invalid {
                     border-color: $red;
+                }
+
+                @include media.laptop {
+                    padding: 6px 12px;
+                    font-size: 18px;
                 }
             }
         }

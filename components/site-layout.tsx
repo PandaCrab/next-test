@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { RiUser3Line, RiMenuFill, RiCloseLine } from 'react-icons/ri';
+import { RiUser3Line } from 'react-icons/ri';
 
 import PopupAlert from './popup';
 import Cart from './cart';
@@ -17,6 +17,7 @@ import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
 import LeftMenu from './leftMenu';
+import { useClickOutside } from '../hooks';
 
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -27,8 +28,8 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
-    const router = useRouter();
 
+    const router = useRouter();
 
     const dispatch = useDispatch();
     const user = useSelector((state: { user: userObject }) => state.user);
@@ -48,6 +49,13 @@ const SiteLayout = ({ children }) => {
 
         dispatch(logout());
     };
+
+    const closeProfile = () => {
+        setPassword('');
+        setOpen(false);
+    };
+
+    useClickOutside(profileRef, isOpen, closeProfile);
 
     const getTokenFromStorage = () => {
         const fromStorage = localStorage.getItem('token');
@@ -102,27 +110,6 @@ const SiteLayout = ({ children }) => {
 
         return nameArr[0];
     };
-
-    const clickOutside = (event) => {
-        const target = event.target
-
-        if (profileRef.current && !profileRef.current.contains(target)) {
-                setOpen(false);
-        }
-    };
-
-
-    useEffect(() => {
-        setPassword('');
-
-        if (isOpen) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', clickOutside);
-        };
-    }, [isOpen]);
 
     return (
         <div className="layout">

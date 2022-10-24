@@ -9,6 +9,7 @@ import { takeSomeProducts } from '../pages/api/api';
 import type { UserInfo, Stuff } from '../types/types';
 
 import styles from '../styles/LikedProducts.module.scss';
+import { useClickOutside } from '../hooks';
 
 const LikedProducts = ({ view, setView }) => {
     const [likes, setLikes] = useState<Stuff[] | null>();
@@ -60,22 +61,7 @@ const LikedProducts = ({ view, setView }) => {
         }
     };
 
-    const clickOutside = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-            setView({
-                ...view,
-                likes: false
-            });
-        }
-    }
-
-    useEffect(() => {
-        if (view.likes) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => document.removeEventListener('mousedown', clickOutside);
-    }, [view]);
+    useClickOutside(ref, view.likes, () => setView({ ...view, likes: false }));
 
     useEffect(() => {
         if (user?.likes?.length) {

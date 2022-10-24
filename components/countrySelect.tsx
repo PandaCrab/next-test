@@ -3,10 +3,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useClickOutside } from '../hooks';
 import { SlArrowUp } from 'react-icons/sl';
 
-import styles from '../styles/CountrySelect.module.scss';
+import { countryList } from '../helpers/countryList';
 import ErrorTooltip from './errorTooltip';
 
-const CountrySelect = ({ value, setValue }) => {
+import styles from '../styles/CountrySelect.module.scss';
+
+const CountrySelect = ({ value, setValue, invalid, setInvalid }) => {
     const [search, setSearch] = useState<string>('');
     const [isOpen, setOpen] = useState<boolean>(false);
     const [options, setOptions] = useState<string[] | []>([]);
@@ -14,7 +16,7 @@ const CountrySelect = ({ value, setValue }) => {
     const selectRef: React.MutableRefObject<HTMLDivElement> = useRef(null);
     useClickOutside(selectRef, isOpen, () => setOpen(false));
 
-    const optionsList = ['test', 'test1', 'test2', 'test3', 'test4'];
+    const inputStyles = `${styles.input} ${invalid && styles.invalid} ${isOpen && styles.search}`;
 
     const filteredList = (list) => {
         const filtered = list.filter((country) => country.toLowerCase().includes(search.toLowerCase()));
@@ -22,66 +24,70 @@ const CountrySelect = ({ value, setValue }) => {
         return setOptions(filtered);
     };
 
+    const onSelectHandler = (item) => {
+        setValue(item);
+        setOpen(false);
+        setSearch(item);
+        setInvalid();
+    };
+
     const toggleSelect = () => {
         setOpen((prev) => !prev);
+        setSearch('');
     };
 
     useEffect(() => {
-        setOptions(optionsList);
+        setOptions(countryList);
     }, []);
 
     useEffect(() => {
-        filteredList(optionsList);
+        filteredList(countryList);
     }, [search]);
 
     return (
         <div className={styles.container} ref={selectRef}>
-            <div className={styles.inputWrapper}>
-                {isOpen ? (
-                    <input
-                        type="text"
-                        className={styles.input}
-                        onChange={({ target }) => setSearch(target.value)}
-
-                    />
-                ) : (
-                    <input
-                        readOnly
-                        className={styles.input}
-                        onClick={() => setOpen(true)}
-                        value={value || 'Country'}
-                    />  
-                )}  
-                <div 
-                    className={isOpen ? `${styles.arrow} ${styles.up}` : `${styles.arrow} ${styles.down}`}
-                    onClick={() => toggleSelect()}
-                >
-                    <SlArrowUp />
-                </div>
-            </div>
-            <ul 
-                className={
-                    isOpen ? `${styles.optionsList} ${styles.open}` : `${styles.optionsList} ${styles.closed}`
-                } 
-                onTransitionEnd={() => setOpen(false)}
-            >
-                {options && options.map((item, index) => (
-                    <li 
-                        className={styles.option}
-                        key={index}
-                        onClick={() => setValue(item)}
+                <input
+                    readOnly={!isOpen}
+                    type="text"
+                    className={inputStyles}
+                    onClick={() => setOpen(true)}
+                    onChange={({ target }) => setSearch(target.value)}
+                    placeholder={value || 'Country'}
+                    value={isOpen ? search : (value || '')}
+                />
+                <div className={styles.arrowWrapper}> 
+                    <div 
+                        className={`${styles.arrow} ${isOpen ? styles.up : styles.down}`}
+                        onClick={() => toggleSelect()}
                     >
-                        {item}
-                    </li>
-                ))}
-            </ul>
-            <ErrorTooltip  />
+                        <SlArrowUp />
+                    </div>
+                </div>
+                <ul 
+                    className={`${styles.optionsList} ${isOpen ? styles.open : styles.closed}`}
+                >
+                    {options && options.map((item, index) => (
+                        <li 
+                            className={styles.option}
+                            key={index}
+                            onClick={() => onSelectHandler(item)}
+                        >
+                            {item}
+                        </li>
+                    ))}
+                </ul>
+                {invalid && (
+                    <ErrorTooltip message={invalid} />
+                )}
         </div>
     );
 };
 
 CountrySelect.propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    setValue: PropTypes.func,
+    invalid: PropTypes.string,
+    setInvalid: PropTypes.func,
 };
 
 export default CountrySelect;

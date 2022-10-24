@@ -1,8 +1,6 @@
-import { useEffect, MutableRefObject } from 'react';
+import { useEffect } from 'react';
 
-type RefElements = MutableRefObject<HTMLDivElement | HTMLInputElement | null>;
-type State = object | boolean;
-type CloseFunction = () => void;
+import type { RefElements, State, CloseFunction } from '../types/types';
 
 const useClickOutside = (ref: RefElements, state: State, closeFunction: CloseFunction) => {
 
@@ -18,7 +16,7 @@ const useClickOutside = (ref: RefElements, state: State, closeFunction: CloseFun
         }
 
         return () => document.removeEventListener('mousedown', clickOutside);
-    }, []);
+    }, [state]);
 };
 
 export default useClickOutside;

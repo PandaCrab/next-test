@@ -8,6 +8,7 @@ import type { Stuff } from '../types/types';
 
 import styles from '../styles/viewedStuff.module.scss';
 import { takeSomeProducts } from '../pages/api/api';
+import { useClickOutside } from '../hooks';
 
 const ViewedStuff = ({ view, setView }) => {
     const [stuff, setStuff] = useState<Stuff[] | null>(null);
@@ -57,14 +58,7 @@ const ViewedStuff = ({ view, setView }) => {
         }
     };
 
-    const clickOutside = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-            setView({
-                ...view,
-                viewedStuff: false
-            });
-        }
-    }
+    useClickOutside(ref, view.viewedStuff, () => setView({ ...view, viewedStuff: false }));
 
     useEffect(() => {
         const stuffIds = JSON.parse(sessionStorage.getItem('viewed'));
@@ -73,14 +67,6 @@ const ViewedStuff = ({ view, setView }) => {
             catchViewedStuff(stuffIds);
         }
     }, []);
-
-    useEffect(() => {
-        if (view.viewedStuff) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => document.removeEventListener('mousedown', clickOutside);
-    }, [view]);
 
     return (
         <div className={styles.viewedStuff} ref={ref}>

@@ -3,68 +3,120 @@
 
 $lightgrayBorder: #bbbbbb;
 $white: white;
+$red: red;
 
 .container {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    font-size: inherit;
+    height: 100%;
     position: relative;
 
-    .inputWrapper {
-        position: relative;
+    .input {
+        padding: 4px 8px;
+        padding-right: 30px;
+        width: 100%;
+        border: 2px solid $lightgrayBorder;
+        border-radius: 5px;
 
-        .input {
+        &.search {
+            border-radius: 5px 5px 0 0;
+        }
+
+        &.invalid {
+            border-color: $red;
+        }
+
+        @include media.mobileS {
+            padding-right: 0;
+        }
+
+        @include media.laptop {
             padding: 6px 12px;
-            width: 100%;
+            font-size: 18px;
+        }
+    }
 
+    .arrowWrapper {
+        width: 25px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 1px solid $lightgrayBorder;
+        position: absolute;
+        top: 0;
+        right: 5px;
+
+        @include media.mobileS {
+            display: none;
+        }
+
+        @include media.laptop {
+            display: flex;
         }
 
         .arrow {
-            width: 20px;
+            width: 20x;
             height: 20px;
-            position: absolute;
-            right: 5px;
-            top: 7px;
-            transition: transform .2s ease-out;
+            color: $lightgrayBorder;
+            transition: transform .1s ease-out;
+            position: relative;
 
             &.up {
                 transform: rotate(0deg);
+                left: 3px;
             }
 
             &.down {
                 transform: rotate(180deg);
+                left: 3px;
             }
         }
     }
 
     .optionsList {
+        margin: 0;
         padding: 0;
-        max-height: 100px;
+        max-height: 300px;
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         background-color: $white;
+        border: 1px solid $lightgrayBorder;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
         list-style: none;
         overflow-y: scroll; 
         position: absolute;
         top: 100%;
         z-index: 100;
-        transition: height .4s linear;
+        transition: height .1s linear;
 
         &.open {
-            height: 100px;
+            height: 140px;
         }
 
         &.closed {
             height: 0;
+            border: none;
         }
 
         @include scrollbars(1px, none, $lightgrayBorder);
 
-        li {
+        .option {
             padding: 5px;
+            width: 100%;
+            font-size: 16px;
+
+            @include media.laptop {
+                padding: 8px;
+                font-size: 18px;
+            }
+
+            &:hover {
+                background-color: $lightgrayBorder;
+                color: $white;
+            }
         }
     }
 }

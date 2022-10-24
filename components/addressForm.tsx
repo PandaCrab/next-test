@@ -143,26 +143,21 @@ const AddressForm = ({
                         <ErrorTooltip message={invalid.path?.city} />
                     )}
                 </div>
-                {/* <<div className={styles.inputWrapper}>
-                    <input
-                        className={
-                            invalid.path?.country
-                                ? `${styles.addressFormInput} ${styles.invalid}`
-                                : `${styles.addressFormInput}`
-                        }
-                        name="country"
-                        value={addressForm.country}
-                        onChange={({ target }) => addressInputChange(target)}
-                        placeholder='Choose country'
-                    />
-                    {invalid.path?.country && (
-                        <ErrorTooltip message={invalid.path?.country} />
-                    )}
-                </div>> */}
                 <div className={styles.inputWrapper}>
                     <CountrySelect
                         value={addressForm.country}
-                        setValue={(item) => addressInputChange(item)}
+                        setValue={(item) => setAddressForm({
+                            ...addressForm,
+                            country: item
+                        })}
+                        invalid={invalid.path?.country}
+                        setInvalid={() => setInvalid({
+                            ...invalid,
+                            path: {
+                                ...invalid.path,
+                                country: ''
+                            }
+                        })}
                     />
                 </div>
                 <div className={styles.inputWrapper}>

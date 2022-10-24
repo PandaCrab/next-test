@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ErrorTooltip, OrderList } from '../../components';
+import { CountrySelect, ErrorTooltip, OrderList } from '../../components';
 import { fillShipping, getOrderId } from '../../redux/ducks/order';
 import { addressSchema, userInfoSchema } from '../../helpers/validation';
 
@@ -243,21 +243,21 @@ const OrderForm = () => {
                 </div>
                 <div className={styles.row}>
                     <div className={styles.inputWrapper}>
-                        <label className={styles.formLabel}>Country</label>
-                        <input
-                            className={
-                                invalidAddress.path?.country
-                                    ? `${styles.formInput} ${styles.invalid}`
-                                    : `${styles.formInput}`
-                            }
-                            name="country"
+                        <CountrySelect
                             value={address.country}
-                            onChange={({ target }) => handleChange(target)
-                            }
+                            setValue={(item) => setAddress({
+                                ...address,
+                                country: item
+                            })}
+                            invalid={invalidAddress.path?.country}
+                            setInvalid={() => setInvalidAddress({
+                                ...invalidAddress,
+                                path: {
+                                    ...invalidAddress.path,
+                                    country: ''
+                                }
+                            })}
                         />
-                        {invalidAddress.path.country && (
-                            <ErrorTooltip message={invalidAddress.path.country} />
-                        )}
                     </div>
                     <div className={styles.inputWrapper}>
                         <label className={styles.formLabel}>ZIP</label>

@@ -12,6 +12,7 @@ import ErrorTooltip from './errorTooltip';
 import type { userObject } from '../types/types';
 
 import styles from '../styles/UserInfoSection.module.scss';
+import { useClickOutside } from '../hooks';
 
 const UserInfoSection = ({
     updateInfo, view, setView, invalid, setInvalid
@@ -52,19 +53,7 @@ const UserInfoSection = ({
         });
     };
 
-    const clickOutside = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-            closePhoneChanging();
-        }
-    };
-
-    useEffect(() => {
-        if (view.phoneChanging) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => document.removeEventListener('mousedown', clickOutside);
-    }, [view]);
+    useClickOutside(ref, view.phoneChanging, closePhoneChanging);
 
     return (
         <div className={styles.infoWrapper}>

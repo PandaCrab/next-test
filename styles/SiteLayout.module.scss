@@ -217,7 +217,7 @@ $red: red;
                 height: auto;
                 display: flex;
                 flex-direction: column;
-                align-items: flex-end;
+                align-items: center;
                 background: $white;
                 border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
@@ -252,21 +252,14 @@ $red: red;
 
                 .greeting {
                     margin-bottom: 10px;
-                    font-size: 18px;
-
-                    @include media.mobileS {
-                        margin-bottom: 5px;
-                        font-size: 20px;
-                    }
-
-                    @include media.laptop {
-                        margin-bottom: 10px;
-                        font-size: 18px;
-                    }
+                    font-size: 22px;
                 }
 
                 .dropdownItems {
+                    padding: 5px;
                     margin-bottom: 5px;
+                    width: 100%;
+                    text-align: center;
                     font-size: 16px;
                     cursor: pointer;
 
@@ -275,7 +268,8 @@ $red: red;
                     }
 
                     &:hover {
-                        color: $backOnHover;
+                        color: $white;
+                        background-color: $lightgrayBorder;
                     }
                 }
 
