@@ -11,7 +11,7 @@ $red: red;
     position: relative;
 
     .input {
-        padding: 4px 8px;
+        padding: 6px 12px;
         padding-right: 30px;
         width: 100%;
         border: 2px solid $lightgrayBorder;
@@ -36,7 +36,7 @@ $red: red;
     }
 
     .arrowWrapper {
-        width: 25px;
+        width: 20px;
         height: 100%;
         display: flex;
         align-items: center;
@@ -45,14 +45,6 @@ $red: red;
         position: absolute;
         top: 0;
         right: 5px;
-
-        @include media.mobileS {
-            display: none;
-        }
-
-        @include media.laptop {
-            display: flex;
-        }
 
         .arrow {
             width: 20x;

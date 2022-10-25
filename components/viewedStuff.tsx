@@ -18,10 +18,10 @@ const ViewedStuff = ({ view, setView }) => {
 
     const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
-    const dropdownStyles = animation ? (view.viewedStuff ?
-        `${styles.itemsWrapper} ${styles.openDropdown}`
-        : `${styles.itemsWrapper} ${styles.closeDropdown}`
-        ) : `${styles.itemsWrapper}`;
+    const dropdownStyles = `
+        ${styles.itemsWrapper}
+        ${animation && (view.viewedStuff ? styles.openDropdown : styles.closeDropdown)}
+    `;
 
     const catchViewedStuff = async (ids) => {
         const viewedStuff = await takeSomeProducts(ids);

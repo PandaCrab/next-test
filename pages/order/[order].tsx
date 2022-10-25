@@ -172,6 +172,7 @@ const OrderForm = () => {
                             invalidUserInfo.path?.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="name"
+                        placeholder="John Doe"
                         value={shipping.name}
                         onChange={({ target }) => handleChange(target)}
                     />
@@ -186,6 +187,7 @@ const OrderForm = () => {
                             invalidUserInfo.path?.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="phone"
+                        placeholder="+380*********"
                         value={shipping.phone}
                         onChange={({ target }) => handleChange(target)}
                     />
@@ -209,6 +211,7 @@ const OrderForm = () => {
                             invalidAddress.path?.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="street"
+                        placeholder="1 Khreshchatyk street"
                         value={address.street}
                         onChange={({ target }) => handleChange(target)
                         }
@@ -222,6 +225,7 @@ const OrderForm = () => {
                     <input
                         className={styles.formInput}
                         name="optional"
+                        placeholder="Door code, gate code, etc."
                         value={shipping.optional}
                         onChange={({ target }) => handleChange(target)}
                     />
@@ -233,6 +237,7 @@ const OrderForm = () => {
                             invalidAddress.path?.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="city"
+                        placeholder="Kiev"
                         value={address.city}
                         onChange={({ target }) => handleChange(target)
                         }
@@ -268,6 +273,7 @@ const OrderForm = () => {
                                     : `${styles.formInput}`
                             }
                             name="zip"
+                            placeholder="01001"
                             value={address.zip}
                             onChange={({ target }) => handleChange(target)
                             }
