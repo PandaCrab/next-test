@@ -86,36 +86,42 @@ const OrderForm = () => {
     const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
 
     const handleChange = (target) => {
-        const { name, value } = target;
-        if (Object.keys(shipping).includes(name)) {
-            setInvalidUserInfo({
-                ...invalidUserInfo,
-                path: {
-                    ...invalidUserInfo.path,
-                    [name]: '',
-                }
-            });
+        if (target) {
+            const { name, value } = target;
 
-            setShipping({
-                ...shipping,
-                [name]: value,
-            });
+
+            if (Object.keys(shipping).includes(name)) {
+                setInvalidUserInfo({
+                    ...invalidUserInfo,
+                    path: {
+                        ...invalidUserInfo.path,
+                        [name]: '',
+                    }
+                });
+
+                setShipping({
+                    ...shipping,
+                    [name]: value,
+                });
+            }
+
+            if (Object.keys(address).includes(name)) {
+                setInvalidAddress({
+                    ...invalidAddress,
+                    path: {
+                        ...invalidAddress.path,
+                        [name]: ''
+                    }
+                });
+
+                setAddress({
+                    ...address,
+                    [name]: value
+                });
+            }
         }
 
-        if (Object.keys(address).includes(name)) {
-            setInvalidAddress({
-                ...invalidAddress,
-                path: {
-                    ...invalidAddress.path,
-                    [name]: ''
-                }
-            });
-
-            setAddress({
-                ...address,
-                [name]: value
-            });
-        }
+        return;
     };
 
     const addShippingAddress = () => {
@@ -197,7 +203,7 @@ const OrderForm = () => {
                     )} */}
                     <PhoneInput 
                         phone={shipping.phone}
-                        setPhone={({target}) => handleChange(target)}
+                        setPhone={handleChange}
                         country={address.country}
                         invalid={invalidUserInfo.path.phone}
                     />
