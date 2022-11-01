@@ -9,6 +9,7 @@ import { addressSchema, userInfoSchema } from '../../helpers/validation';
 import type { AddressInfo, ShippingInfo, userObject } from '../../types/types';
 
 import styles from '../../styles/OrderPage.module.scss';
+import PhoneInput from '../../components/phoneInput';
 
 interface AddressInvalid {
     path: {
@@ -182,18 +183,24 @@ const OrderForm = () => {
                 </div>
                 <div className={styles.inputWrapper}>
                     <label className={styles.formLabel}>Contact phone</label>
-                    <input
+                    {/* <input
                         className={
                             invalidUserInfo.path?.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="phone"
-                        placeholder="+380*********"
+                        placeholder="+38 (0**) ***-****"
                         value={shipping.phone}
                         onChange={({ target }) => handleChange(target)}
                     />
                     {invalidUserInfo.path.phone && (
                         <ErrorTooltip message={invalidUserInfo.path.phone} />
-                    )}
+                    )} */}
+                    <PhoneInput 
+                        phone={shipping.phone}
+                        setPhone={({target}) => handleChange(target)}
+                        country={address.country}
+                        invalid={invalidUserInfo.path.phone}
+                    />
                 </div>
                 <div className={styles.inputWrapper}>
                     <label className={styles.formLabel}>
