@@ -36,21 +36,14 @@ const ProductCard = (props) => {
 
     const pushToOrder = (stuff) => {
         const idInOrder = clientOrder.length;
-        const {
-            _id, name, price, imgUrl, color, quantity, width, height,
-        } = stuff;
+        const { _id } = stuff;
+
+        
 
         dispatch(
             inOrder({
                 id: idInOrder,
                 _id,
-                name,
-                price,
-                imgUrl,
-                color,
-                quantity,
-                width,
-                height,
             }),
         );
     };
@@ -71,39 +64,44 @@ const ProductCard = (props) => {
 
     const buttonsToShow = () => {
         if (router.pathname === '/cartPage') {
-            return (<div className={styles.cardButtons}>
-                <button
-                    onClick={() => dispatch(deleteFromOrder(product))}
-                    className={styles.deleteButton}
-                >
-                    <AiOutlineDelete />
-                </button>
-            </div>);
+            return (
+                <div className={styles.cardButtons}>
+                    <button
+                        onClick={() => dispatch(deleteFromOrder(product))}
+                        className={styles.deleteButton}
+                    >
+                        <AiOutlineDelete />
+                    </button>
+                </div>
+            );
         }
-        return (<div className={styles.cardButtons}>
-            <button
-                onClick={() => pushToOrder(product)}
-                className={
-                    clientOrder.find((x) => x._id === product._id)
-                        ? `${styles.cartButton} ${styles.ordered}`
-                        : `${styles.cartButton}`
-                }
-            >
-                <BsCart />
-            </button>
-            {user?._id && (
+
+        return (
+            <div className={styles.cardButtons}>
                 <button
+                    onClick={() => pushToOrder(product)}
                     className={
-                        user.likes?.find((x) => x._id === product._id)
-                            ? `${styles.cartButton} ${styles.liked}`
+                        clientOrder.find((x) => x._id === product._id)
+                            ? `${styles.cartButton} ${styles.ordered}`
                             : `${styles.cartButton}`
                     }
-                    onClick={() => handleLike(product._id)}
                 >
-                    <AiFillHeart />
+                    <BsCart />
                 </button>
-            )}
-        </div>);
+                {user?._id && (
+                    <button
+                        className={
+                            user.likes?.find((x) => x._id === product._id)
+                                ? `${styles.cartButton} ${styles.liked}`
+                                : `${styles.cartButton}`
+                        }
+                        onClick={() => handleLike(product._id)}
+                    >
+                        <AiFillHeart />
+                    </button>
+                )}
+            </div>
+        );
     };
 
     useEffect(() => {

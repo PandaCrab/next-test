@@ -7,17 +7,61 @@ $white: white;
 $backOnHover: #e8e8e8;
 
 .cartContainer {
-    padding: 40px;
-    width: 1600px;
+    padding: 20px;
+    width: 290px;
+    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: $white;
+    border: 2px solid $lightgrayBorder;
+    box-shadow: 0 2px 5px $gray;
+    position: fixed;
+    opacity: 0;
+    top: 50px;
+    right: 2%;
 
-    @include media.mobileS {
+    &.open {
+        animation: open-cart .2s linear forwards;
+    }
+
+    &.close {
+        animation: close-cart .2s linear forwards;
+    }
+
+    @keyframes open-cart {
+        0% {
+            height: 0;
+            top: -10px;
+            opacity: 0;
+        }
+        100% {
+            height: 500px;
+            top: 50px;
+            opacity: 1;
+            z-index: 300;
+        }
+    }
+
+    @keyframes close-cart {
+        0% {
+            height: 500px;
+            top: 50px;
+            opacity: 1;
+            z-index: 300;
+        }
+        99% {
+            height: 0;
+            top: -100px;
+            opacity: 0;
+        }
+    }
+
+    @include media.laptop {
         margin: 0;
         padding: 5px;
-        width: 100%;
+        width: 90%;
     }
 
     .emptyCart {
@@ -41,10 +85,13 @@ $backOnHover: #e8e8e8;
 
     .productWrapper {
         margin-bottom: 25px;
+        padding: 2px;
         max-width: 95vw;
+        max-height: 400px;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        overflow-x: scroll;
+        overflow-y: scroll;
 
         @include scrollbars(1px, $lightgrayBorder, none);
     }

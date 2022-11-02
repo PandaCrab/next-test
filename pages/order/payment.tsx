@@ -189,7 +189,7 @@ const PaymentForm = () => {
                         <input
                             id="cardholder"
                             className={
-                                invalid.path?.cardholder ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                                `${styles.paymentInput} ${invalid.path?.cardholder && styles.invalid}`
                             }
                             name="cardholder"
                             placeholder="Enter cardholder name"
@@ -204,7 +204,7 @@ const PaymentForm = () => {
                         <input
                             id="cardNum"
                             className={
-                                invalid.path?.cardNum ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                                `${styles.paymentInput} ${invalid.path?.cardNum && styles.invalid}`
                             }
                             name="cardNum"
                             placeholder="Enter card number"
@@ -220,7 +220,7 @@ const PaymentForm = () => {
                             <input
                                 id="expiry"
                                 className={
-                                    invalid.path?.expiry ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                                    `${styles.paymentInput} ${invalid.path?.expiry && styles.invalid}`
                                 }
                                 name="expiry"
                                 placeholder="MM/YY"
@@ -235,7 +235,7 @@ const PaymentForm = () => {
                             <input
                                 id="cvv"
                                 className={
-                                    invalid.path?.cvv ? `${styles.paymentInput} ${styles.invalid}` : `${styles.paymentInput}`
+                                    `${styles.paymentInput} ${invalid.path?.cvv && styles.invalid}`
                                 }
                                 name="cvv"
                                 placeholder="Enter cvv code"

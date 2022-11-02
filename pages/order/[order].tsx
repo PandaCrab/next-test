@@ -89,7 +89,6 @@ const OrderForm = () => {
         if (target) {
             const { name, value } = target;
 
-
             if (Object.keys(shipping).includes(name)) {
                 setInvalidUserInfo({
                     ...invalidUserInfo,
@@ -189,18 +188,6 @@ const OrderForm = () => {
                 </div>
                 <div className={styles.inputWrapper}>
                     <label className={styles.formLabel}>Contact phone</label>
-                    {/* <input
-                        className={
-                            invalidUserInfo.path?.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                        }
-                        name="phone"
-                        placeholder="+38 (0**) ***-****"
-                        value={shipping.phone}
-                        onChange={({ target }) => handleChange(target)}
-                    />
-                    {invalidUserInfo.path.phone && (
-                        <ErrorTooltip message={invalidUserInfo.path.phone} />
-                    )} */}
                     <PhoneInput 
                         phone={shipping.phone}
                         setPhone={handleChange}
@@ -303,7 +290,6 @@ const OrderForm = () => {
                     Go to Payment
                 </button>
             </div>
-            <OrderList />
         </div>
     );
 };

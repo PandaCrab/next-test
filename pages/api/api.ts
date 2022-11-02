@@ -48,7 +48,7 @@ export const data$ = fromFetch(url + '/storage')
         })
     );
 
-export const takeSomeProducts = async (id: string): Promise<Stuff[]> => {
+export const takeSomeProducts = async (id: { _id: string}[] ): Promise<Stuff[]> => {
     try {
         const products = await fetchFunc(url + '/storage', 'POST', id);
 

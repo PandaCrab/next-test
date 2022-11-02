@@ -9,18 +9,19 @@ import { RiUser3Line } from 'react-icons/ri';
 import PopupAlert from './popup';
 import Cart from './cart';
 import CategoriesDropdown from './categotiesDropdown';
+import LeftMenu from './leftMenu';
 import ErrorTooltip from './errorTooltip';
 import { getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
+import { useClickOutside } from '../hooks';
 
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
-import LeftMenu from './leftMenu';
-import { useClickOutside } from '../hooks';
 
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
+    const [cartOpen, setCartOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
@@ -28,6 +29,7 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
+    const cartRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
     const router = useRouter();
 
