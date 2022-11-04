@@ -7,6 +7,7 @@ import { AiFillHeart, AiOutlineDelete } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 
 import StarRating from './star-rating';
+import QuantityReiser from './quantityReiser';
 import { inOrder, deleteFromOrder } from '../redux/ducks/order';
 import { getInfo } from '../redux/ducks/user';
 import { getUserLikes, getUserInfo } from '../pages/api/api';
@@ -38,8 +39,6 @@ const ProductCard = (props) => {
         const idInOrder = clientOrder.length;
         const { _id } = stuff;
 
-        
-
         dispatch(
             inOrder({
                 id: idInOrder,
@@ -63,7 +62,7 @@ const ProductCard = (props) => {
     };
 
     const buttonsToShow = () => {
-        if (router.pathname === '/cartPage') {
+        if (props.inOrder) {
             return (
                 <div className={styles.cardButtons}>
                     <button
@@ -125,7 +124,11 @@ const ProductCard = (props) => {
                         <div className={styles.productTitle}>{product.name}</div>
                         <div className={styles.productColor}>{product.color}</div>
                         <div className={styles.productPrice}>${product.price}</div>
-                        {router.pathname === '/cartPage' ? null : <StarRating product={product} />}
+                        {props.inOrder ? (
+                            <QuantityReiser product={product} />
+                        ) : (
+                            <StarRating product={product} />
+                        )}
                     </div>
                 </div>
                 {buttonsToShow()}
@@ -136,6 +139,7 @@ const ProductCard = (props) => {
 
 ProductCard.propTypes = {
     product: PropTypes.object,
+    inOrder: PropTypes.bool
 };
 
 export default ProductCard;

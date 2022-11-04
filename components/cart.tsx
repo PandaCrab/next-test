@@ -29,16 +29,17 @@ const Cart = () => {
             className={styles.cartContainer}
             ref={ref}
         >
-            <div className={styles.cart} onClick={() => toggleCartInfo()}>
-                <BsCart />
+            <div onClick={() => toggleCartInfo()}>
+                <div className={styles.cart}>
+                    <BsCart />
+                </div>
+                {ordered && ordered.length ? <div className={styles.badge}>{ordered.length}</div> : null}
             </div>
-            {ordered && ordered.length ? <div className={styles.badge}>{ordered.length}</div> : null}
             <CartInfo
                 state={open}
                 setState={setOpen}
                 animation={animation}
                 setAnimation={setAnimation}
-                ref={ref}
             />
         </div>
     );

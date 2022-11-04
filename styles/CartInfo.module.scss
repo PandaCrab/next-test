@@ -9,7 +9,6 @@ $backOnHover: #e8e8e8;
 .cartContainer {
     padding: 20px;
     width: 290px;
-    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +18,6 @@ $backOnHover: #e8e8e8;
     box-shadow: 0 2px 5px $gray;
     position: fixed;
     opacity: 0;
-    top: 50px;
     right: 2%;
 
     &.open {
@@ -33,7 +31,7 @@ $backOnHover: #e8e8e8;
     @keyframes open-cart {
         0% {
             height: 0;
-            top: -10px;
+            top: -100px;
             opacity: 0;
         }
         100% {
@@ -51,17 +49,33 @@ $backOnHover: #e8e8e8;
             opacity: 1;
             z-index: 300;
         }
-        99% {
+        100% {
             height: 0;
             top: -100px;
             opacity: 0;
+            z-index: 0;
         }
     }
 
     @include media.laptop {
         margin: 0;
         padding: 5px;
-        width: 90%;
+        width: 400px;
+        right: 5%;
+
+        @keyframes open-cart {
+            0% {
+                height: 0;
+                top: -10px;
+                opacity: 0;
+            }
+            100% {
+                height: 600px;
+                top: 80px;
+                opacity: 1;
+                z-index: 300;
+            }
+        }
     }
 
     .emptyCart {
@@ -80,6 +94,20 @@ $backOnHover: #e8e8e8;
 
         @include media.laptop {
             font-size: 18px;
+        }
+    }
+
+    .totalPrice {
+        margin-bottom: 15px;
+        padding: 10px;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid;
+
+        .label {
+            font-weight: bold;
         }
     }
 
