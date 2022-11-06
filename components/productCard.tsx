@@ -84,6 +84,7 @@ const ProductCard = (props) => {
                             ? `${styles.cartButton} ${styles.ordered}`
                             : `${styles.cartButton}`
                     }
+                    disabled={product.quantity === 0}
                 >
                     <BsCart />
                 </button>
@@ -109,7 +110,7 @@ const ProductCard = (props) => {
 
     return (
         <div className={styles.productWrapper}>
-            <div className={styles.productCard}>
+            <div className={`${styles.productCard} ${product.quantity === 0 && styles.outOfOrder}`}>
                 <div className={styles.cardContentWrapper}>
                     <div className={styles.imageWrapper}>
                         <Image

@@ -11,7 +11,7 @@ import type { Stuff } from '../types/types';
 import styles from '../styles/CartInfo.module.scss';
 import { takeSomeProducts } from '../pages/api/api';
 
-const CartInfo = ({ state, setState, animation, setAnimation }) => {
+const CartInfo = ({ open, setOpen, animation, setAnimation }) => {
     const [stuff, setStuff] = useState<Stuff[] | null>(null);
 
     const router = useRouter();
@@ -22,16 +22,16 @@ const CartInfo = ({ state, setState, animation, setAnimation }) => {
         }) => state.order.clientOrder
     );
 
-    const cartContainerStyle = `${styles.cartContainer} ${animation && (state ? styles.open : styles.close)}`;
+    const cartContainerStyle = `${styles.cartContainer} ${animation && (open ? styles.open : styles.close)}`;
 
     const animationEndHandler = ({ animationName }) => {
         if (animationName === 'open-cart') {
-            setState(true);
+            setOpen(true);
             setAnimation(true);
         }
 
         if (animationName === 'close-cart') {
-            setState(false);
+            setOpen(false);
             setAnimation(false);
         }
     };
@@ -60,13 +60,18 @@ const CartInfo = ({ state, setState, animation, setAnimation }) => {
         }
     }
 
+    const createOrderHandler = () => {
+        setOpen(false);
+        router.push(`/order/${Math.floor(Math.random() * 10000000000)}`);
+    };
+
     useEffect(() => {
         if (cart.length) {
             takeOrderedStuff();
         }
     }, [cart]);
 
-    return state && (
+    return open && (
         <div 
             className={cartContainerStyle}
             onAnimationEnd={(event) => animationEndHandler(event)}
@@ -90,7 +95,7 @@ const CartInfo = ({ state, setState, animation, setAnimation }) => {
 
                     <button
                         className={styles.orderButton}
-                        onClick={() => router.push(`/order/${Math.floor(Math.random() * 10000000)}`)}
+                        onClick={() => createOrderHandler()}
                     >
                         Create order
                     </button>
@@ -100,7 +105,7 @@ const CartInfo = ({ state, setState, animation, setAnimation }) => {
                     <div className={styles.emptyCart}>
                         Your cart don`t have any stuff
                         <Link href="/shop">
-                            <a>Buy somhting</a>
+                            <a onClick={() => setOpen(false)}>Buy somhting</a>
                         </Link>
                     </div>
                 </>
@@ -110,8 +115,8 @@ const CartInfo = ({ state, setState, animation, setAnimation }) => {
 };
 
 CartInfo.propTypes = {
-    state: PropTypes.bool,
-    setState: PropTypes.func,
+    open: PropTypes.bool,
+    setOpen: PropTypes.func,
     animation: PropTypes.bool,
     setAnimation: PropTypes.func,
 };

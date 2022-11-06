@@ -12,16 +12,8 @@ interface PropTypes {
     country?: string;
     invalid?: string;
 };
-
 const PhoneInput = ({ phone, setPhone, country, invalid }: PropTypes) => {
-    const [value, setValue] = useState('');
-
-    useEffect(() => {
-        setPhone({target: {
-            name: 'phone',
-            value: value,
-        }});
-    }, [value]);
+    console.log(phone)
     return (
         <div className={styles.container}>
             <Input

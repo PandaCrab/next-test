@@ -18,6 +18,10 @@ $green: green;
     border-radius: 5px;
     box-shadow: 2px 3px 10px $gray;
 
+    &.outOfOrder {
+        opacity: .5;
+    }
+
     @include media.mobileS {
         margin: 10px;
         margin-right: 10px;

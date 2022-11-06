@@ -36,8 +36,8 @@ const Cart = () => {
                 {ordered && ordered.length ? <div className={styles.badge}>{ordered.length}</div> : null}
             </div>
             <CartInfo
-                state={open}
-                setState={setOpen}
+                open={open}
+                setOpen={setOpen}
                 animation={animation}
                 setAnimation={setAnimation}
             />

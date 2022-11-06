@@ -190,7 +190,7 @@ const OrderForm = () => {
                     <label className={styles.formLabel}>Contact phone</label>
                     <PhoneInput 
                         phone={shipping.phone}
-                        setPhone={handleChange}
+                        setPhone={(value) => setShipping({...shipping, phone: value})}
                         country={address.country}
                         invalid={invalidUserInfo.path.phone}
                     />
