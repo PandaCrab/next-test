@@ -25,6 +25,10 @@ const ProductCard = (props) => {
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const disabledBuyBtn = product.quantity === 0 || clientOrder.filter(
+        e => e._id === product._id
+    ).length >= product.quantity;
+
     const routeToProductInfo = (id) => {
         router.push(`/shop/${id}`);
     };
@@ -84,7 +88,7 @@ const ProductCard = (props) => {
                             ? `${styles.cartButton} ${styles.ordered}`
                             : `${styles.cartButton}`
                     }
-                    disabled={product.quantity === 0}
+                    disabled={disabledBuyBtn}
                 >
                     <BsCart />
                 </button>

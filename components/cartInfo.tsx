@@ -16,9 +16,7 @@ const CartInfo = ({ open, setOpen, animation, setAnimation }) => {
 
     const router = useRouter();
     const cart = useSelector((state: {
-            order: { 
-                clientOrder: Array<{id: string; _id: string}> 
-            }
+            order: { clientOrder: Array<{id: string; _id: string}> }
         }) => state.order.clientOrder
     );
 
@@ -43,7 +41,7 @@ const CartInfo = ({ open, setOpen, animation, setAnimation }) => {
             array.forEach(product => total += product.price * (cart.filter(({ _id }) => _id === product._id).length));
         }
 
-        return total;
+        return total.toFixed(2);
     };
 
     const takeOrderedStuff = async () => {

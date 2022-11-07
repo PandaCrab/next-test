@@ -104,14 +104,13 @@ $green: green;
         }
 
         .deleteButton {
-            padding: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: $red;
             color: $white;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             border: 1px solid $lightgrayBorder;
             border-radius: 50%;
 
@@ -165,6 +164,10 @@ $green: green;
             &.ordered {
                 background-color: $green;
                 color: $white;
+
+                &:disabled {
+                    opacity: .6;
+                }
             }
 
             &.liked {

@@ -50,7 +50,7 @@ const QuantityReiser = ({ product }) => {
             return true;
         }
 
-        if (quantityInOrder < quantity) {
+        if (quantityInOrder <= quantity) {
             return false
         }
     }

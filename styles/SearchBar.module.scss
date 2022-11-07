@@ -1,52 +1,125 @@
 @use 'mixins/MediaMixins' as media;
 
 $lightgrayBorder: #bbbbbb;
+$white: white;
 
 .searchContainer {
-    padding: 5px;
-    width: 100%;
+    padding: 0;
+    width: 20px;
+    height: 20px;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    background-color: $white;
+    border: 1px solid $lightgrayBorder;
+    border-radius: 50%;
+    position: absolute;
+    overflow: hidden;
+    top: 12px;
+    right: 95px;
+
+    &.open {
+        padding-right: 5px;
+        width: 180px;
+        border-radius: 5px;
+        animation: search-open .2s linear forwards;
+    }
+
+    &.close {
+        justify-content: center;
+        width: 20px;
+        border-radius: 50%;
+        animation: close-search .2s linear forwards;
+    }
+
+    @keyframes search-open {
+        0% {
+            width: 20px;
+            border-radius: 50%;
+        }
+        20% { border-radius: 5px; }
+        100% { width: 180px; border-radius: 5px;}
+    }
+
+    @keyframes close-search {
+        0% { width: 180px; border-radius: 5px; }
+        80% {width: 20px; border-radius: 5px;}
+        100% { border-radius: 50%; }
+    }
+
+    @include media.laptop {
+        width: 30px;
+        height: 30px;
+        top: 23px;
+        right: 140px;
+
+        &.open {
+            width: 300px;
+        }
+
+        &.close {
+            width: 30px;
+        }
+
+        @keyframes search-open {
+            0% { width: 30px; border-radius: 50%; }
+            20% { border-radius: 5px; }
+            100% { width: 300px; }
+        }
+
+        @keyframes close-search {
+            0% { width: 300px; border-radius: 5px; }
+            80% { width: 30px; border-radius: 5px; }
+            100% { border-radius: 50%; }
+        }
+    }
 
     .searchInput {
-        margin-right: 5px;
+        margin: 0;
         padding: 3px 6px;
-        width: 100%;
-        font-size: 12px;
-        border: 1px solid $lightgrayBorder;
+        font-size: 14px;
+        border: none;
         border-radius: 5px;
+        left: 0;
+
+        &:focus {
+            border: none;
+            outline: none;
+        }
 
         @include media.laptop {
-            margin: 10px;
             padding: 6px 12px;
-            width: 500px;
+            width: 200px;
             font-size: 16px;
         }
 
         @include media.desktop {
-            width: 600px;
-            font-size: 18px;
+            width: 500px;
         }
     }
 
     .searchBtn {
-        padding: 5px;
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         background: none;
         font-size: 12px;
-        border: 1px solid $lightgrayBorder;
+        border: none;
         border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        position: absolute;
+        right: 3px;
 
         @include media.laptop {
             font-size: 18px;
+            right: 4px;
         }
 
         @include media.desktop {
-            font-size: 20px;
+            font-size: 20px;  
         }
     }    
 }

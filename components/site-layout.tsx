@@ -18,10 +18,11 @@ import { useClickOutside } from '../hooks';
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
+import SearchBar from './searchBar';
 
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
-    const [cartOpen, setCartOpen] = useState<boolean>(false);
+    const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
@@ -29,7 +30,6 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
-    const cartRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
     const router = useRouter();
 
@@ -146,6 +146,7 @@ const SiteLayout = ({ children }) => {
                     </div>
                 </div>
                 <div className={styles.loginCartWrapper}>
+                    <SearchBar isOpen={searchOpen} setOpen={setSearchOpen} />
                     <Cart />
                     <div
                         className={styles.profile}
