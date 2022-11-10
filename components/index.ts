@@ -14,6 +14,7 @@ import Avatar from './Avatar';
 import ErrorTooltip from './errorTooltip';
 import Loader from './loader';
 import CountrySelect from './countrySelect';
+import FilterBar from './filterBar';
 
 export {
     AddProductForm,
@@ -31,4 +32,5 @@ export {
     ErrorTooltip,
     Loader,
     CountrySelect,
+    FilterBar
 };

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiSearch } from 'react-icons/bi';
 
@@ -25,6 +26,7 @@ const SearchBar = ({ isOpen, setOpen }) => {
     useClickOutside(searchRef, isOpen, () => setOpen(false));
 
     const dispatch = useDispatch();
+    const router = useRouter();
     
     const catchSearchInput = useSelector((state: { search: { search: string } }) => state.search.search);
     const stuff = useSelector((state: { stuff: { stuff: Stuff[] } }) => state.stuff.stuff);
@@ -39,6 +41,11 @@ const SearchBar = ({ isOpen, setOpen }) => {
             setProduct(null);
         }
     };
+
+    const clickItemHandler = (id) => {
+        setOpen(false);
+        router.push(`shop/${id}`)
+    }
 
     const animationEndHandler = ({ animationName }) => {
         if (animationName === 'search-open') {
@@ -97,8 +104,8 @@ const SearchBar = ({ isOpen, setOpen }) => {
         }
     }, [isSearch]);
     return (
-        <>
-            <div className={containerClass} ref={searchRef} onAnimationEnd={(event) => animationEndHandler(event)}>
+        <div ref={searchRef}>
+            <div className={containerClass} onAnimationEnd={(event) => animationEndHandler(event)}>
                 <input
                     autoComplete='off'
                     ref={inputRef}
@@ -116,8 +123,12 @@ const SearchBar = ({ isOpen, setOpen }) => {
 
             {isOpen && product && (
                 <div className={styles.searchResults}>
-                    {product?.length ? product.map(({ imgUrl, name, width, height }, index) => (
-                        <div className={styles.item} key={index}>
+                    {product?.length ? product.map(({ _id, imgUrl, name, width, height }, index) => (
+                        <div
+                            className={styles.item}
+                            key={index}
+                            onClick={() => clickItemHandler(_id)}
+                        >
                             <div className={styles.imageWrapper}>
                                 <Image
                                     src={imgUrl}
@@ -135,7 +146,7 @@ const SearchBar = ({ isOpen, setOpen }) => {
                     )}
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

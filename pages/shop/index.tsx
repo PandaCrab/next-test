@@ -4,9 +4,10 @@ import {
 } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { SearchBar, ProductCard, Loader } from '../../components';
+import { ProductCard, Loader, FilterBar } from '../../components';
 import { storeStuff } from '../../redux/ducks/stuff';
 import { data$ } from '../api/api';
+import useSortProducts from '../../hooks/sortProducts';
 
 import type { Stuff } from '../../types/types';
 
@@ -28,29 +29,19 @@ const Shop = () => {
         status: false,
         message: null,
     });
-
     const [isLoading, setLoading] = useState<Loader>({
         status: false,
         loader: null,
     });
-
-    const catchSearchInput = useSelector((state: { search: { search: string } }) => state.search.search);
+    
     const stuff = useSelector((state: { stuff: { stuff: Stuff[] } }) => state.stuff.stuff);
-
-    const dispatch = useDispatch();
+    const [sorted, setSortedBy] = useSortProducts(stuffs);
 
     const observable$ = interval(400);
 
-    const searchProducts = (text) => {
-        if (text) {
-            const filtered = stuff
-                .filter((products) => Object.values(products).join('').toLowerCase().includes(text.toLowerCase()));
-
-            setStuffs(filtered);
-        } else {
-            setStuffs(stuff);
-        }
-    };
+    useEffect(() => {
+        console.log('hooray')
+    }, [sorted]);
 
     useEffect(() => {
         const loadProgress = ['Loading', 'Loading.', 'Loading..', 'Loading...'];
@@ -70,43 +61,24 @@ const Shop = () => {
     }, [isLoading.loader]);
 
     useEffect(() => {
-        setLoading({
-            ...isLoading,
-            status: true,
-        });
+        if (!stuff) {
+            setLoading({
+                ...isLoading,
+                status: true,
+            });
 
-        data$.subscribe({
-            next: async (result) => {
-                try {
-                    if (result) {
-                        if (result.length) {
-                            dispatch(storeStuff(result));
-                        }
-
-                        if (result.error) {
-                            setError({
-                                status: result.error,
-                                message: result.message,
-                            });
-                        }
-                    }
-                } catch (err) {
-                    console.log(err);
-                }
-            },
-            complete: () => {
-                setLoading({ status: false, loader: null });
-            },
-        });
+            setTimeout(() => setLoading({
+                ...isLoading,
+                status: false
+            }), 2500);
+        }
     }, []);
 
     useEffect(() => {
         setStuffs(stuff);
     }, [stuff]);
 
-    useEffect(() => {
-        searchProducts(catchSearchInput);
-    }, [catchSearchInput]);
+    useState
 
     if (isLoading.status) {
         return (<div className={styles.loader}><Loader /></div>);
@@ -119,7 +91,7 @@ const Shop = () => {
     return (
         <>
             <div className={styles.contentContainer}>
-                <SearchBar />
+              <FilterBar products={stuffs} setProducts={setStuffs} sortBy={setSortedBy} />
                 {stuffs ? (
                     <div className={styles.productWrapper}>
                         {stuffs.map((product) => (
