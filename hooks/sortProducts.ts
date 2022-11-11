@@ -35,7 +35,7 @@ const useSortProducts = (sortItems: Stuff[]): [Stuff[] | [], React.Dispatch<SetS
     
     switch (sortedBy) {
         case 'most-rated':
-            afterSort =  sortItems.sort((a: { stars: Stars }, b: { stars: Stars }) => {
+            afterSort =  [].concat(sortItems).sort((a: { stars: Stars }, b: { stars: Stars }) => {
                 const prev: number = Object.values(a.stars).reduce((a: number, b: number) => a + b, 0);
                 const current: number = Object.values(b.stars).reduce((a: number, b: number) => a + b, 0);
 
@@ -43,21 +43,35 @@ const useSortProducts = (sortItems: Stuff[]): [Stuff[] | [], React.Dispatch<SetS
             });
             break;
         case 'rating':
-            afterSort = sortItems.sort((a: Stuff, b: Stuff) => {
+            afterSort = [].concat(sortItems).sort((a: Stuff, b: Stuff) => {
                 const ratingA = calculateRating(a);
                 const ratingB = calculateRating(b);
 
                 return (ratingB - ratingA);
             });
             break;
+        case 'rating-lower':
+            afterSort = [].concat(sortItems).sort((a: Stuff, b: Stuff) => {
+                const ratingA = calculateRating(a);
+                const ratingB = calculateRating(b);
+
+                return (ratingA - ratingB);
+            });
+            break;
         case 'quantity':
-            afterSort = sortItems.sort((a, b) => b.quantity - a.quantity);
+            afterSort = [].concat(sortItems).sort((a, b) => b.quantity - a.quantity);
+            break;
+        case 'quantity-reverse':
+            afterSort = [].concat(sortItems).sort((a, b) => a.quantity - b.quantity);
             break;
         case 'price':
-            afterSort = sortItems.sort((a, b) => b.price - a.price);
+            afterSort = [].concat(sortItems).sort((a, b) => b.price - a.price);
+            break;
+        case 'price-cheap':
+            afterSort = [].concat(sortItems).sort((a, b) => b.price - a.price);
             break;
         default: 
-            afterSort = sortItems.sort((a, b) => b.quantity - a.quantity);
+            afterSort = [].concat(sortItems).sort((a, b) => b.quantity - a.quantity);
             break;
     }
 

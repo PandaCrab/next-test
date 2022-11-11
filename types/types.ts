@@ -151,6 +151,7 @@ export type ReduxStore = {
         orderId: string;
         clientOrder: object[] | undefined[];
     };
+    loader: { loader: boolean };
 };
 
 export type ObservableResult = Stuff[] | {

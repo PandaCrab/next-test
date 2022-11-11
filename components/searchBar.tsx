@@ -79,22 +79,6 @@ const SearchBar = ({ isOpen, setOpen }) => {
     }, [catchSearchInput]);
 
     useEffect(() => {
-        data$.subscribe({
-            next: async (result) => {
-                try {
-                    if (result) {
-                        if (result.length) {
-                            dispatch(storeStuff(result));
-                        }
-                    }
-                } catch (err) {
-                    console.log(err);
-                }
-            }
-        });
-    }, []);
-
-    useEffect(() => {
         if (isSearch.length >= 3) {
             dispatch(putSearch(isSearch));
         }

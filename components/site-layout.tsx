@@ -7,18 +7,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RiUser3Line } from 'react-icons/ri';
 
 import PopupAlert from './popup';
+import SearchBar from './searchBar';
 import Cart from './cart';
 import CategoriesDropdown from './categotiesDropdown';
 import LeftMenu from './leftMenu';
 import ErrorTooltip from './errorTooltip';
-import { getUserInfo, loginUser } from '../pages/api/api';
+import { data$, getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 import { useClickOutside } from '../hooks';
+import { storeStuff } from '../redux/ducks/stuff';
+import { catchError } from '../redux/ducks/alerts';
 
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
-import SearchBar from './searchBar';
 
 const SiteLayout = ({ children }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -112,6 +114,26 @@ const SiteLayout = ({ children }) => {
 
         return nameArr[0];
     };
+
+    useEffect(() => {
+        data$.subscribe({
+            next: async (result) => {
+                try {
+                    if (result) {
+                        if (result.length) {
+                            dispatch(storeStuff(result));
+                        }
+                    }
+
+                    if (result.error) {
+                        dispatch(catchError( result.message ))
+                    }
+                } catch (err) {
+                    console.log(err.message);
+                }
+            }
+        });
+    }, []);
 
     return (
         <div className="layout">
