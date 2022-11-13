@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
@@ -6,11 +5,22 @@ import { useSelector } from 'react-redux';
 import { CountrySelect, ErrorTooltip } from '../components';
 import { useClickOutside } from '../hooks';
 
-import type { AddressInfo, userObject } from '../types/types';
+import type { AddressInfo, userObject, InvalidAddressForm, AccountViews } from '../types/types';
 
 import styles from '../styles/AddressForm.module.scss';
+interface Props {
+    updateInfo: (
+        arg0: { shippingAddress: AddressInfo },
+        arg1: null,
+        arg2: React.Dispatch<React.SetStateAction<AddressInfo>>
+    ) => void;
+    view: AccountViews;
+    setView: React.Dispatch<React.SetStateAction<AccountViews>>;
+    invalid: InvalidAddressForm;
+    setInvalid: React.Dispatch<React.SetStateAction<InvalidAddressForm>>;
+};
 
-const AddressForm = ({
+const AddressForm: React.FC<Props> = ({
     updateInfo, view, setView, invalid, setInvalid
 }) => {
     const [animation, setAnimation] = useState<boolean>(false);
@@ -186,14 +196,6 @@ const AddressForm = ({
             </button>
         </div>
     );
-};
-
-AddressForm.propTypes = {
-    updateInfo: PropTypes.func,
-    view: PropTypes.object,
-    setView: PropTypes.func,
-    invalid: PropTypes.object,
-    setInvalid: PropTypes.func,
 };
 
 export default AddressForm;

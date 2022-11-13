@@ -1,20 +1,22 @@
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiSearch } from 'react-icons/bi';
 
 import { putSearch, deleteSearch } from '../redux/ducks/search';
-import { data$ } from '../pages/api/api';
 import { useClickOutside } from '../hooks';
-import { storeStuff } from '../redux/ducks/stuff';
 
 import type { Stuff } from '../types/types';
 
 import styles from '../styles/SearchBar.module.scss';
 
-const SearchBar = ({ isOpen, setOpen }) => {
+interface Props {
+    isOpen: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const SearchBar: React.FC<Props> = ({ isOpen, setOpen }) => {
     const [isSearch, setSearch] = useState<string>('');
     const [animation, setAnimation] = useState<boolean>(false);
     const [product, setProduct] = useState<Stuff[] | null>(null);
@@ -132,11 +134,6 @@ const SearchBar = ({ isOpen, setOpen }) => {
             )}
         </div>
     );
-};
-
-SearchBar.propTypes = {
-    isOpen: PropTypes.bool,
-    setOpen: PropTypes.func,
 };
 
 export default SearchBar;

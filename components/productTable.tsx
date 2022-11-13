@@ -63,7 +63,7 @@ const ProductTable = () => {
         }
     };
 
-    const deleteFromStorage = async (id) => {
+    const deleteFromStorage: (arg0: { _id: string } | string) => Promise<void> = async (id) => {
         try {
             const res = await deleteProduct(id);
             const { message } = await res.json();
@@ -82,7 +82,7 @@ const ProductTable = () => {
         }
     };
 
-    const updateProduct = async (product) => {
+    const updateProduct: (arg0: Stuff) => Promise<void> = async (product) => {
         try {
             const res = await updateProductInStorage(product);
 
@@ -97,7 +97,7 @@ const ProductTable = () => {
         }
     };
 
-    const updateInputChange = (target) => {
+    const updateInputChange: (arg0: HTMLInputElement) => void = (target) => {
         const { name, value } = target;
         setUpdate({
             ...inUpdate,

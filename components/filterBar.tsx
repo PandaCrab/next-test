@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { RiCloseLine, RiFilterLine, RiFilterOffLine } from 'react-icons/ri';
 
@@ -6,8 +5,15 @@ import { useClickOutside } from '../hooks';
 import useSortProducts from '../hooks/sortProducts';
 
 import styles from '../styles/FilterBar.module.scss';
+import { Stuff } from '../types/types';
+import Slider from './slider';
 
-const FilterBar = ({ products, setProducts }) => {
+interface Props {
+    products: Stuff[];
+    setProducts: React.Dispatch<React.SetStateAction<Stuff[]>>;
+};
+
+const FilterBar: React.FC<Props> = ({ products, setProducts }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const [sorted, setSortedBy] = useSortProducts(products);
     
@@ -66,15 +72,11 @@ const FilterBar = ({ products, setProducts }) => {
                     >
                         price
                     </div>
+                    <Slider min={1} max={100000} />
                 </div>
             </div>
         </div>
     );
 };
-
-FilterBar.propTypes = {
-    products: PropTypes.array,
-    setProducts: PropTypes.func
-}
 
 export default FilterBar;

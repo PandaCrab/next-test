@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { BsCart } from 'react-icons/bs';
@@ -16,7 +15,12 @@ import type { Stuff, UserInfo } from '../types/types';
 
 import styles from '../styles/ProductCard.module.scss';
 
-const ProductCard = (props) => {
+interface Props {
+    product: Stuff;
+    inOrder: boolean;
+}
+
+const ProductCard: React.FC<Props> = (props) => {
     const [product, setProduct] = useState<Stuff>(props.product);
 
     const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
@@ -140,11 +144,6 @@ const ProductCard = (props) => {
             </div>
         </div>
     );
-};
-
-ProductCard.propTypes = {
-    product: PropTypes.object,
-    inOrder: PropTypes.bool
 };
 
 export default ProductCard;

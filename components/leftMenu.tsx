@@ -5,7 +5,7 @@ import { useClickOutside } from '../hooks';
 
 import styles from '../styles/LeftMenu.module.scss';
 
-const LeftMenu = (props) => {
+const LeftMenu: React.FC<{ admin: boolean }> = ({ admin }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const [animation, setAnimation] = useState<boolean>(false);
 
@@ -15,7 +15,7 @@ const LeftMenu = (props) => {
 
     const setClassName = `${styles.menuDropdown} ${animation && (isOpen ? styles.openMenu :  styles.closeMenu)}`;
 
-    const animationEndHandler = ({ animationName }) => {
+    const animationEndHandler: (arg0: React.AnimationEvent) => void = ({ animationName }) => {
         if (animationName === 'open-menu') {
             setOpen(true);
             setAnimation(true);
@@ -74,7 +74,7 @@ const LeftMenu = (props) => {
                         Shop
                     </a>
                 </Link>
-                {props?.admin && (
+                {admin && (
                     <Link href="/admin">
                         <a
                             onClick={() => setOpen(false)}

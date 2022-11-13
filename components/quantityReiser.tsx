@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,7 +7,11 @@ import type { Stuff } from '../types/types';
 
 import styles from '../styles/QuantityReiser.module.scss';
 
-const QuantityReiser = ({ product }) => {
+interface Props {
+    product: Stuff;
+};
+
+const QuantityReiser: React.FC<Props> = ({ product }) => {
     const clientOrder = useSelector((state: { order: { clientOrder: Stuff[] } }) => state.order.clientOrder);
     const dispatch = useDispatch();
 
@@ -76,10 +79,6 @@ const QuantityReiser = ({ product }) => {
             </button>
         </div>
     )
-};
-
-QuantityReiser.propTypes = {
-    product: PropTypes.object,
 };
 
 export default QuantityReiser;

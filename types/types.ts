@@ -35,8 +35,17 @@ export type ShippingInfo = {
     };
 }
 
+export type Comments = {
+    userId?: string | null;
+    photo?: string | null;
+    username: string;
+    createdDate: Date;
+    message: string;
+    _id: string;
+}[];
+
 export type Stuff = {
-    _id?: string;
+    _id: string;
     name?: string;
     price?: number;
     imgUrl?: string;
@@ -47,7 +56,7 @@ export type Stuff = {
     description?: string;
     category?: string;
     subcategory?: string;
-    comments?: string[];
+    comments?: Comments;
     stars?: {
         one: number;
         two: number;
@@ -80,15 +89,6 @@ export type OrderInfo = {
         paymentType: string;
     };
 };
-
-export type Comments = {
-    userId: string | null;
-    photo: string | null;
-    username: string;
-    createdDate: Date;
-    message: string;
-    _id: string;
-}[];
 
 export type userObject = {
     token: string | null;
@@ -158,6 +158,27 @@ export type ObservableResult = Stuff[] | {
     error: boolean;
     message: string
 };
+
+export type AccountViews = {
+    viewedStuff: boolean;
+    likes: boolean;
+    addressForm: boolean;
+    phoneChanging: boolean;
+    settings: boolean;
+    agreeDeletion: boolean;
+    confirmPassword: boolean;
+}
+
+export type InvalidAddressForm = {
+    path: {
+        phone?: string;
+        street?: string;
+        city?: string;
+        country?: string;
+        zip?:string;
+    };
+    isValid: boolean;
+}
 
 export type RefElements = React.MutableRefObject<HTMLDivElement | HTMLInputElement | null>;
 

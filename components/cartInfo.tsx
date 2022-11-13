@@ -5,13 +5,20 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import { ProductCard } from '.';
+import { takeSomeProducts } from '../pages/api/api';
 
 import type { Stuff } from '../types/types';
 
 import styles from '../styles/CartInfo.module.scss';
-import { takeSomeProducts } from '../pages/api/api';
 
-const CartInfo = ({ open, setOpen, animation, setAnimation }) => {
+interface Props {
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    animation: boolean;
+    setAnimation: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const CartInfo: React.FC<Props> = ({ open, setOpen, animation, setAnimation }) => {
     const [stuff, setStuff] = useState<Stuff[] | null>(null);
 
     const router = useRouter();
@@ -110,13 +117,6 @@ const CartInfo = ({ open, setOpen, animation, setAnimation }) => {
             )}
         </div>
     );
-};
-
-CartInfo.propTypes = {
-    open: PropTypes.bool,
-    setOpen: PropTypes.func,
-    animation: PropTypes.bool,
-    setAnimation: PropTypes.func,
 };
 
 export default CartInfo;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useClickOutside } from '../hooks';
 import { SlArrowUp } from 'react-icons/sl';
@@ -6,9 +5,18 @@ import { SlArrowUp } from 'react-icons/sl';
 import { countryList } from '../helpers/countryList';
 import ErrorTooltip from './errorTooltip';
 
+import type { AddressInfo } from '../types/types';
+
 import styles from '../styles/CountrySelect.module.scss';
 
-const CountrySelect = ({ value, setValue, invalid, setInvalid }) => {
+interface Props {
+    value: string;
+    setValue: (arg0: string) => void;
+    invalid: string;
+    setInvalid: () => void;
+};
+
+const CountrySelect: React.FC<Props> = ({ value, setValue, invalid, setInvalid }) => {
     const [search, setSearch] = useState<string>('');
     const [isOpen, setOpen] = useState<boolean>(false);
     const [options, setOptions] = useState<string[] | []>([]);
@@ -81,13 +89,6 @@ const CountrySelect = ({ value, setValue, invalid, setInvalid }) => {
                 )}
         </div>
     );
-};
-
-CountrySelect.propTypes = {
-    className: PropTypes.string,
-    setValue: PropTypes.func,
-    invalid: PropTypes.string,
-    setInvalid: PropTypes.func,
 };
 
 export default CountrySelect;

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +21,11 @@ import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
 
-const SiteLayout = ({ children }) => {
+interface Props {
+    children: React.ReactElement;
+};
+
+const SiteLayout: React.FC<Props> = ({ children }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
@@ -300,10 +303,6 @@ const SiteLayout = ({ children }) => {
             </div>
         </div>
     );
-};
-
-SiteLayout.propTypes = {
-    children: PropTypes.element,
 };
 
 export default SiteLayout;

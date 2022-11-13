@@ -22,8 +22,11 @@
     "include": [
         "next-env.d.ts",
         "**/*.ts",
-        "**/*.tsx"
-    , "redux/store.ts", "pages/order/[order].jsx", "pages/order/[order].tsx"  ],
+        "**/*.tsx",
+        "redux/store.ts",
+        "pages/order/[order].jsx",
+        "pages/order/[order].tsx"  
+    ],
     "exclude": [
         "node_modules"
     ]
