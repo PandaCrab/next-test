@@ -19,8 +19,6 @@ import type {
 
 const url = `${process.env.NEXT_PUBLIC_SERVER_URI}`;
 
-console.log(process.env.SERVER_URI)
-
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?) => {
     if (method === 'GET') return fetch(url)

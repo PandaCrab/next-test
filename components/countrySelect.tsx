@@ -5,15 +5,13 @@ import { SlArrowUp } from 'react-icons/sl';
 import { countryList } from '../helpers/countryList';
 import ErrorTooltip from './errorTooltip';
 
-import type { AddressInfo } from '../types/types';
-
 import styles from '../styles/CountrySelect.module.scss';
 
 interface Props {
     value: string;
-    setValue: (arg0: string) => void;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
     invalid: string;
-    setInvalid: () => void;
+    setInvalid: Function;
 };
 
 const CountrySelect: React.FC<Props> = ({ value, setValue, invalid, setInvalid }) => {

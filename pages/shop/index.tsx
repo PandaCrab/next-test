@@ -39,12 +39,11 @@ const Shop = () => {
     if (isLoading) {
         return (<div className={styles.loader}><Loader /></div>);
     }
-    console.log(stuffs)
 
     return (
         <>
             <div className={styles.contentContainer}>
-              <FilterBar products={stuffs} setProducts={setStuffs} />
+                <FilterBar products={stuffs} setProducts={setStuffs} />
                 {stuffs ? (
                     <div className={styles.productWrapper}>
                         {stuffs.map((product) => (

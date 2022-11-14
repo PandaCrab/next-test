@@ -61,14 +61,11 @@ const useSortProducts = (sortItems: Stuff[]): [Stuff[] | [], React.Dispatch<SetS
         case 'quantity':
             afterSort = [].concat(sortItems).sort((a, b) => b.quantity - a.quantity);
             break;
-        case 'quantity-reverse':
-            afterSort = [].concat(sortItems).sort((a, b) => a.quantity - b.quantity);
-            break;
-        case 'price':
+        case 'expensive-first':
             afterSort = [].concat(sortItems).sort((a, b) => b.price - a.price);
             break;
-        case 'price-cheap':
-            afterSort = [].concat(sortItems).sort((a, b) => b.price - a.price);
+        case 'cheapest-first':
+            afterSort = [].concat(sortItems).sort((a, b) => a.price - b.price);
             break;
         default: 
             afterSort = [].concat(sortItems).sort((a, b) => b.quantity - a.quantity);

@@ -17,7 +17,7 @@ import styles from '../styles/ProductCard.module.scss';
 
 interface Props {
     product: Stuff;
-    inOrder: boolean;
+    inOrder?: boolean;
 }
 
 const ProductCard: React.FC<Props> = (props) => {
