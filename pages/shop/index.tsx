@@ -43,7 +43,7 @@ const Shop = () => {
     return (
         <>
             <div className={styles.contentContainer}>
-                <FilterBar products={stuffs} setProducts={setStuffs} />
+                <FilterBar products={stuff} setProducts={setStuffs} />
                 {stuffs ? (
                     <div className={styles.productWrapper}>
                         {stuffs.map((product) => (

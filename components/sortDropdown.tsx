@@ -25,6 +25,11 @@ const SortDropdown: React.FC<Props> = ({ products, setProducts }) => {
         setOpen((prev) => !prev);
     };
 
+    const itemClickHandler = (criterion) => {
+        setSortedBy(criterion);
+        setOpen(false);
+    };
+
     useEffect(() => {
         if (sorted) {
             setProducts(sorted);
@@ -42,9 +47,9 @@ const SortDropdown: React.FC<Props> = ({ products, setProducts }) => {
             <div className={`${styles.itemsWrapper} ${isOpen ? styles.open : styles.close}`}>
                 {criteria.map((criterion, index) => (
                     <div
-                        key={index}
+                        key={index} 
                         className={styles.item}
-                        onClick={() => setSortedBy(criterion)}
+                        onClick={() => itemClickHandler(criterion)}
                     >
                         {criterion.replace(/-/, ' ')}
                     </div>

@@ -15,6 +15,8 @@ import ErrorTooltip from './errorTooltip';
 import Loader from './loader';
 import CountrySelect from './countrySelect';
 import FilterBar from './filterBar';
+import Slider from './slider';
+import SortDropdown from './sortDropdown';
 
 export {
     AddProductForm,
@@ -32,5 +34,7 @@ export {
     ErrorTooltip,
     Loader,
     CountrySelect,
-    FilterBar
+    FilterBar,
+    Slider,
+    SortDropdown,
 };

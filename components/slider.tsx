@@ -1,16 +1,16 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import { range } from 'rxjs';
 
 import styles from '../styles/Slider.module.scss';
 
 interface Props {
     min: number,
-    max: number
+    max: number,
+    setPrice?: (arg0: [number, number]) => void;  
 };
 
 type RefInput = React.MutableRefObject<HTMLInputElement>
 
-const Slider: React.FC<Props> = ({ min, max }) => {
+const Slider: React.FC<Props> = ({ min, max, setPrice }) => {
     const [leftPointActive, setLeftPoint] = useState<boolean>(false);
     const [minValue, setMinValue] = useState<number>(min);
     const [maxValue, setMaxValue] = useState<number>(max);
@@ -25,16 +25,20 @@ const Slider: React.FC<Props> = ({ min, max }) => {
     );
 
     const changeMinHandler = (target) => {
-        const value = Math.min(+target.value, maxValue - 1)
+        const value = Math.min(+target.value, maxValue - 1);
         setMinValue(value);
-        target.value = value.toString();
+        target.value.toString();
     }
 
     const changeMaxHandler = (target) => {
         const value = Math.max(+target.value, minValue + 1);
         setMaxValue(value);
-        target.value = value.toString();
+        target.value.toString();
     };
+
+    useEffect(() => {
+        setPrice([minValue, maxValue]);
+    }, [minValue, maxValue]);
 
     useEffect(() => {
         if (maxValRef.current) {
@@ -64,13 +68,11 @@ const Slider: React.FC<Props> = ({ min, max }) => {
             <div className={styles.row}>
                 <input
                     className={`${styles.sliderValue} ${styles.left}`}
-                    maxLength={max.toString().length - 1}
                     value={minValue}
                     onChange={({ target }) => changeMinHandler(target)}
                 />
                 <input 
                     className={`${styles.sliderValue} ${styles.right}`}
-                    maxLength={max.toString().length - 1}
                     value={maxValue}
                     onChange={({ target }) => changeMaxHandler(target)}
                 />
