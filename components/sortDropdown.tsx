@@ -36,6 +36,10 @@ const SortDropdown: React.FC<Props> = ({ products, setProducts }) => {
         }
     }, [sorted]);
 
+    useEffect(() => {
+        setSortedBy('');
+    }, [products]);
+
     return (
         <div ref={ref} className={styles.container}>
             <div className={styles.dropdown} onClick={() => toggleDropdown()}>

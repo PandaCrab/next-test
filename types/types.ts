@@ -64,6 +64,12 @@ export type Stuff = {
         four: number;
         five: number;
     };
+};
+
+export type FilterCriteria = {
+    name?: string;
+    price?: number[];
+    colors?: string[];
 }
 
 export type OrderInfo = {

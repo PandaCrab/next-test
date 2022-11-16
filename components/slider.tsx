@@ -1,16 +1,19 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 
+import { FilterCriteria } from '../types/types';
+
 import styles from '../styles/Slider.module.scss';
 
 interface Props {
     min: number,
     max: number,
     setPrice?: (arg0: [number, number]) => void;  
+    criteria: FilterCriteria;
 };
 
 type RefInput = React.MutableRefObject<HTMLInputElement>
 
-const Slider: React.FC<Props> = ({ min, max, setPrice }) => {
+const Slider: React.FC<Props> = ({ min, max, setPrice, criteria }) => {
     const [leftPointActive, setLeftPoint] = useState<boolean>(false);
     const [minValue, setMinValue] = useState<number>(min);
     const [maxValue, setMaxValue] = useState<number>(max);
@@ -39,6 +42,13 @@ const Slider: React.FC<Props> = ({ min, max, setPrice }) => {
     useEffect(() => {
         setPrice([minValue, maxValue]);
     }, [minValue, maxValue]);
+
+    useEffect(() => {
+        if (!criteria) {
+            setMinValue(min);
+            setMaxValue(max);
+        }
+    }, [criteria]);
 
     useEffect(() => {
         if (maxValRef.current) {
