@@ -155,8 +155,8 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
                         <a className={styles.homeLink}>Shop</a>
                     </Link>
                     {admin && (
-                        <Link href="/admin">
-                            <a className={styles.homeLink}>Admin</a>
+                        <Link href={process.env.NEXT_PUBLIC_ADMIN_PORTAL}>
+                            <a target="_blank" className={styles.homeLink}>Admin</a>
                         </Link>
                     )}
                     <div
