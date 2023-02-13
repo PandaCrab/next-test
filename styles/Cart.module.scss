@@ -9,7 +9,6 @@ $white: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     position: relative;
 
     @include media.desktop {
@@ -22,6 +21,7 @@ $white: white;
         height: 20px;
         display: flex;
         align-items: center;
+        cursor: pointer;
 
         @include media.laptop {
             width: 30px;

@@ -4,12 +4,16 @@ const FILL_SHIPPING_INFO = "order/FILL_SHIPPING_INFO";
 const GET_ORDER_ID = 'order/GET_ORDER_ID';
 const ADD_TO_ORDER = 'order/ADD_TO_ORDER';
 const DELETE_FROM_ORDER = 'order/DELETE_FROM_ORDER';
+const DELETE_ONE_ITEM = 'order/DELETE_ONE_ITEM';
 const CLEAR_USER_ORDER = 'order/CLEAR_USER_ORDER';
 
 interface State {
     shippingInfo: ShippingInfo | {};
     orderId: string;
-    clientOrder: Stuff[];
+    clientOrder: {
+        id: string;
+        _id: string;
+    }[];
 }
 
 const initialState: State = {
@@ -27,7 +31,9 @@ const orderReduer = (state=initialState, action) => {
         case ADD_TO_ORDER:
             return { ...state, clientOrder: state.clientOrder.concat(action.payload) };
         case DELETE_FROM_ORDER:
-            return { ...state, clientOrder: state.clientOrder.filter(items => items !== action.payload) };
+            return { ...state, clientOrder: state.clientOrder.filter(items => items._id !== action.payload) };
+        case DELETE_ONE_ITEM:
+            return {...state, clientOrder: state.clientOrder.filter(item => item !== action.payload)}
         case CLEAR_USER_ORDER:
             return { ...state, clientOrder: [], shippinginfo: {} };
         default: return state;
@@ -51,9 +57,14 @@ export const inOrder = (item) => ({
 
 export const clearOrder = () => ({ type: CLEAR_USER_ORDER });
 
+export const deleteItem = item => ({
+    type: DELETE_ONE_ITEM,
+    payload: item
+});
+
 export const deleteFromOrder = item => ({
     type: DELETE_FROM_ORDER,
-    payload: item
+    payload: item._id
 });
 
 export default orderReduer;

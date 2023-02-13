@@ -8,14 +8,15 @@ import { updateUserInfo } from '../api/api';
 import { getInfo } from '../../redux/ducks/user';
 import { catchSuccess, catchError } from '../../redux/ducks/alerts';
 import { addressSchema, phoneSchema } from '../../helpers/validation';
-import { UserInfoSection, DelitionAccount, AddressForm } from '../../components';
+import { UserInfoSection, DelitionAccount, AddressForm, Loader } from '../../components';
 
 import type { UserInfo } from '../../types/types';
 
 import styles from '../../styles/AccountPage.module.scss';
+import { useClickOutside } from '../../hooks';
 
 interface ViewState {
-    inBucket: boolean;
+    viewedStuff: boolean;
     likes: boolean;
     addressForm: boolean;
     phoneChanging: boolean;
@@ -31,18 +32,19 @@ interface InvalidState {
         city?: string;
         country?: string;
         zip?:string;
-    } | null;
+    } | {};
     isValid: boolean;
 };
 
 const AccountPage = () => {
-    const [loged, setLoged] = useState<boolean>(false);
+    const [logout, setLogout] = useState<boolean | null>(false);
+    const [isLoad, setLoad] = useState<boolean>(true);
     const [invalid, setInvalid] = useState<InvalidState>({
-        path: null,
+        path: {},
         isValid: false,
     });
     const [view, setView] = useState<ViewState>({
-        inBucket: false,
+        viewedStuff: false,
         likes: false,
         addressForm: false,
         phoneChanging: false,
@@ -56,7 +58,7 @@ const AccountPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const token = useSelector((state: { user: { token: string } }) => state.user.token);
+    const token = useSelector((state: { user: { token: string } }) => state.user.token);;
     const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
 
     const updateInfo = async (info, setPhone, setAddressForm) => {
@@ -70,9 +72,9 @@ const AccountPage = () => {
         }
 
         if (info) {
-            if (info.phone) {
+            if (Object.keys(info).includes('phone')) {
                 await phoneSchema
-                    .validate(info)
+                    .validate(info, { abortEarly: false })
                     .then(async (value) => {
                         if (value) {
                             const res = await updateUserInfo(id.toString(), info);
@@ -111,7 +113,7 @@ const AccountPage = () => {
 
             if (info.shippingAddress) {
                 await addressSchema
-                    .validate(info, { abortEarly: false })
+                    .validate(info.shippingAddress, { abortEarly: false })
                     .then(async (value) => {
                         if (value) {
                             const res = await updateUserInfo(id.toString(), info);
@@ -161,97 +163,85 @@ const AccountPage = () => {
         }
     };
 
-    const clickOutsideSettings = (event) => {
-        if (!settingsRef.current.contains(event.target)) {
-            setView({
-                ...view,
-                settings: false,
-            });
-        }
-    };
-
-    useEffect(() => {
-        if (view.settings) {
-            document.addEventListener('click', clickOutsideSettings);
-        }
-
-        return () => {
-            document.removeEventListener('click', clickOutsideSettings);
-        };
-    }, [view.settings]);
+    useClickOutside(settingsRef, view.settings, () => setView({ ...view, settings: false }));
 
     useEffect(() => {
         if (token) {
-            setLoged(true);
+            setLogout(false);
+            setLoad(false);
         }
 
         if (!token) {
-            setLoged(false);
+            setLogout(true);
+            setLoad(false);
         }
     }, [token]);
 
-    return loged ? (
-        user && (
-            <div className={styles.accountContainer}>
-                <div className={styles.headerWrapper}>
-                    <div className={styles.greeting}>My account</div>
-                    {user?.admin && <div>Admin</div>}
-                    <div
-                        className={styles.settingsWrapper}
-                        ref={settingsRef}
+    if (logout) {
+        return ( <LoginPage /> )
+    }
+
+    if (isLoad) {
+        return (<Loader />);
+    }
+
+    return user && (
+        <div className={styles.accountContainer}>
+            <div className={styles.headerWrapper}>
+                <div className={styles.greeting}>My account</div>
+                {user?.admin && <div>Admin</div>}
+                <div
+                    className={styles.settingsWrapper}
+                    ref={settingsRef}
+                >
+                    <button
+                        className={styles.settingsBtn}
+                        onClick={() => setView({
+                            ...view,
+                            settings: !view.settings,
+                        })
+                        }
                     >
-                        <button
-                            className={styles.settingsBtn}
-                            onClick={() => setView({
-                                ...view,
-                                settings: !view.settings,
-                            })
-                            }
-                        >
-                            <RiSettings4Line />
-                        </button>
-                        {view.settings && (
-                            <div className={styles.settings}>
-                                <div
-                                    className={styles.settingsItem}
-                                    onClick={() => setView({
-                                        ...view,
-                                        agreeDeletion: true,
-                                        settings: false,
-                                    })
-                                    }
-                                >
-                                    Delete account
-                                </div>
+                        <RiSettings4Line />
+                    </button>
+                    {view.settings && (
+                        <div className={styles.settings}>
+                            <div
+                                className={styles.settingsItem}
+                                onClick={() => setView({
+                                    ...view,
+                                    agreeDeletion: true,
+                                    settings: false,
+                                })
+                                }
+                            >
+                                Delete account
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
-                {view.agreeDeletion && (
-                    <DelitionAccount
-                        view={view}
-                        setView={setView}
-                    />
-                )}
-                {view.addressForm && (
-                    <AddressForm
-                        updateInfo={updateInfo}
-                        view={view}
-                        setView={setView}
-                        invalid={invalid}
-                        setInvalid={setInvalid}
-                    />
-                )}
-                <UserInfoSection
-                    updateInfo={updateInfo}
+            </div>
+            {view.agreeDeletion && (
+                <DelitionAccount
                     view={view}
                     setView={setView}
-                    invalid={invalid}
                 />
-            </div>
-        )
-    ) : (
-        <LoginPage />
+            )}
+            <AddressForm
+                updateInfo={updateInfo}
+                view={view}
+                setView={setView}
+                invalid={invalid}
+                setInvalid={setInvalid}
+            />
+            <UserInfoSection
+                updateInfo={updateInfo}
+                view={view}
+                setView={setView}
+                invalid={invalid}
+                setInvalid={setInvalid}
+            />
+        </div>
     );
 };
 

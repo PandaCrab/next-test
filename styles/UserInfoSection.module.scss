@@ -1,10 +1,10 @@
 @use 'mixins/MediaMixins.scss' as media;
-@use 'mixins/ScrollbarMixin.module.scss' as *;
 
 $lightgrayBorder: #bbbbbb;
 $gray: gray;
 $red: red;
-$descriptionBack: rgb(243, 243, 243);
+$white: white;
+$descriptionBack: rgb(126, 126, 126);
 
 .infoWrapper {
     padding: 12px;
@@ -79,7 +79,7 @@ $descriptionBack: rgb(243, 243, 243);
         }
 
         .userAddressInfo {
-            font-size: 12px;
+            font-size: 20px;
 
             @include media.laptop {
                 font-size: 24px;
@@ -92,8 +92,9 @@ $descriptionBack: rgb(243, 243, 243);
 
         .userPhoneWrapper {
             margin-bottom: 20px;
+            height: 50px;
             display: flex;
-            align-items: center;
+            align-items: baseline;
             font-size: 28px;
             font-weight: bold;
 
@@ -109,31 +110,27 @@ $descriptionBack: rgb(243, 243, 243);
                 font-size: 32px;
             }
 
-            .phoneInput {
-                padding: 5px 10px;
-                font-size: 18px;
-                border-radius: 5px;
+            .inputWrapper {
+                margin-bottom: 18px;
+                position: relative;
 
-                @include media.mobileS {
-                    padding: 3px 5px;
-                    font-size: 12px;
-                }
-
-                @include media.laptop {
+                .phoneInput {
                     padding: 6px 12px;
-                    font-size: 16px;
-                }
+                    width: 220px;
+                    font-size: 18px;
+                    border: 1px solid;
+                    border-radius: 5px;
 
-                @include media.desktop {
-                    width: 400px;
-                    font-size: 32px;
-                }
+                    @include media.mobileS {
+                        font-size: 14px;
+                    }
 
-                &.invalid {
-                    border-color: $red;
+                    @include media.laptop {
+                        font-size: 16px;
+                    }
 
-                    &::placeholder {
-                        color: $red;
+                    &.invalid {
+                        border-color: $red;
                     }
                 }
             }
@@ -151,11 +148,6 @@ $descriptionBack: rgb(243, 243, 243);
 
                 @include media.mobileS {
                     margin-left: 10px;
-                }
-
-                @include media.desktop {
-                    padding: 10px;
-                    font-size: 28px;
                 }
             }
         }
@@ -175,7 +167,7 @@ $descriptionBack: rgb(243, 243, 243);
             }
 
             @include media.desktop {
-                font-size: 32px;
+                font-size: 20px;
             }
 
             .descriptionOutput {
@@ -189,19 +181,13 @@ $descriptionBack: rgb(243, 243, 243);
                 font-size: 12px;
                 border: 1px solid;
                 border-radius: 50%;
+                position: relative;
                 cursor: default;
 
                 @include media.mobileS {
                     margin-left: 5px;
-                    position: relative;
                     left: -150px;
                     bottom: -10px;
-                }
-
-                @include media.mobileM {
-                    margin-left: 3px;
-                    left: 0;
-                    bottom: 0;
                 }
 
                 @include media.laptop {
@@ -209,15 +195,8 @@ $descriptionBack: rgb(243, 243, 243);
                     width: 20px;
                     height: 20px;
                     font-size: 16px;
-                    left: -5px;
-                }
-
-                @include media.desktop {
-                    width: 30px;
-                    height: 30px;
-                    font-size: 24px;
-                    position: relative;
-                    left: -70px;
+                    left: 0;
+                    top: 0;
                 }
             }
 
@@ -225,6 +204,7 @@ $descriptionBack: rgb(243, 243, 243);
                 padding: 12px;
                 width: 400px;
                 background-color: $descriptionBack;
+                color: $white;
                 text-align: center;
                 border: 1px solid $lightgrayBorder;
                 border-radius: 5px;
@@ -233,6 +213,24 @@ $descriptionBack: rgb(243, 243, 243);
                 top: -120px;
                 right: 0;
 
+                &::after {
+                    content: " ";
+                    position: absolute;
+                    top: 100%;
+                    left: 33%;
+                    border-width: 10px;
+                    border-style: solid;
+                    border-color: $descriptionBack transparent transparent transparent;
+
+                    @include media.tablet {
+                        left: 90%;
+                    }
+
+                    @include media.laptop {
+                        left: 90%;
+                    }
+                }
+
                 @include media.mobileS {
                     padding: 6px;
                     width: 250px;
@@ -240,17 +238,17 @@ $descriptionBack: rgb(243, 243, 243);
                     top: -70px;
                 }
 
+                @include media.tablet {
+                    top: -80px;
+                    right: -10px;
+                }
+
                 @include media.laptop {
                     padding: 12px;
                     width: 450px;
                     font-size: 16px;
-                    top: -90px;
-                }
-
-                @include media.desktop {
-                    width: 600px;
-                    font-size: 24px;
-                    top: -120px;
+                    top: -100px;
+                    right: -25px;
                 }
             }
         }
@@ -263,14 +261,12 @@ $descriptionBack: rgb(243, 243, 243);
 
         @include media.mobileS {
             width: 100%;
+            font-size: 14px;
         }
 
         @include media.laptop {
-            width: 250px;
-        }
-
-        @include media.desktop {
-            width: 500px;
+            width: 350px;
+            font-size: 16px;
         }
     }
 }

@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { RiCloseLine } from 'react-icons/ri';
 import PropTypes from 'prop-types';
+import React, { useState, useEffect, useRef } from 'react';
+import { RiCloseLine } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
 
-import { ErrorTooltip } from '../components';
+import { CountrySelect, ErrorTooltip } from '../components';
+import { useClickOutside } from '../hooks';
 
-import type { AddressInfo } from '../types/types';
+import type { AddressInfo, userObject } from '../types/types';
 
 import styles from '../styles/AddressForm.module.scss';
 
 const AddressForm = ({
     updateInfo, view, setView, invalid, setInvalid
 }) => {
+    const [animation, setAnimation] = useState<boolean>(false);
     const [addressForm, setAddressForm] = useState<AddressInfo>({
         street: '',
         city: '',
@@ -18,16 +21,50 @@ const AddressForm = ({
         zip: '',
     });
 
-    const closeHendler = () => {
+    const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
+
+    const formRef: React.MutableRefObject<HTMLDivElement> = useRef(null);
+
+    const formClassName = animation ? (view.addressForm ? 
+        `${styles.addressFormWrapper} ${styles.openForm}` 
+        : `${styles.addressFormWrapper} ${styles.closeForm}`
+        ) : `${styles.addressFormWrapper}`
+
+    const closeHandler = () => {
         setView({
             ...view,
             addressForm: false
+        });
+
+        setAddressForm({
+            street: '',
+            city: '',
+            country: '',
+            zip: ''
         });
 
         setInvalid({
             ...invalid,
             path: null
         });
+    };
+
+    const animationEndHandler = ({ animationName }) => {
+        if (animationName === 'open-form') {
+            setView({
+                ...view,
+                addressForm: true
+            });
+            setAnimation (true);
+        }
+
+        if (animationName === 'close-form') {
+            setView({
+                ...view,
+                addressForm: false
+            });
+            setAnimation(false);
+        }
     };
 
     const addressInputChange = (target: { name: string, value: string }) => {
@@ -47,10 +84,28 @@ const AddressForm = ({
         });
     };
 
+    useEffect(() => {
+        if (userAddress && Object.keys(userAddress).length) {
+            setAddressForm(userAddress);
+        }
+    }, [view.addressForm]);
+
+    useClickOutside(formRef, view.addressForm, closeHandler);
+
+    useEffect(() => {
+        if (view.addressForm) {
+            setAnimation(true);
+        }
+    }, [view.addressForm]);
+
     return (
-        <div className={styles.addressFormWrapper}>
+        <div 
+            className={formClassName} 
+            ref={formRef}
+            onAnimationEnd={(event) => animationEndHandler(event)}
+        >
             <button
-                onClick={() => closeHendler()}
+                onClick={() => closeHandler()}
                 className={styles.closeBtn}
             >
                 <RiCloseLine />
@@ -59,7 +114,7 @@ const AddressForm = ({
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.street
+                            invalid.path?.street
                                 ? `${styles.addressFormInput} ${styles.invalid}`
                                 : `${styles.addressFormInput}`
                         }
@@ -75,7 +130,7 @@ const AddressForm = ({
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.city
+                            invalid.path?.city
                                 ? `${styles.addressFormInput} ${styles.invalid}`
                                 : `${styles.addressFormInput}`
                         }
@@ -89,25 +144,26 @@ const AddressForm = ({
                     )}
                 </div>
                 <div className={styles.inputWrapper}>
-                    <input
-                        className={
-                            invalid.path.country
-                                ? `${styles.addressFormInput} ${styles.invalid}`
-                                : `${styles.addressFormInput}`
-                        }
-                        name="country"
+                    <CountrySelect
                         value={addressForm.country}
-                        onChange={({ target }) => addressInputChange(target)}
-                        placeholder='Choose country'
+                        setValue={(item) => setAddressForm({
+                            ...addressForm,
+                            country: item
+                        })}
+                        invalid={invalid.path?.country}
+                        setInvalid={() => setInvalid({
+                            ...invalid,
+                            path: {
+                                ...invalid.path,
+                                country: ''
+                            }
+                        })}
                     />
-                    {invalid.path?.country && (
-                        <ErrorTooltip message={invalid.path?.country} />
-                    )}
                 </div>
                 <div className={styles.inputWrapper}>
                     <input
                         className={
-                            invalid.path.zip ? `${styles.addressFormInput} ${styles.invalid}` : `${styles.addressFormInput}`
+                            invalid.path?.zip ? `${styles.addressFormInput} ${styles.invalid}` : `${styles.addressFormInput}`
                         }
                         name="zip"
                         value={addressForm.zip}

@@ -1,0 +1,31 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+$lightgrayBorder: #bbbbbb;
+$red: red;
+
+.container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .phoneInput {
+        padding: 6px 12px;
+        padding-right: 30px;
+        width: 100%;
+        border: 2px solid $lightgrayBorder;
+        border-radius: 5px;
+
+        &.invalid {
+            border-color: $red;
+        }
+
+        @include media.mobileS {
+            padding-right: 0;
+        }
+
+        @include media.laptop {
+            padding: 6px 12px;
+            font-size: 18px;
+        }
+    }
+}

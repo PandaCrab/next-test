@@ -5,8 +5,9 @@ import { useRouter } from 'next/router';
 import LoginPage from './login';
 import { AddProductForm, ProductTable } from '../components';
 
+import type { userObject } from '../types/types';
+
 import styles from '../styles/Admin.module.scss';
-import { userObject } from '../types/types';
 
 const AdminPage = () => {
     const [loged, setloged] = useState<boolean>(false);

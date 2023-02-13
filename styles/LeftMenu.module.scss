@@ -1,0 +1,96 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+$lightgrayBorder: #bbbbbb;
+$gray: gray;
+$white: white;
+
+.menuWrapper {
+    display: flex;
+    position: relative;
+
+    @include media.laptop {
+        display: none;
+    }
+    .menuBtn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+
+    }
+
+    .menuDropdown {
+        padding-top: 30px;
+        width: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: $white;
+        border: 1px solid $lightgrayBorder;
+        border-radius: 5px;
+        position: absolute;
+        left: -20px;
+        box-shadow: none;
+        overflow: hidden;
+        z-index: 1000;
+
+        &.openMenu {
+            animation: open-menu .2s linear forwards;
+        }
+
+        &.closeMenu {
+            animation: close-menu .2s linear forwards;
+        }
+
+        .closedMenuDropdown {
+            display: none;
+        }
+
+        @keyframes open-menu {
+            0% {width: 0;}
+            100% {
+                width: 260px;
+                box-shadow: 0 2px 5px $gray;
+                left: -15px;
+            }
+        }
+
+        @keyframes close-menu {
+            0% {width: 260px;}
+            100% {
+                width: 0;
+                box-shadow: none;
+                left: -20px;
+            }
+        }
+
+        &>a {
+            margin-bottom: 20px;
+            padding-left: 10px;
+            width: 100%;
+            font-size: 24px;
+            text-decoration: none;
+            border-bottom: 1px solid $lightgrayBorder;
+        }
+
+        .closeBtn {
+            padding: 1px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 1px solid $lightgrayBorder;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+
+            &:active {
+                box-shadow: 0 0 3px $gray;
+            }
+        }
+    }
+}

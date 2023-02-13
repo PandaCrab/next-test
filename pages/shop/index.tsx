@@ -4,7 +4,7 @@ import {
 } from 'rxjs';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { SearchBar, ProductCard } from '../../components';
+import { SearchBar, ProductCard, Loader } from '../../components';
 import { storeStuff } from '../../redux/ducks/stuff';
 import { data$ } from '../api/api';
 
@@ -109,7 +109,7 @@ const Shop = () => {
     }, [catchSearchInput]);
 
     if (isLoading.status) {
-        return (<div className={styles.loader}>{ isLoading.loader }</div>);
+        return (<div className={styles.loader}><Loader /></div>);
     }
 
     if (error.status) {

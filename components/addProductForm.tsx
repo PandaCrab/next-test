@@ -9,7 +9,7 @@ import { postProduct } from '../pages/api/api';
 import { addProductSchema } from '../helpers/validation';
 import { ErrorTooltip } from '../components';
 import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
-import useWindowSize from '../hooks/windowSize';
+import { useClickOutside, useWindowSize } from '../hooks';
 
 import type { Stuff } from '../types/types';
 
@@ -112,21 +112,13 @@ const AddProductForm = () => {
             });
     };
 
-    const onClickOutside = (event) => {
-        if (!dropdownRef.current.contains(event.target)) {
+    const closeDropdown = () => {
+        if (dropdownCategories && (dropdownCategories.category || dropdownCategories.subcategory)) {
             setCategories(false);
         }
-    };
+    }
 
-    useEffect(() => {
-        if (dropdownCategories && (dropdownCategories.category || dropdownCategories.subcategory)) {
-            document.addEventListener('click', onClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('click', onClickOutside);
-        }
-    }, [dropdownCategories]);
+    useClickOutside(dropdownRef, dropdownCategories, closeDropdown);
 
     useEffect(() => {
         if (size.width < 767) {

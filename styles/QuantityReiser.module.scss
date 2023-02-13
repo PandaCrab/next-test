@@ -1,0 +1,49 @@
+@use 'mixins/MediaMixins.scss' as media;
+
+$gray: gray;
+
+.quantityRaiser {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+
+    .minus,
+    .plus {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        background: none;
+        border: 1px solid;
+        border-radius: 5px;
+        margin: 2px;
+
+        &:hover {
+            box-shadow: 0 0 7px $gray;
+        }
+
+        &:active {
+            box-shadow: 0 1px 5px $gray;
+        }
+
+        &:disabled {
+            &:hover {
+                box-shadow: none;
+            }
+
+            &:active {
+                box-shadow: none;
+            }
+        }
+        
+    }
+
+    .quantity {
+        width: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

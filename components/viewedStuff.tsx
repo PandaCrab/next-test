@@ -4,42 +4,39 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import type { Stuff } from '../types/types';
+
+import styles from '../styles/viewedStuff.module.scss';
 import { takeSomeProducts } from '../pages/api/api';
-
-import type { UserInfo, Stuff } from '../types/types';
-
-import styles from '../styles/LikedProducts.module.scss';
 import { useClickOutside } from '../hooks';
 
-const LikedProducts = ({ view, setView }) => {
-    const [likes, setLikes] = useState<Stuff[] | null>();
+const ViewedStuff = ({ view, setView }) => {
+    const [stuff, setStuff] = useState<Stuff[] | null>(null);
     const [animation, setAnimation] = useState<boolean>(false);
 
     const router = useRouter();
 
-    const user = useSelector((state: { user: { info: UserInfo } }) => state.user.info);
-
     const ref: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
     const dropdownStyles = `
-        ${styles.itemsWrapper} 
-        ${animation && (view.likes ? styles.openDropdown : styles.closeDropdown)}
+        ${styles.itemsWrapper}
+        ${animation && (view.viewedStuff ? styles.openDropdown : styles.closeDropdown)}
     `;
 
-    const catchLikedProducts = async (ids) => {
-        const likedProducts = await takeSomeProducts(ids);
+    const catchViewedStuff = async (ids) => {
+        const viewedStuff = await takeSomeProducts(ids);
 
-        if (likedProducts) {
-            setLikes(likedProducts);
+        if (viewedStuff) {
+            setStuff(viewedStuff)
         }
-    };
+    }
 
     const toggleDropdown = () => {
         setAnimation(true);
 
         setView((prev) => ({
             ...prev,
-            likes: !prev.likes
+            viewedStuff: !prev.viewedStuff
         }));
     };
 
@@ -47,7 +44,7 @@ const LikedProducts = ({ view, setView }) => {
         if (animationName === 'open-dropdown') {
             setView({
                 ...view,
-                likes: true
+                viewedStuff: true
             });
             setAnimation(true);
         }
@@ -55,36 +52,36 @@ const LikedProducts = ({ view, setView }) => {
         if (animationName === 'close-dropdown') {
             setView({
                 ...view,
-                likes: false
+                viewedStuff: false
             });
             setAnimation(false);
         }
     };
 
-    useClickOutside(ref, view.likes, () => setView({ ...view, likes: false }));
+    useClickOutside(ref, view.viewedStuff, () => setView({ ...view, viewedStuff: false }));
 
     useEffect(() => {
-        if (user?.likes?.length) {
-            catchLikedProducts(user.likes);
-        } else {
-            setLikes(null);
+        const stuffIds = JSON.parse(sessionStorage.getItem('viewed'));
+
+        if (stuffIds && stuffIds.length) {
+            catchViewedStuff(stuffIds);
         }
-    }, [user]);
-    
+    }, []);
+
     return (
-        <div className={styles.likes} ref={ref}>
+        <div className={styles.viewedStuff} ref={ref}>
             <div
                 onClick={() => toggleDropdown()}
                 className={styles.itemsHeader}
             >
-                Your liked stuff
+                Viewed products
             </div>
             <div
                 className={dropdownStyles}
                 onAnimationEnd={(event) => animationEndHandler(event)}
             >
-                {likes ? (
-                    likes.map((product) => (
+                {stuff ? (
+                    stuff.map((product) => (
                         <div
                             key={product._id}
                             className={styles.items}
@@ -105,16 +102,16 @@ const LikedProducts = ({ view, setView }) => {
                         </div>
                     ))
                 ) : (
-                    <div>You didn`t liked anything yet</div>
+                    <div>You didn't view any product</div>
                 )}
             </div>
         </div>
     );
 };
 
-LikedProducts.propTypes = {
+ViewedStuff.propTypes = {
     view: PropTypes.object,
     setView: PropTypes.func,
 };
 
-export default LikedProducts;
+export default ViewedStuff;

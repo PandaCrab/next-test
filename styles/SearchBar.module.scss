@@ -1,52 +1,183 @@
 @use 'mixins/MediaMixins' as media;
+@use 'mixins/ScrollbarMixin.module.scss' as *;
 
 $lightgrayBorder: #bbbbbb;
+$itemBackground: #f1f1f1;
+$white: white;
 
-.searchContainer {
-    padding: 5px;
-    width: 100%;
+.searchBarWrapper {
+    padding: 0;
+    width: 20px;
+    height: 20px;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    background-color: $white;
+    border: 1px solid $lightgrayBorder;
+    border-radius: 50%;
+    position: absolute;
+    overflow: hidden;
+    top: 12px;
+    right: 95px;
+    z-index: 100;
+
+    &.open {
+        padding-right: 5px;
+        width: 180px;
+        border-radius: 5px;
+        animation: search-open .2s linear forwards;
+    }
+
+    &.close {
+        justify-content: center;
+        width: 20px;
+        border-radius: 50%;
+        animation: close-search .2s linear forwards;
+    }
+
+    @keyframes search-open {
+        0% {
+            width: 20px;
+            border-radius: 50%;
+        }
+        20% { border-radius: 5px; }
+        100% { width: 180px; border-radius: 5px;}
+    }
+
+    @keyframes close-search {
+        0% { width: 180px; border-radius: 5px; }
+        80% {width: 20px; border-radius: 5px;}
+        100% { border-radius: 50%; }
+    }
+
+    @include media.laptop {
+        width: 30px;
+        height: 30px;
+        top: 23px;
+        right: 140px;
+
+        &.open {
+            width: 300px;
+        }
+
+        &.close {
+            width: 30px;
+        }
+
+        @keyframes search-open {
+            0% { width: 30px; border-radius: 50%; }
+            20% { border-radius: 5px; }
+            100% { width: 300px; }
+        }
+
+        @keyframes close-search {
+            0% { width: 300px; border-radius: 5px; }
+            80% { width: 30px; border-radius: 5px; }
+            100% { border-radius: 50%; }
+        }
+    }
 
     .searchInput {
-        margin-right: 5px;
+        margin: 0;
         padding: 3px 6px;
-        width: 100%;
-        font-size: 12px;
-        border: 1px solid $lightgrayBorder;
+        font-size: 14px;
+        border: none;
         border-radius: 5px;
+        left: 0;
+
+        &:focus {
+            border: none;
+            outline: none;
+        }
 
         @include media.laptop {
-            margin: 10px;
             padding: 6px 12px;
-            width: 500px;
+            width: 200px;
             font-size: 16px;
         }
 
         @include media.desktop {
-            width: 600px;
-            font-size: 18px;
+            width: 500px;
         }
     }
 
     .searchBtn {
-        padding: 5px;
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         background: none;
         font-size: 12px;
-        border: 1px solid $lightgrayBorder;
+        border: none;
         border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        position: absolute;
+        right: 3px;
 
         @include media.laptop {
             font-size: 18px;
+            right: 4px;
         }
 
         @include media.desktop {
-            font-size: 20px;
+            font-size: 20px;  
         }
-    }    
+    }
+}
+
+.searchResults {
+    width: 180px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $white;
+    border: 1px solid $lightgrayBorder;
+    border-radius: 0 0 5px 5px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 30px;
+    right: 95px;
+    box-shadow: 0 2px 5px $lightgrayBorder;
+    z-index: 99;
+
+    @include scrollbars(1px, none, $lightgrayBorder);
+
+    @include media.laptop {
+        width: 300px;
+        top: 50px;
+        right: 140px;
+    }
+
+    .item {
+        padding: 5px;   
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 12px;
+
+        &:hover {
+            background-color: $itemBackground;
+        }
+
+        &.empty {
+            padding: 10px 5px;
+            font-size: 14px;
+            justify-content: center;
+
+            &:hover {
+                border: none;
+            }
+        }
+
+        .imageWrapper {
+            margin-right: 5px;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+        }
+    }
 }

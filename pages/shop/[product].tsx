@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Image from 'next/image';
 import { takeOneProduct } from '../api/api';
-import { ProductComments } from '../../components';
+import { ProductComments, StarRating } from '../../components';
 import { inOrder } from '../../redux/ducks/order';
+import { catchSuccess } from '../../redux/ducks/alerts';
+import { setViewedStuff } from '../../helpers/setToSessionStorage';
 
 import type { Stuff } from '../../types/types';
 
 import styles from '../../styles/ProductPage.module.scss';
-import { catchSuccess } from '../../redux/ducks/alerts';
 
 const SingleProduct = () => {
     const [productId, setProductId] = useState<string | string[]>('');
@@ -37,21 +38,12 @@ const SingleProduct = () => {
 
     const pushToOrder = (stuff) => {
         const idInOrder = clientOrder.length;
-        const {
-            _id, name, price, imgUrl, color, quantity, width, height,
-        } = stuff;
+        const { _id } = stuff;
 
         dispatch(
             inOrder({
                 id: idInOrder,
-                _id,
-                name,
-                price,
-                imgUrl,
-                color,
-                quantity,
-                width,
-                height,
+                _id
             }),
         );
 
@@ -70,6 +62,12 @@ const SingleProduct = () => {
         }
         return 'Sold';
     };
+
+    useEffect(() => {
+        if (productId) {
+            setViewedStuff(productId);
+        }
+    }, [productId]);
 
     useEffect(() => {
         if (productId) {
@@ -122,12 +120,13 @@ const SingleProduct = () => {
                                 <div>
                                     { availability() }
                                 </div>
+                                <StarRating product={product} />
                             </div>
                         </div>
                         <div className={styles.description}>{product?.description}</div>
                         <button 
                             onClick={() => pushToOrder(product)}
-                            className="btns"
+                            className={styles.buyBtn}
                         >
                             Buy
                         </button>

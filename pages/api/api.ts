@@ -1,10 +1,10 @@
 import {
     switchMap,
     of,
-    catchError,
-    Observable
+    catchError
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch'
+import { Stuff } from '../../types/types';
 
 import type {
     Product,
@@ -17,7 +17,7 @@ import type {
     CommentApi,
 } from '../../types/apiTypes';
 
-const url = 'http://192.168.31.172:4000';
+const url = 'http://localhost:4000';
 
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?) => {
@@ -48,7 +48,7 @@ export const data$ = fromFetch(url + '/storage')
         })
     );
 
-export const takeSomeProducts = async (id: string) => {
+export const takeSomeProducts = async (id: { _id: string}[] ): Promise<Stuff[]> => {
     try {
         const products = await fetchFunc(url + '/storage', 'POST', id);
 
