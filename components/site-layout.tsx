@@ -1,26 +1,31 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RiUser3Line } from 'react-icons/ri';
 
 import PopupAlert from './popup';
+import SearchBar from './searchBar';
 import Cart from './cart';
 import CategoriesDropdown from './categotiesDropdown';
 import LeftMenu from './leftMenu';
 import ErrorTooltip from './errorTooltip';
-import { getUserInfo, loginUser } from '../pages/api/api';
+import { data$, getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
 import { useClickOutside } from '../hooks';
+import { storeStuff } from '../redux/ducks/stuff';
+import { catchError } from '../redux/ducks/alerts';
 
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
-import SearchBar from './searchBar';
 
-const SiteLayout = ({ children }) => {
+interface Props {
+    children: React.ReactElement;
+};
+
+const SiteLayout: React.FC<Props> = ({ children }) => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
@@ -113,6 +118,26 @@ const SiteLayout = ({ children }) => {
         return nameArr[0];
     };
 
+    useEffect(() => {
+        data$.subscribe({
+            next: async (result) => {
+                try {
+                    if (result) {
+                        if (result.length) {
+                            dispatch(storeStuff(result));
+                        }
+                    }
+
+                    if (result.error) {
+                        dispatch(catchError( result.message ))
+                    }
+                } catch (err) {
+                    console.log(err.message);
+                }
+            }
+        });
+    }, []);
+
     return (
         <div className="layout">
             <PopupAlert />
@@ -130,8 +155,8 @@ const SiteLayout = ({ children }) => {
                         <a className={styles.homeLink}>Shop</a>
                     </Link>
                     {admin && (
-                        <Link href="/admin">
-                            <a className={styles.homeLink}>Admin</a>
+                        <Link href={process.env.NEXT_PUBLIC_ADMIN_PORTAL}>
+                            <a target="_blank" className={styles.homeLink}>Admin</a>
                         </Link>
                     )}
                     <div
@@ -278,10 +303,6 @@ const SiteLayout = ({ children }) => {
             </div>
         </div>
     );
-};
-
-SiteLayout.propTypes = {
-    children: PropTypes.element,
 };
 
 export default SiteLayout;

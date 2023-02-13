@@ -17,7 +17,7 @@ import type {
     CommentApi,
 } from '../../types/apiTypes';
 
-const url = 'http://localhost:4000';
+const url = `${process.env.NEXT_PUBLIC_SERVER_URI}`;
 
 //Need write method to working correct
 const fetchFunc = (url: string, method: string, data?) => {
@@ -78,7 +78,7 @@ export const takeCategories = async (category: string, subcategory: string) => {
 
 export const postProduct = (data: Product) => fetchFunc( url + '/storage', 'POST', data);
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: { _id: string } | string) => {
     try {
         const res: Response = await fetch(url +`/storage`, {
             method: 'DELETE',

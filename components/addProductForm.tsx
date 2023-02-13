@@ -31,17 +31,7 @@ const AddProductForm = () => {
         category: false,
         subcategory: false,
     });
-    const [addProduct, setProduct] = useState<Stuff>({
-        name: '',
-        price: 0,
-        imgUrl: '',
-        color: '',
-        quantity: 0,
-        category: '',
-        width: 0,
-        height: 0,
-        description: '',
-    });
+    const [addProduct, setProduct] = useState<Stuff | null>(null);
     const [invalidInfo, setInvalidInfo] = useState<InvalidState>({
         path: null,
         isValid: false,
@@ -76,18 +66,7 @@ const AddProductForm = () => {
                 if (value) {
                     await postProduct(info);
 
-                    setProduct({
-                        name: '',
-                        price: 0,
-                        imgUrl: '',
-                        color: '',
-                        quantity: 0,
-                        category: '',
-                        subcategory: '',
-                        width: 0,
-                        height: 0,
-                        description: '',
-                    });
+                    setProduct(null);
 
                     if (size.width < 767) {
                         setPreview(false);
@@ -97,7 +76,7 @@ const AddProductForm = () => {
                 }
             })
             .catch((error) => {
-                const validationError = {};
+                const validationError = null;
 
                 error.inner.forEach((err) => {
                     if (err.path) {

@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { RiCheckFill, RiCloseLine } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
@@ -8,13 +7,24 @@ import LikedProducts from './likedProducts';
 import ViewedStuff from './viewedStuff';
 import Avatar from './Avatar';
 import ErrorTooltip from './errorTooltip';
-
-import type { userObject } from '../types/types';
-
-import styles from '../styles/UserInfoSection.module.scss';
 import { useClickOutside } from '../hooks';
 
-const UserInfoSection = ({
+import type { AccountViews, AddressInfo, InvalidAddressForm, userObject } from '../types/types';
+
+import styles from '../styles/UserInfoSection.module.scss';
+
+interface Props {
+    updateInfo: (
+        arg0: { shippingAddress: AddressInfo | {} } | { phone: string },
+        arg1?: React.Dispatch<React.SetStateAction<string>>
+    ) => void;
+    view: AccountViews;
+    setView: React.Dispatch<React.SetStateAction<AccountViews>>;
+    invalid: InvalidAddressForm;
+    setInvalid: React.Dispatch<React.SetStateAction<InvalidAddressForm>>;
+};
+
+const UserInfoSection: React.FC<Props> = ({
     updateInfo, view, setView, invalid, setInvalid
 }) => {
     const [descriptionHide, setDescriptionHide] = useState<boolean>(true);
@@ -190,14 +200,6 @@ const UserInfoSection = ({
             </div>
         </div>
     );
-};
-
-UserInfoSection.propTypes = {
-    view: PropTypes.object,
-    setView: PropTypes.func,
-    updateInfo: PropTypes.func,
-    invalid: PropTypes.object,
-    setInvalid: PropTypes.func,
 };
 
 export default UserInfoSection;

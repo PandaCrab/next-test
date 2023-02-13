@@ -6,13 +6,13 @@ import { phoneCode } from '../helpers/phoneCountryCode';
 
 import styles from '../styles/PhoneInput.module.scss';
 
-interface PropTypes {
+interface Props {
     phone: string;
     setPhone: (val?) => void;
     country?: string;
     invalid?: string;
 };
-const PhoneInput = ({ phone, setPhone, country, invalid }: PropTypes) => {
+const PhoneInput: React.FC<Props> = ({ phone, setPhone, country, invalid }) => {
     console.log(phone)
     return (
         <div className={styles.container}>

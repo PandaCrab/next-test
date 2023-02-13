@@ -12,6 +12,9 @@ To warking corectly, you need clone beckend
 repository `node-test-app` in same level folder.
 To start server just need to follow the insturctions in `node-test-app` README;)
 
+## To connect your server You need to create env file
+
+Create `.env.local` in the root directory with parameters presented in `.env.local.template`
 ### To start docker-compose
 
 Check docker has been launch on your machine, before start.

@@ -1,16 +1,19 @@
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 
-import type { Stuff } from '../types/types';
+import type { AccountViews, Stuff } from '../types/types';
 
 import styles from '../styles/viewedStuff.module.scss';
 import { takeSomeProducts } from '../pages/api/api';
 import { useClickOutside } from '../hooks';
 
-const ViewedStuff = ({ view, setView }) => {
+interface Props {
+    view: AccountViews;
+    setView: React.Dispatch<React.SetStateAction<AccountViews>>;
+};
+
+const ViewedStuff: React.FC<Props> = ({ view, setView }) => {
     const [stuff, setStuff] = useState<Stuff[] | null>(null);
     const [animation, setAnimation] = useState<boolean>(false);
 
@@ -107,11 +110,6 @@ const ViewedStuff = ({ view, setView }) => {
             </div>
         </div>
     );
-};
-
-ViewedStuff.propTypes = {
-    view: PropTypes.object,
-    setView: PropTypes.func,
 };
 
 export default ViewedStuff;
