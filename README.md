@@ -6,9 +6,9 @@ This is test next app for education.
 
 run in terminal `yarn dev`.
 
-### To warking correct
+### To working correct
 
-To warking corectly, you need clone beckend
+To working corectly, you need clone beckend
 repository `node-test-app` in same level folder.
 To start server just need to follow the insturctions in `node-test-app` README;)
 
