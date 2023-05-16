@@ -37,10 +37,6 @@ const PopupAlert: React.FC = () => {
             setError(alert.error);
             setTimeout(() => setError(''), 3000);
         }
-
-        setTimeout(() => {
-            dispatch(clearAlerts());
-        }, 3000);
     }, [alert.success, alert.warning, alert.error]);
 
     if (success) {

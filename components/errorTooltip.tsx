@@ -1,18 +1,13 @@
-import PropTypes from 'prop-types'
 import React from 'react';
 
 import styles from '../styles/ErrorTooltip.module.scss'
 
-const ErrorTooltip = ({ message }) => {
+const ErrorTooltip: React.FC<{ message: string | number }> = ({ message }) => {
     return (
         <div className={styles.container}>
             {message}
         </div>
     )
 }
-
-ErrorTooltip.propTypes = {
-    message: PropTypes.string || PropTypes.number,
-};
 
 export default ErrorTooltip;

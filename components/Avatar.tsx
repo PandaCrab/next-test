@@ -33,7 +33,7 @@ const Avatar = () => {
     const dispatch = useDispatch();
 
     const userAvatar = useSelector((state: { user: { info: UserInfo }}) => state.user.info.photo );
-    const userId = (router.query.userAccount).toString();
+    const userId = (router.query?.userAccount).toString();
 
     const resizeImage = (base64Str, maxWidth = 200, maxHeight = 150): Promise<string> => {
         return new Promise((resolve) => {

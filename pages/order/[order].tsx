@@ -2,13 +2,14 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ErrorTooltip, OrderList } from '../../components';
+import { CountrySelect, ErrorTooltip, OrderList } from '../../components';
 import { fillShipping, getOrderId } from '../../redux/ducks/order';
 import { addressSchema, userInfoSchema } from '../../helpers/validation';
 
 import type { AddressInfo, ShippingInfo, userObject } from '../../types/types';
 
 import styles from '../../styles/OrderPage.module.scss';
+import PhoneInput from '../../components/phoneInput';
 
 interface AddressInvalid {
     path: {
@@ -85,36 +86,41 @@ const OrderForm = () => {
     const userAddress = useSelector((state: { user: userObject }) => state.user.info?.shippingAddress);
 
     const handleChange = (target) => {
-        const { name, value } = target;
-        if (Object.keys(shipping).includes(name)) {
-            setInvalidUserInfo({
-                ...invalidUserInfo,
-                path: {
-                    ...invalidUserInfo.path,
-                    [name]: '',
-                }
-            });
+        if (target) {
+            const { name, value } = target;
 
-            setShipping({
-                ...shipping,
-                [name]: value,
-            });
+            if (Object.keys(shipping).includes(name)) {
+                setInvalidUserInfo({
+                    ...invalidUserInfo,
+                    path: {
+                        ...invalidUserInfo.path,
+                        [name]: '',
+                    }
+                });
+
+                setShipping({
+                    ...shipping,
+                    [name]: value,
+                });
+            }
+
+            if (Object.keys(address).includes(name)) {
+                setInvalidAddress({
+                    ...invalidAddress,
+                    path: {
+                        ...invalidAddress.path,
+                        [name]: ''
+                    }
+                });
+
+                setAddress({
+                    ...address,
+                    [name]: value
+                });
+            }
         }
 
-        if (Object.keys(address).includes(name)) {
-            setInvalidAddress({
-                ...invalidAddress,
-                path: {
-                    ...invalidAddress.path,
-                    [name]: ''
-                }
-            });
-
-            setAddress({
-                ...address,
-                [name]: value
-            });
-        }
+        return;
     };
 
     const addShippingAddress = () => {
@@ -172,6 +178,7 @@ const OrderForm = () => {
                             invalidUserInfo.path?.name ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="name"
+                        placeholder="John Doe"
                         value={shipping.name}
                         onChange={({ target }) => handleChange(target)}
                     />
@@ -181,35 +188,30 @@ const OrderForm = () => {
                 </div>
                 <div className={styles.inputWrapper}>
                     <label className={styles.formLabel}>Contact phone</label>
-                    <input
-                        className={
-                            invalidUserInfo.path?.phone ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
-                        }
-                        name="phone"
-                        value={shipping.phone}
-                        onChange={({ target }) => handleChange(target)}
+                    <PhoneInput 
+                        phone={shipping.phone}
+                        setPhone={(value) => setShipping({...shipping, phone: value})}
+                        country={address.country}
+                        invalid={invalidUserInfo.path.phone}
                     />
-                    {invalidUserInfo.path.phone && (
-                        <ErrorTooltip message={invalidUserInfo.path.phone} />
-                    )}
                 </div>
                 <div className={styles.inputWrapper}>
                     <label className={styles.formLabel}>
                         <div>Street</div>
-                        {userAddress && Object.keys(userAddress).length && (
-                            <div
-                                className={styles.autocompleteBtn}
-                                onClick={() => addShippingAddress()}
-                            >
-                                Autocomplete
-                            </div>
-                        )}
+                        <button
+                            className={styles.autocompleteBtn}
+                            disabled={userAddress && !Object.keys(userAddress).length}
+                            onClick={() => addShippingAddress()}
+                        >
+                            Autocomplete
+                        </button>
                     </label>
                     <input
                         className={
                             invalidAddress.path?.street ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="street"
+                        placeholder="1 Khreshchatyk street"
                         value={address.street}
                         onChange={({ target }) => handleChange(target)
                         }
@@ -223,6 +225,7 @@ const OrderForm = () => {
                     <input
                         className={styles.formInput}
                         name="optional"
+                        placeholder="Door code, gate code, etc."
                         value={shipping.optional}
                         onChange={({ target }) => handleChange(target)}
                     />
@@ -234,6 +237,7 @@ const OrderForm = () => {
                             invalidAddress.path?.city ? `${styles.formInput} ${styles.invalid}` : `${styles.formInput}`
                         }
                         name="city"
+                        placeholder="Kiev"
                         value={address.city}
                         onChange={({ target }) => handleChange(target)
                         }
@@ -244,21 +248,21 @@ const OrderForm = () => {
                 </div>
                 <div className={styles.row}>
                     <div className={styles.inputWrapper}>
-                        <label className={styles.formLabel}>Country</label>
-                        <input
-                            className={
-                                invalidAddress.path?.country
-                                    ? `${styles.formInput} ${styles.invalid}`
-                                    : `${styles.formInput}`
-                            }
-                            name="country"
+                        <CountrySelect
                             value={address.country}
-                            onChange={({ target }) => handleChange(target)
-                            }
+                            setValue={(item) => setAddress({
+                                ...address,
+                                country: item
+                            })}
+                            invalid={invalidAddress.path?.country}
+                            setInvalid={() => setInvalidAddress({
+                                ...invalidAddress,
+                                path: {
+                                    ...invalidAddress.path,
+                                    country: ''
+                                }
+                            })}
                         />
-                        {invalidAddress.path.country && (
-                            <ErrorTooltip message={invalidAddress.path.country} />
-                        )}
                     </div>
                     <div className={styles.inputWrapper}>
                         <label className={styles.formLabel}>ZIP</label>
@@ -269,6 +273,7 @@ const OrderForm = () => {
                                     : `${styles.formInput}`
                             }
                             name="zip"
+                            placeholder="01001"
                             value={address.zip}
                             onChange={({ target }) => handleChange(target)
                             }
@@ -285,7 +290,6 @@ const OrderForm = () => {
                     Go to Payment
                 </button>
             </div>
-            <OrderList />
         </div>
     );
 };

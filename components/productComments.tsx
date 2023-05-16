@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { RiUser3Line } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
@@ -7,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { commentSchema } from '../helpers/validation';
 import { commentProduct, takeOneProduct } from '../pages/api/api';
 
-import type { Comments, UserInfo } from '../types/types';
+import type { Comments, Stuff, UserInfo } from '../types/types';
 
 import styles from '../styles/ProductComments.module.scss';
 
@@ -16,7 +15,13 @@ interface InvalidState {
     valid: boolean;
 };
 
-const ProductComments = ({ product, setProduct, productId }) => {
+interface Props {
+    product: Stuff;
+    setProduct: React.Dispatch<React.SetStateAction<Stuff>>;
+    productId: string;
+};
+
+const ProductComments: React.FC<Props> = ({ product, setProduct, productId }) => {
     const [commentInput, setCommentInput] = useState<string>('');
     const [comments, setComments] = useState<Comments>();
     const [invalid, setInvalid] = useState<InvalidState>({
@@ -133,12 +138,6 @@ const ProductComments = ({ product, setProduct, productId }) => {
             </div>
         </div>
     );
-};
-
-ProductComments.propTypes = {
-    product: PropTypes.object,
-    setProduct: PropTypes.func,
-    productId: PropTypes.string,
 };
 
 export default ProductComments;

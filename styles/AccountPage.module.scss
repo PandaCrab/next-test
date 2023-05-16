@@ -75,14 +75,26 @@ $backOnHover: #e8e8e8;
                 border-radius: 5px;
                 box-shadow: 0 3px 10px $gray;
                 position: absolute;
-                top: 35px;
+                top: 25px;
                 right: 0;
                 z-index: 20;
+                overflow: hidden;
+                animation: settings-dropdown .2s linear forwards;
+
+                @keyframes settings-dropdown {
+                    0% {opacity: 0; top: 0}
+                    100% {opacity: 1; top: 35px}
+                }
 
                 @include media.mobileS {
                     padding: 6px;
                     width: 150px;
                     font-size: 12px;
+
+                    @keyframes settings-dropdown {
+                        0% {width: 0; height: 0; opacity: 0;}
+                        100% {width: 150px; height: 40px; opacity: 1;}
+                    }
                 }
 
                 @include media.laptop {
@@ -95,6 +107,11 @@ $backOnHover: #e8e8e8;
                     width: 300px;
                     font-size: 24px;
                     top: 45px;
+
+                    @keyframes settings-dropdown {
+                        0% {width: 0; height: 0; opacity: 0;}
+                        100% {width: 300px; height: 70px; opacity: 1;}
+                    }
                 }
 
                 .settingsItem {

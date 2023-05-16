@@ -1,31 +1,33 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { RiUser3Line, RiMenuFill } from 'react-icons/ri';
+import { RiUser3Line } from 'react-icons/ri';
 
 import PopupAlert from './popup';
+import SearchBar from './searchBar';
 import Cart from './cart';
 import CategoriesDropdown from './categotiesDropdown';
-import { getUserInfo, loginUser } from '../pages/api/api';
+import LeftMenu from './leftMenu';
+import ErrorTooltip from './errorTooltip';
+import { data$, getUserInfo, loginUser } from '../pages/api/api';
 import { getToken, getInfo, logout } from '../redux/ducks/user';
+import { useClickOutside } from '../hooks';
+import { storeStuff } from '../redux/ducks/stuff';
+import { catchError } from '../redux/ducks/alerts';
 
 import type { userObject } from '../types/types';
 
 import styles from '../styles/SiteLayout.module.scss';
 
-interface OpenState {
-    account?: boolean;
-    menu?: boolean;
-}
+interface Props {
+    children: React.ReactElement;
+};
 
-const SiteLayout = ({ children }) => {
-    const [isOpen, setOpen] = useState<OpenState>({
-        account: false,
-        menu: false
-    });
+const SiteLayout: React.FC<Props> = ({ children }) => {
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
@@ -33,9 +35,8 @@ const SiteLayout = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
-    const menuDropdownRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
-    const router = useRouter();
 
+    const router = useRouter();
 
     const dispatch = useDispatch();
     const user = useSelector((state: { user: userObject }) => state.user);
@@ -55,6 +56,13 @@ const SiteLayout = ({ children }) => {
 
         dispatch(logout());
     };
+
+    const closeProfile = () => {
+        setPassword('');
+        setOpen(false);
+    };
+
+    useClickOutside(profileRef, isOpen, closeProfile);
 
     const getTokenFromStorage = () => {
         const fromStorage = localStorage.getItem('token');
@@ -97,10 +105,7 @@ const SiteLayout = ({ children }) => {
             setPassword('');
             setErrorMessage('');
 
-            setOpen({
-                ...isOpen,
-                account: false
-            });
+            setOpen(false);
         } else {
             setErrorMessage(token.message);
             setPassword('');
@@ -113,109 +118,31 @@ const SiteLayout = ({ children }) => {
         return nameArr[0];
     };
 
-    const clickOutside = (event) => {
-        const target = event.target
-
-        if (profileRef.current && !profileRef.current.contains(target)) {
-            if (isOpen.account) {
-                setOpen({
-                    ...isOpen,
-                    account: false
-                });
-            }
-        }
-
-        if (menuDropdownRef.current && !menuDropdownRef.current.contains(target)) {
-            if (isOpen.menu) {
-                setOpen({
-                    ...isOpen,
-                    menu: false
-                });
-            }
-        }
-    };
-
-
     useEffect(() => {
-        setPassword('');
+        data$.subscribe({
+            next: async (result) => {
+                try {
+                    if (result) {
+                        if (result.length) {
+                            dispatch(storeStuff(result));
+                        }
+                    }
 
-        if (isOpen.account || isOpen.menu) {
-            document.addEventListener('mousedown', clickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', clickOutside);
-        };
-    }, [isOpen]);
+                    if (result.error) {
+                        dispatch(catchError( result.message ))
+                    }
+                } catch (err) {
+                    console.log(err.message);
+                }
+            }
+        });
+    }, []);
 
     return (
         <div className="layout">
             <PopupAlert />
             <div className={styles.header}>
-                <div 
-                    className={styles.menuWrapper}
-                    ref={menuDropdownRef}
-                >
-                    <div
-                        onClick={() => setOpen((prev) => ({
-                            ...prev,
-                            menu: !prev.menu
-                        }))}
-                        className={styles.menuBtn}
-                    >
-                        <RiMenuFill />
-                    </div>
-                    {isOpen.menu && (
-                        <div className={styles.menuDropdown}>
-                            <Link href="/">
-                                <a
-                                    onClick={() => setOpen({
-                                        ...isOpen,
-                                        menu: false
-                                    })}
-                                    className={styles.menuItems}
-                                >
-                                    Home
-                                </a>
-                            </Link>
-                            <Link href="/shop">
-                                <a
-                                    onClick={() => setOpen({
-                                        ...isOpen,
-                                        menu: false
-                                    })}
-                                    className={styles.menuItems}
-                                >
-                                    Shop
-                                </a>
-                            </Link>
-                            {admin && (
-                                <Link href="/admin">
-                                    <a
-                                        onClick={() => setOpen({
-                                            ...isOpen,
-                                            menu: false
-                                        })}
-                                        className={styles.menuItems}
-                                    >
-                                        Admin
-                                    </a>
-                                </Link>
-                            )}
-                            <Link href="/shop/categories">
-                                <a
-                                    onClick={() => setOpen({
-                                        ...isOpen,
-                                        menu: false
-                                    })}
-                                    className={styles.menuItems}
-                                >
-                                    Categories
-                                </a>
-                            </Link>
-                        </div>
-                    )}
-                </div>
+                <LeftMenu admin={admin} />
                 <div className={styles.logoWrapper}>
                     <div className={styles.logoNameWrapper}>
                         <div className={styles.logo} />
@@ -228,8 +155,8 @@ const SiteLayout = ({ children }) => {
                         <a className={styles.homeLink}>Shop</a>
                     </Link>
                     {admin && (
-                        <Link href="/admin">
-                            <a className={styles.homeLink}>Admin</a>
+                        <Link href={process.env.NEXT_PUBLIC_ADMIN_PORTAL}>
+                            <a target="_blank" className={styles.homeLink}>Admin</a>
                         </Link>
                     )}
                     <div
@@ -244,6 +171,7 @@ const SiteLayout = ({ children }) => {
                     </div>
                 </div>
                 <div className={styles.loginCartWrapper}>
+                    <SearchBar isOpen={searchOpen} setOpen={setSearchOpen} />
                     <Cart />
                     <div
                         className={styles.profile}
@@ -251,10 +179,7 @@ const SiteLayout = ({ children }) => {
                     >
                         {user.token ? (
                             <div
-                                onClick={() => setOpen((prev) => ({
-                                    ...prev,
-                                    account: !prev.account
-                                }))}
+                                onClick={() => setOpen(!isOpen)}
                                 className={styles.accountBtn}
                             >
                                 {user.info?.photo ? (
@@ -275,22 +200,17 @@ const SiteLayout = ({ children }) => {
                             </div>
                         ) : (
                             <div
-                                onClick={() => setOpen({
-                                    ...isOpen,
-                                    account: false
-                                })}
+                                onClick={() => setOpen(!isOpen)}
                                 className={styles.logBtn}
                             >
                                 Log In
                             </div>
                         )}
-                        {isOpen.account && (
+                        {isOpen && (
                             <div>
                                 {user.token ? (
                                     <>
-                                        <div
-                                            className={styles.dropdown}
-                                        >
+                                        <div className={styles.dropdown}>
                                             <div className={styles.greeting}>
                                                 Welcom <b>
                                                     {user.info?.username && displayFirstName(user.info?.username)}
@@ -299,10 +219,7 @@ const SiteLayout = ({ children }) => {
                                             <div
                                                 onClick={() => {
                                                     router.push('/myOrders/');
-                                                    setOpen({
-                                                        ...isOpen,
-                                                        account: false
-                                                    });
+                                                    setOpen(false);
                                                 }}
                                                 className={styles.dropdownItems}
                                             >
@@ -311,10 +228,7 @@ const SiteLayout = ({ children }) => {
                                             <div
                                                 onClick={() => {
                                                     router.push(`/account/${user.info._id}`);
-                                                    setOpen({
-                                                        ...isOpen,
-                                                        account: false
-                                                    });
+                                                    setOpen(false);
                                                 }}
                                                 className={styles.dropdownItems}
                                             >
@@ -331,9 +245,7 @@ const SiteLayout = ({ children }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <div
-                                            className={styles.dropdown}
-                                        >
+                                        <div className={styles.dropdown}>
                                             <div className={styles.formTitle}>Welcome</div>
                                             <div className={styles.loginForm}>
                                                 <input
@@ -355,17 +267,12 @@ const SiteLayout = ({ children }) => {
                                                     onChange={({ target }) => setPassword(target.value)}
                                                 />
                                                 {errorMessage && (
-                                                    <div className={styles.errorMessage}>
-                                                        {errorMessage}
-                                                    </div>
+                                                    <ErrorTooltip message={errorMessage} />
                                                 )}
                                                 <div className={styles.dropdownBtnWrapper}>
                                                     <button
                                                         onClick={() => {
-                                                            setOpen({
-                                                                ...isOpen,
-                                                                account: false
-                                                            });
+                                                            setOpen(false);
                                                             router.push('/registration');
                                                         }}
                                                         className={styles.logBtn}
@@ -396,10 +303,6 @@ const SiteLayout = ({ children }) => {
             </div>
         </div>
     );
-};
-
-SiteLayout.propTypes = {
-    children: PropTypes.element,
 };
 
 export default SiteLayout;

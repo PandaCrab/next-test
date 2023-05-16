@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -7,10 +6,16 @@ import { catchError, catchWarning } from '../redux/ducks/alerts';
 import { deleteUser } from '../pages/api/api';
 import { logout } from '../redux/ducks/user';
 import { clearOrder } from '../redux/ducks/order';
+import { AccountViews } from '../types/types';
 
 import styles from '../styles/DelitionAccount.module.scss';
 
-const DelitionAccount = ({ view, setView }) => {
+interface Props {
+    view: AccountViews;
+    setView: React.Dispatch<React.SetStateAction<AccountViews>>
+};
+
+const DelitionAccount: React.FC<Props> = ({ view, setView }) => {
     const [confirmPass, setConfirmPass] = useState<string>('');
 
     const router = useRouter();
@@ -97,11 +102,6 @@ const DelitionAccount = ({ view, setView }) => {
             </div>
         </div>
     );
-};
-
-DelitionAccount.propTypes = {
-    view: PropTypes.object,
-    setView: PropTypes.func,
 };
 
 export default DelitionAccount;

@@ -24,9 +24,10 @@ export const addressSchema = yup.object().shape({
 export const phoneSchema = yup.object().shape({
     phone: yup
         .string()
+        .matches(/^\+?[0-9]{9,18}$/gm, 'Only numbers')
         .min(10, 'Invalide phone number')
-        .max(19, 'You enter to long phone')
-        .required('Enter a contact phone'),
+        .max(19, 'To long phone number')
+        .required('Enter a contact phone')
 });
 
 export const paymentValidation = yup.object().shape({

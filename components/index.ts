@@ -12,6 +12,11 @@ import StarRating from './star-rating';
 import UserInfoSection from './userInfoSection';
 import Avatar from './Avatar';
 import ErrorTooltip from './errorTooltip';
+import Loader from './loader';
+import CountrySelect from './countrySelect';
+import FilterBar from './filterBar';
+import Slider from './slider';
+import SortDropdown from './sortDropdown';
 
 export {
     AddProductForm,
@@ -27,4 +32,9 @@ export {
     UserInfoSection,
     Avatar,
     ErrorTooltip,
+    Loader,
+    CountrySelect,
+    FilterBar,
+    Slider,
+    SortDropdown,
 };

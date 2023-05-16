@@ -9,7 +9,7 @@ import { postProduct } from '../pages/api/api';
 import { addProductSchema } from '../helpers/validation';
 import { ErrorTooltip } from '../components';
 import { devicesSubcategories, clothesSubcategories, categories } from '../helpers/categoriesArrays';
-import useWindowSize from '../hooks/windowSize';
+import { useClickOutside, useWindowSize } from '../hooks';
 
 import type { Stuff } from '../types/types';
 
@@ -31,17 +31,7 @@ const AddProductForm = () => {
         category: false,
         subcategory: false,
     });
-    const [addProduct, setProduct] = useState<Stuff>({
-        name: '',
-        price: 0,
-        imgUrl: '',
-        color: '',
-        quantity: 0,
-        category: '',
-        width: 0,
-        height: 0,
-        description: '',
-    });
+    const [addProduct, setProduct] = useState<Stuff | null>(null);
     const [invalidInfo, setInvalidInfo] = useState<InvalidState>({
         path: null,
         isValid: false,
@@ -76,18 +66,7 @@ const AddProductForm = () => {
                 if (value) {
                     await postProduct(info);
 
-                    setProduct({
-                        name: '',
-                        price: 0,
-                        imgUrl: '',
-                        color: '',
-                        quantity: 0,
-                        category: '',
-                        subcategory: '',
-                        width: 0,
-                        height: 0,
-                        description: '',
-                    });
+                    setProduct(null);
 
                     if (size.width < 767) {
                         setPreview(false);
@@ -97,7 +76,7 @@ const AddProductForm = () => {
                 }
             })
             .catch((error) => {
-                const validationError = {};
+                const validationError = null;
 
                 error.inner.forEach((err) => {
                     if (err.path) {
@@ -112,21 +91,13 @@ const AddProductForm = () => {
             });
     };
 
-    const onClickOutside = (event) => {
-        if (!dropdownRef.current.contains(event.target)) {
+    const closeDropdown = () => {
+        if (dropdownCategories && (dropdownCategories.category || dropdownCategories.subcategory)) {
             setCategories(false);
         }
-    };
+    }
 
-    useEffect(() => {
-        if (dropdownCategories && (dropdownCategories.category || dropdownCategories.subcategory)) {
-            document.addEventListener('click', onClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('click', onClickOutside);
-        }
-    }, [dropdownCategories]);
+    useClickOutside(dropdownRef, dropdownCategories, closeDropdown);
 
     useEffect(() => {
         if (size.width < 767) {

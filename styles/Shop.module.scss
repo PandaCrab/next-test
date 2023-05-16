@@ -7,6 +7,37 @@ $green: green;
 $errorBack: rgb(255, 72, 72);
 $red: red;
 
+.errorWrapper {
+    margin-top: 100px;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 500;
+    color: $white;
+    background-color: $errorBack;
+    border: 1px solid $red;
+    border-radius: 10px;
+    box-shadow: 0 0 15px $red;
+
+    @include media.mobileS {
+        width: 200px;
+        height: 100px;
+        font-size: 16px;
+    }
+}
+
+.loader {
+    margin-top: 100px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .contentContainer {
     padding: 10px;
     width: 95%;
@@ -17,35 +48,6 @@ $red: red;
 
     @include media.mobileS {
         padding: 5px;
-    }
-    
-    .loader {
-        margin: auto;
-        width: 200px;
-        height: 200px;
-        text-align: center;
-    }
-
-    .errorWrapper {
-        margin: auto;
-        width: 300px;
-        height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 25px;
-        font-weight: 500;
-        color: $white;
-        background-color: $errorBack;
-        border: 1px solid $red;
-        border-radius: 10px;
-        box-shadow: 0 0 15px $red;
-
-        @include media.mobileS {
-            width: 200px;
-            height: 100px;
-            font-size: 16px;
-        }
     }
 
     .productWrapper {

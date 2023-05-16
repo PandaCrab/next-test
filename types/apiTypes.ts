@@ -14,9 +14,9 @@ export type Product = {
 export type UpdateProduct = {
     _id: string;
     name?: string;
-    price?: string;
+    price?: number;
     color?: string;
-    quantity?: string
+    quantity?: number
 }
 
 export type UserRatedProductId = {
@@ -48,7 +48,7 @@ export type Order = {
 
 export type CommentApi = {
     userId: string | null;
-    photo: any | null;
+    photo: string | null;
     username: string;
     createdDate: Date;
     message: string;
@@ -60,11 +60,13 @@ export type Credentials = {
 };
 
 export type Info = {
-    street: string,
-    city: string,
-    country: string,
-    zip: string,
-} | { phone: string };
+    shippingInfo?: {
+        street: string,
+        city: string,
+        country: string,
+        zip: string,
+    } | {}
+    phone?: string };
 
 export type Registration = {
     username: string,

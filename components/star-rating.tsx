@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -125,10 +124,6 @@ const StarRating = ({ product }: { product: Stuff }) => {
             })}
         </div>
     );
-};
-
-StarRating.propTypes = {
-    product: PropTypes.object,
 };
 
 export default StarRating;
