@@ -8,7 +8,7 @@ const initialState: state = {
     stuff: [],
 };
 
-export default function stuffReducer (state = initialState, action: { type: any, payload?: Object[] | String[] | any }) {
+export default function stuffReducer (state = initialState, action: { type: string, payload?: Object[] | String[] }) {
     switch ( action.type ) {
         case FETCH_STUFF: 
             return { ...state, stuff: action.payload };

@@ -15,7 +15,7 @@ export default function Home() {
 
             <h1 className={styles.title}>Hello in our shop</h1>
             <Link href="/shop">
-                <a>Check what you can buy</a>
+                <a className="bordered-link">Check what you can buy</a>
             </Link>
         </div>
     );

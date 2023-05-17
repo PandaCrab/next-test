@@ -31,7 +31,9 @@ const Shop = () => {
     }, [loader]);
 
     useEffect(() => {
-        setStuffs(stuff);
+        if (!stuff.length) {
+            setStuffs(stuff);
+        }
     }, [stuff]);
 
     useState
