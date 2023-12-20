@@ -6,20 +6,18 @@ $itemBackground: #f1f1f1;
 $white: white;
 
 .searchBarWrapper {
+    margin-right: 10px;
     padding: 0;
     width: 20px;
     height: 20px;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: $white;
     border: 1px solid $lightgrayBorder;
     border-radius: 50%;
-    position: absolute;
+    position: relative;
     overflow: hidden;
-    top: 12px;
-    right: 95px;
     z-index: 100;
 
     &.open {
@@ -54,8 +52,6 @@ $white: white;
     @include media.laptop {
         width: 30px;
         height: 30px;
-        top: 23px;
-        right: 140px;
 
         &.open {
             width: 300px;
@@ -111,10 +107,9 @@ $white: white;
         font-size: 12px;
         border: none;
         border-radius: 50%;
+        position: absolute;
         outline: none;
         cursor: pointer;
-        position: absolute;
-        right: 3px;
 
         @include media.laptop {
             font-size: 18px;

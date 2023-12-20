@@ -12,9 +12,11 @@ $backOnHover: #e8e8e8;
     justify-content: center;
     background: $white;
     border: 1px solid $lightgrayBorder;
-    border-radius: 5px;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 10px 10px $gray;
     position: absolute;
-    top: 50px;
+    top: 100%;
     z-index: 100;
 
     .categoriesItems {

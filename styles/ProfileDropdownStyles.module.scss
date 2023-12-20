@@ -1,0 +1,137 @@
+@use 'mixins/MediaMixins' as media;
+
+$lightgrayBorder: #bbbbbb;
+// $backgroudGradient: linear-gradient(180deg, #170029 37%, #ffffff 100%);
+$backgroudGradient: white;
+$gray: gray;
+$white: white;
+$backOnHover: #cccccc;
+$backgroundHeader: white;
+$black: black;
+$red: red;
+
+.dropdown {
+    padding: 0;
+    width: 250px;
+    height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: $white;
+    border: 1px solid $lightgrayBorder;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 10px 10px $gray;  
+    position: absolute;
+    top: 100%;
+    right: 5px;
+    z-index: 100;
+    overflow: hidden;
+
+    &.openDropdown {
+        animation: profile-dropdown-open .2s ease-out forwards;
+    }
+
+    &.closeDropdown {
+        animation: profile-dropdown-close .2s ease-out forwards;
+    }
+
+    @keyframes profile-dropdown-open {
+        0% { height: 0; }
+        100% { height: 200px; padding: 12px; }
+    }
+
+    @keyframes profile-dropdown-close {
+        0% { height: 200px; }
+        100% { height: 0; }
+    }
+
+    @include media.mobileS {
+        width: 170px;
+        right: 0;
+
+        @keyframes profile-dropdown-open {
+            0% { height: 0; }
+            100% { height: 200px; padding: 12px; }
+        }
+
+        @keyframes profile-dropdown-close {
+            0% { height: 200px; }
+            100% { height: 0; }
+        }
+    }
+
+    @include media.laptop {
+        width: 250px;
+        right: 5px;
+    }
+
+    .greeting {
+        margin-bottom: 5px;
+        font-size: 18px;
+    }
+
+    .dropdownItems {
+        padding: 5px;
+        margin-bottom: 5px;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all .2s linear;
+
+        &:last-child {
+            margin-bottom: 200px;
+        }
+
+        &:hover {
+            color: $white;
+            background-color: $lightgrayBorder;
+        }
+    }
+
+    .loginForm {
+        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+
+        .logInput {
+            padding: 6px 12px;
+            border: 1px solid $lightgrayBorder;
+            border-radius: 5px;
+
+            &:first-child {
+                margin-bottom: 10px;
+            }
+
+            @include media.mobileS {
+                padding: 4px 8px;
+                font-size: 16px;
+            }
+
+            @include media.laptop {
+                padding: 4px 8px;
+                font-size: 14px;
+            }   
+        }
+
+        .dropdownBtnWrapper {
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .errorMessage {
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $red;
+            font-size: 14px;
+        }
+    }
+}

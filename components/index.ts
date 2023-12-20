@@ -17,6 +17,7 @@ import CountrySelect from './countrySelect';
 import FilterBar from './filterBar';
 import Slider from './slider';
 import SortDropdown from './sortDropdown';
+import ProfileDropdown from './ProfileDropdown';
 
 export {
     AddProductForm,
@@ -37,4 +38,5 @@ export {
     FilterBar,
     Slider,
     SortDropdown,
+    ProfileDropdown,
 };

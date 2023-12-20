@@ -26,7 +26,7 @@ interface Dropdown {
 };
 
 const AddProductForm = () => {
-    const [productPriview, setPreview] = useState<boolean>(false);
+    const [productPreview, setPreview] = useState<boolean>(false);
     const [dropdownCategories, setCategories] = useState<Dropdown | false>({
         category: false,
         subcategory: false,
@@ -120,7 +120,7 @@ const AddProductForm = () => {
                         }
                         name="name"
                         placeholder="Name of product"
-                        value={addProduct.name}
+                        value={addProduct.name ?? ''}
                         onChange={({ target }) => handleChange(target)}
                     />
                     {invalidInfo.path?.name && (
@@ -154,7 +154,7 @@ const AddProductForm = () => {
                         }
                         name="imgUrl"
                         placeholder="Image path?"
-                        value={addProduct.imgUrl}
+                        value={addProduct.imgUrl ?? ''}
                         onChange={({ target }) => handleChange(target)}
                     />
                     {invalidInfo.path?.imgUrl && (
@@ -171,7 +171,7 @@ const AddProductForm = () => {
                         }
                         name="color"
                         placeholder="Enter product color (optional)"
-                        value={addProduct.color}
+                        value={addProduct.color ?? ''}
                         onChange={({ target }) => handleChange(target)}
                     />
                     {invalidInfo.path?.color && (
@@ -354,7 +354,7 @@ const AddProductForm = () => {
                 </div>
                 <div className={styles.btnsWrapper}>
                     {size.width < 767 && (
-                        <button className={styles.previewBtn} onClick={() => setPreview(!productPriview)}>
+                        <button className={styles.previewBtn} onClick={() => setPreview(!productPreview)}>
                             Preview
                         </button>
                     )}
@@ -366,7 +366,7 @@ const AddProductForm = () => {
             <div
                 className={styles.previewCard}
                 style={{
-                    display: productPriview ? 'flex' : 'none',
+                    display: productPreview ? 'flex' : 'none',
                 }}
             >
                 <div className={styles.productCard} key={addProduct._id}>

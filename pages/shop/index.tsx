@@ -17,11 +17,11 @@ const Shop = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (stuff.length) {
+        if (stuffs.length) {
             dispatch(loaderOff());
         }
 
-        if (!stuff.length) {
+        if (!stuffs.length) {
             dispatch(loaderOn());
         }
     }, [stuff]);
@@ -31,12 +31,10 @@ const Shop = () => {
     }, [loader]);
 
     useEffect(() => {
-        if (!stuff.length) {
+        if (!stuffs.length) {
             setStuffs(stuff);
         }
     }, [stuff]);
-
-    useState
 
     if (isLoading) {
         return (<div className={styles.loader}><Loader /></div>);
@@ -45,7 +43,7 @@ const Shop = () => {
     return (
         <>
             <div className={styles.contentContainer}>
-                <FilterBar products={stuff} setProducts={setStuffs} />
+                <FilterBar products={stuffs} setProducts={setStuffs} />
                 {stuffs ? (
                     <div className={styles.productWrapper}>
                         {stuffs.map((product) => (

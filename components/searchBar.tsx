@@ -127,7 +127,7 @@ const SearchBar: React.FC<Props> = ({ isOpen, setOpen }) => {
                         </div>
                     )) : isSearch?.length >= 3 && (
                         <div className={`${styles.item} ${styles.empty}`}>
-                            <div>Sorry, we don't have this</div>
+                            <div>Sorry, we don't have that</div>
                         </div>
                     )}
                 </div>

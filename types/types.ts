@@ -141,7 +141,7 @@ export type UserInfo = {
 }
 
 export type ReduxStore = {
-    stuff: { stuff: Stuff[] };
+    stuff: { stuff: Stuff[] | String[] };
     user: {
         token: string | null;
         info: userObject;
