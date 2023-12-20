@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RiUser3Line } from 'react-icons/ri';
 
@@ -10,12 +9,11 @@ import SearchBar from './searchBar';
 import Cart from './cart';
 import CategoriesDropdown from './categotiesDropdown';
 import LeftMenu from './leftMenu';
-import ErrorTooltip from './errorTooltip';
-import { data$, getUserInfo, loginUser } from '../pages/api/api';
-import { getToken, getInfo, logout } from '../redux/ducks/user';
-import { useClickOutside } from '../hooks';
+import { data$, getUserInfo } from '../pages/api/api';
+import { getToken, getInfo } from '../redux/ducks/user';
 import { storeStuff } from '../redux/ducks/stuff';
 import { catchError } from '../redux/ducks/alerts';
+import { ProfileDropdown } from './index';
 
 import type { userObject } from '../types/types';
 
@@ -30,39 +28,18 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
     const [admin, setAdmin] = useState<boolean>(false);
     const [showCategories, setShowCategories] = useState<boolean>(false);
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [animation, setAnimation] = useState<boolean>();
 
     const profileRef: React.MutableRefObject<HTMLDivElement> | null = useRef(null);
 
-    const router = useRouter();
-
     const dispatch = useDispatch();
     const user = useSelector((state: { user: userObject }) => state.user);
-
-    const setToken = (token) => {
-        localStorage.setItem('token', JSON.stringify(token));
-    };
 
     const takeUserInfo = async (id: string) => {
         const info = await getUserInfo(id);
 
         dispatch(getInfo(info));
     };
-
-    const onLogout = () => {
-        localStorage.removeItem('token');
-
-        dispatch(logout());
-    };
-
-    const closeProfile = () => {
-        setPassword('');
-        setOpen(false);
-    };
-
-    useClickOutside(profileRef, isOpen, closeProfile);
 
     const getTokenFromStorage = () => {
         const fromStorage = localStorage.getItem('token');
@@ -92,32 +69,6 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
         }
     }, [user.info?.admin]);
 
-    const onLogin = async () => {
-        const token = await loginUser({ username: String(username).toLowerCase(), password });
-
-        if (token.token) {
-            dispatch(getToken(token.token));
-            dispatch(getInfo(token.user));
-
-            setToken(token.token);
-
-            setUsername('');
-            setPassword('');
-            setErrorMessage('');
-
-            setOpen(false);
-        } else {
-            setErrorMessage(token.message);
-            setPassword('');
-        }
-    };
-
-    const displayFirstName = (name) => {
-        const nameArr = name.split(' ');
-
-        return nameArr[0];
-    };
-
     useEffect(() => {
         data$.subscribe({
             next: async (result) => {
@@ -138,6 +89,16 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
         });
     }, []);
 
+    const toggleDropdown = () => {
+        setAnimation(true);
+
+        setOpen(!isOpen);
+
+        if (isOpen) {
+            setAnimation(true)
+        }
+    }
+
     return (
         <div className="layout">
             <PopupAlert />
@@ -155,7 +116,7 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
                         <a className={styles.homeLink}>Shop</a>
                     </Link>
                     {admin && (
-                        <Link href={process.env.NEXT_PUBLIC_ADMIN_PORTAL}>
+                        <Link href={process.env.NEXT_PUBLIC_ADMIN_PORTAL ?? '/admin'}>
                             <a target="_blank" className={styles.homeLink}>Admin</a>
                         </Link>
                     )}
@@ -179,7 +140,7 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
                     >
                         {user.token ? (
                             <div
-                                onClick={() => setOpen(!isOpen)}
+                                onClick={() => toggleDropdown()}
                                 className={styles.accountBtn}
                             >
                                 {user.info?.photo ? (
@@ -206,100 +167,26 @@ const SiteLayout: React.FC<Props> = ({ children }) => {
                                 Log In
                             </div>
                         )}
-                        {isOpen && (
-                            <div>
-                                {user.token ? (
-                                    <>
-                                        <div className={styles.dropdown}>
-                                            <div className={styles.greeting}>
-                                                Welcom <b>
-                                                    {user.info?.username && displayFirstName(user.info?.username)}
-                                                </b>
-                                            </div>
-                                            <div
-                                                onClick={() => {
-                                                    router.push('/myOrders/');
-                                                    setOpen(false);
-                                                }}
-                                                className={styles.dropdownItems}
-                                            >
-                                                Order history
-                                            </div>
-                                            <div
-                                                onClick={() => {
-                                                    router.push(`/account/${user.info._id}`);
-                                                    setOpen(false);
-                                                }}
-                                                className={styles.dropdownItems}
-                                            >
-                                                My account
-                                            </div>
-                                            <div className={styles.dropdownItems}>Item</div>
-                                            <button
-                                                onClick={() => onLogout()}
-                                                className={styles.logBtn}
-                                            >
-                                                Log Out
-                                            </button>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className={styles.dropdown}>
-                                            <div className={styles.formTitle}>Welcome</div>
-                                            <div className={styles.loginForm}>
-                                                <input
-                                                    className={styles.logInput}
-                                                    id="username"
-                                                    name="username"
-                                                    type="text"
-                                                    placeholder="Enter your name"
-                                                    value={username}
-                                                    onChange={({ target }) => setUsername(target.value)}
-                                                />
-                                                <input
-                                                    className={styles.logInput}
-                                                    id="password"
-                                                    name="password"
-                                                    type="password"
-                                                    placeholder="Enter your password"
-                                                    value={password}
-                                                    onChange={({ target }) => setPassword(target.value)}
-                                                />
-                                                {errorMessage && (
-                                                    <ErrorTooltip message={errorMessage} />
-                                                )}
-                                                <div className={styles.dropdownBtnWrapper}>
-                                                    <button
-                                                        onClick={() => {
-                                                            setOpen(false);
-                                                            router.push('/registration');
-                                                        }}
-                                                        className={styles.logBtn}
-                                                    >
-                                                        Sign In
-                                                    </button>
-                                                    <button
-                                                        disabled={username.length && false}
-                                                        onClick={() => onLogin()}
-                                                        className={styles.logBtn}
-                                                    >
-                                                        Log In
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        )}
+                        <ProfileDropdown 
+                            isOpen={isOpen}
+                            setOpen={setOpen} 
+                            user={user}
+                            animation={animation}
+                            setAnimation={setAnimation}
+                            profileRef={profileRef}
+                        />
                     </div>
                 </div>
             </div>
             <div className={styles.mainFooterWrapper}>
                 <main className={styles.main}>{children}</main>
 
-                <footer className={styles.footer}>Test Next application</footer>
+                <footer className={styles.footer}>
+                    <div>
+                        <h5>Test Next application</h5>
+                        <p>&#169;Company name. All Rights Reserved</p>
+                    </div>
+                </footer>
             </div>
         </div>
     );

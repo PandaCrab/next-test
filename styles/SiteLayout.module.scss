@@ -1,9 +1,12 @@
 @use 'mixins/MediaMixins' as media;
 
 $lightgrayBorder: #bbbbbb;
+// $backgroudGradient: linear-gradient(180deg, #170029 37%, #ffffff 100%);
+$backgroudGradient: white;
 $gray: gray;
 $white: white;
 $backOnHover: #cccccc;
+$backgroundHeader: white;
 $black: black;
 $red: red;
 
@@ -39,37 +42,36 @@ $red: red;
 }
 
 .header {
-    padding: 0 30px;
     margin-bottom: 25px;
     width: 100%;
-    height: 50px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: $white;
+    background: $backgroundHeader;
+    color: $black;
     box-shadow: 0 3px 10px $gray;
     position: fixed;
     z-index: 1000;
 
     @include media.mobileS {
-        padding: 0 15px;
+        padding-left: 10px;
         margin-bottom: 15px;
-        height: 40px;
+        height: 50px;
         font-size: 16px;
     }
 
     @include media.laptop {
-        height: 70px;
+        height: 90px;
         font-size: 16px;
     }
 
     @include media.desktop {
-        width: 1700px;
-        height: 70px;
         font-size: 18px;
     }
 
     .logoWrapper {
+        padding-left: 10px;
         width: 500px;
         height: 100%;
         display: flex;
@@ -128,7 +130,13 @@ $red: red;
                 width: 30px;
                 height: 30px;
 
+                &:hover {
+                    filter: drop-shadow(-5px 5px 5px gray);
+
+                }
+
                 @include media.mobileS {
+                    margin: 0;
                     display: none;
                 }
 
@@ -147,10 +155,13 @@ $red: red;
     }
 
     .loginCartWrapper {
+        padding-right: 10px;
         width: auto;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: space-around;
+        position: relative;
 
         @include media.laptop {
             font-size: 20px;
@@ -159,7 +170,6 @@ $red: red;
         .profile {
             margin-right: 20px;
             width: auto;
-            position: relative;
 
             @include media.mobileS {
                 margin-right: 5px;
@@ -210,114 +220,6 @@ $red: red;
                     }
                 }
             }
-
-            .dropdown {
-                padding: 12px;
-                width: 250px;
-                height: auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                background: $white;
-                border: 1px solid $lightgrayBorder;
-                border-radius: 5px;
-                box-shadow: 0 0 5px $gray;
-                position: absolute;
-                top: 45px;
-                right: -30px;
-                z-index: 100;
-                overflow: hidden;
-                animation: profile-dropdown .2s linear;
-
-                @keyframes profile-dropdown {
-                    0% {height: 0; width: 20px;}
-                    100% { height: 150px; width: 250px; }
-                }
-
-                @include media.mobileS {
-                    padding: 6px;
-                    right: 0;
-                }
-
-                @include media.laptop {
-                    padding: 12px;
-                    top: 40px;
-                    right: -10px;
-                }
-
-                @include media.desktop {
-                    top: 45px;
-                    right: -10px;
-                }
-
-                .greeting {
-                    margin-bottom: 10px;
-                    font-size: 22px;
-                }
-
-                .dropdownItems {
-                    padding: 5px;
-                    margin-bottom: 5px;
-                    width: 100%;
-                    text-align: center;
-                    font-size: 16px;
-                    cursor: pointer;
-
-                    &:last-child {
-                        margin-bottom: 200px;
-                    }
-
-                    &:hover {
-                        color: $white;
-                        background-color: $lightgrayBorder;
-                    }
-                }
-
-                .loginForm {
-                    margin-top: 10px;
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-
-
-                    .logInput {
-                        padding: 6px 12px;
-                        border: 1px solid $lightgrayBorder;
-                        border-radius: 5px;
-
-                        &:first-child {
-                            margin-bottom: 10px;
-                        }
-
-                        @include media.mobileS {
-                            padding: 4px 8px;
-                            font-size: 16px;
-                        }
-
-                        @include media.laptop {
-                            padding: 4px 8px;
-                            font-size: 14px;
-                        }   
-                    }
-
-                    .dropdownBtnWrapper {
-                        margin-top: 10px;
-                        width: 100%;
-                        display: flex;
-                        justify-content: space-around;
-                    }
-
-                    .errorMessage {
-                        padding: 5px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: $red;
-                        font-size: 14px;
-                    }
-                }
-            }
         }
     }
 }
@@ -329,6 +231,7 @@ $red: red;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    background: $backgroudGradient;
 
     .main {
         margin-top: 90px;
@@ -352,31 +255,32 @@ $red: red;
     }
 
     .footer {
-        padding: 20px 0;
+        padding: 5px 20px;
         width: 100%;
-        height: 100px;
+        height: 60px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: $black;
-        color: $white;
-        border-top: 1px solid $lightgrayBorder;
+        justify-content: space-between;
+        background: $white;
+        color: $black;
+        border-top: 1px solid $backOnHover;
         position: relative;
         bottom: 0;
 
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+
+        p {
+            font-size: 10px;
+            font-weight: lighter;
+        }
+
         @include media.mobileS {
-            height: 50px;
-            font-size: 12px;
-        }
-
-        @include media.laptop {
-            height: 100px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        @include media.desktop {
-            width: 1700px;
+            p {
+                margin: 0;
+            }
         }
     }
 }
